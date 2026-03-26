@@ -6,8 +6,8 @@ import MainLayout from '@/Layouts/MainLayout';
 export default function Home() {
     return (
         <MainLayout>
+            <Head title="Home" />
             <div className="relative min-h-screen">
-                <Head title="Home" />
                 {/* Hero Section */}
                 <section className="relative min-h-screen flex flex-col justify-center px-6 lg:px-24 overflow-hidden">
                     {/* Background Ambiance */}

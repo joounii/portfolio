@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
 import { Send, Terminal, Code, Mail, Network, MessageSquare, MapPin, ExternalLink } from 'lucide-react';
+import { Head } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
 
 export default function Contact() {
   return (
     <MainLayout>
+        <Head title="Contact" />
         <div className="max-w-7xl mx-auto px-6 pt-32 pb-32">
         {/* Hero Section */}
         <section className="relative mb-20">

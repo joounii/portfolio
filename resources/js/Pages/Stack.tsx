@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Terminal, Diamond, Database, Layers, Cloud, Zap, Rocket, Settings, Code } from 'lucide-react';
 import { TechStack } from '@/types/types';
+import { Head } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
 
 const coreEngines: TechStack[] = [
@@ -42,6 +43,7 @@ const toolkit = [
 export default function Stack() {
   return (
     <MainLayout>
+        <Head title="Stack" />
         <div className="max-w-7xl mx-auto px-6 pt-32 pb-32">
         <header className="mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8">
             <div className="max-w-2xl">

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Terminal as TerminalIcon, Cpu, Database, Activity, ShieldCheck, AlertCircle } from 'lucide-react';
 import MainLayout from '@/Layouts/MainLayout';
+import { Head } from '@inertiajs/react';
 
 const bootSequence = [
   '> INITIALIZING JOOUNII_OS v2.4.0...',
@@ -43,6 +44,7 @@ export default function Logs() {
 
   return (
     <MainLayout>
+        <Head title="Console" />
         <div className="max-w-7xl mx-auto px-6 pt-32 pb-32 grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Terminal View */}
         <motion.div
