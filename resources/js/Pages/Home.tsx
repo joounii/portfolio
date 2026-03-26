@@ -93,9 +93,9 @@ export default function Home() {
                                     <div className="w-3 h-3 rounded-full bg-primary/40"></div>
                                 </div>
                                 <code className="font-mono text-sm text-on-surface-variant block space-y-1">
-                                    <span className="text-secondary">class</span> <span className="text-primary">Architect</span> {'{'}<br />
-                                    &nbsp;&nbsp;<span className="text-tertiary">async</span> build(void) {'{'}<br />
-                                    &nbsp;&nbsp;&nbsp;&nbsp;await this.deploy();<br />
+                                    <span className="text-secondary">class</span> <span className="text-primary">Joounii</span> {'{'}<br />
+                                    &nbsp;&nbsp;<span className="text-secondary">async</span> <span className="text-tertiary">build</span>(me: <span className="text-primary">Developer</span>) {'{'}<br />
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-secondary">await</span> this.<span className="text-tertiary">deploy</span>();<br />
                                     &nbsp;&nbsp;{'}'}<br />
                                     {'}'}
                                 </code>

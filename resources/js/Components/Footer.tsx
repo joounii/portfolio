@@ -1,26 +1,23 @@
-import { View } from '../types';
+import { Link } from '@inertiajs/react';
 
-interface FooterProps {
-  setView: (view: View) => void;
-}
-
-export default function Footer({ setView }: FooterProps) {
+export default function Footer() {
   return (
     <footer className="bg-surface-container-lowest w-full py-12 px-6 lg:px-24 border-t border-outline-variant/15 mt-24">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="font-mono text-[10px] tracking-widest uppercase text-on-surface-variant">
-          © 2024 DEPLOY_READY // ALL SYSTEMS OPERATIONAL
+          © {new Date().getFullYear()} DEPLOY_READY // ALL SYSTEMS OPERATIONAL
         </div>
-        
+
         <div className="flex gap-10">
-          <a href="#" className="font-mono text-[10px] tracking-widest uppercase text-on-surface-variant hover:text-secondary transition-colors">GITHUB</a>
-          <a href="#" className="font-mono text-[10px] tracking-widest uppercase text-on-surface-variant hover:text-secondary transition-colors">LINKEDIN</a>
-          <button 
-            onClick={() => setView('logs')}
+          <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" className="font-mono text-[10px] tracking-widest uppercase text-on-surface-variant hover:text-secondary transition-colors">GITHUB</a>
+          <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" className="font-mono text-[10px] tracking-widest uppercase text-on-surface-variant hover:text-secondary transition-colors">LINKEDIN</a>
+
+          <Link
+            href="/logs"
             className="font-mono text-[10px] tracking-widest uppercase text-on-surface-variant hover:text-secondary transition-colors"
           >
             SYSTEM_STATUS
-          </button>
+          </Link>
         </div>
 
         <div className="flex items-center gap-2">

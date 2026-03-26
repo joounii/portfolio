@@ -2,15 +2,20 @@ import { motion } from 'framer-motion';
 import { Terminal, FileCode, Layers, Mail, LayoutGrid } from 'lucide-react';
 import { Link, usePage } from '@inertiajs/react';
 
+interface NavItem {
+    label: string;
+    href: string;
+}
+
 export default function Navbar() {
 
     const { url } = usePage();
 
-    const navItems = [
-        { label: 'HOME', value: 'home' },
-        { label: 'PROJECTS', value: 'projects' },
-        { label: 'STACK', value: 'stack' },
-        { label: 'CONTACT', value: 'contact' },
+    const navItems: NavItem[] = [
+        { label: 'HOME', href: '/home' },
+        { label: 'PROJECTS', href: '/projects' },
+        { label: 'STACK', href: '/stack' },
+        { label: 'CONTACT', href: '/contact' },
     ];
 
     return (
@@ -19,7 +24,7 @@ export default function Navbar() {
                 href="/"
                 className="text-xl font-bold tracking-tighter text-on-surface font-headline uppercase whitespace-nowrap cursor-pointer"
             >
-                //KINETIC_ARCHITECT
+                //JOOUNII
             </Link>
 
             <div className="hidden md:flex items-center gap-6">
