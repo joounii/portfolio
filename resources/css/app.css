@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-surface-container-lowest text-on-surface font-body antialiased;
+  }
+}
+
+@layer utilities {
+  .bg-grid-pattern {
+    background-image: radial-gradient(circle, #353535 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .neon-glow-primary {
+    box-shadow: 0 0 20px rgba(208, 188, 255, 0.2);
+  }
+  .neon-glow-secondary {
+    box-shadow: 0 0 20px rgba(76, 215, 246, 0.2);
+  }
+  .glass-panel {
+    /* v3 doesn't support the /40 syntax for custom theme vars easily,
+       so we'll use a standard rgba or hex for now if needed */
+    background-color: rgba(31, 31, 31, 0.4);
+    @apply backdrop-blur-xl border border-white/10;
+  }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap');
