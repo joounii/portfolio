@@ -2,8 +2,7 @@ import { motion } from 'framer-motion';
 import { Database, Activity, Terminal, Server, Zap, Shield } from 'lucide-react';
 import { Head } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
-import UptimeCounter from '@/Components/time'
-import FullStackIcon from '@/Components/FullStackIcon';
+import UptimeCounter from '@/Components/time';
 
 export default function Home() {
     return (
