@@ -121,7 +121,7 @@ export default function Contact() {
                 <div
                 className="absolute inset-0 opacity-20 pointer-events-none grayscale brightness-50 contrast-125 transition-transform duration-700 group-hover:scale-105"
                 style={{
-                    backgroundImage: "url('https://picsum.photos/seed/map/800/600')",
+                    backgroundImage: "url('/images/earth_picture.png')",
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                 }}
@@ -139,8 +139,8 @@ export default function Contact() {
                 <div className="space-y-4">
                     <div>
                     <h3 className="font-mono text-[10px] text-on-surface-variant tracking-widest uppercase">LOCATION_COORDINATES</h3>
-                    <p className="font-headline text-2xl font-bold tracking-tight">BERLIN, DE</p>
-                    <p className="font-mono text-[10px] text-secondary opacity-70">52.5200° N, 13.4050° E</p>
+                    <p className="font-headline text-2xl font-bold tracking-tight">ZURCIH, CH</p>
+                    <p className="font-mono text-[10px] text-secondary opacity-70">47.3744° N, 8.5411° E</p>
                     </div>
                     <div className="pt-4 border-t border-outline-variant/10">
                     <h3 className="font-mono text-[10px] text-on-surface-variant tracking-widest uppercase mb-2">TIMEZONE_SYNC</h3>
