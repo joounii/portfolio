@@ -36,6 +36,12 @@ export default {
                 'on-tertiary': '#580065',
                 'on-tertiary-container': '#4d0059',
 
+                // Accent
+                'accent': '#ffb86c',
+                'accent-container': '#ff9c30',
+                'on-accent': '#4a2800',
+                'on-accent-container': '#432400',
+
                 // Surface
                 'surface': '#131313',
                 'surface-dim': '#131313',

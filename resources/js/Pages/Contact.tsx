@@ -8,25 +8,26 @@ export default function Contact() {
     <MainLayout>
         <Head title="Contact" />
         <div className="max-w-7xl mx-auto px-6 pt-32 pb-32">
-        {/* Hero Section */}
-        <section className="relative mb-20">
-            <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary-container opacity-5 blur-[80px] rounded-full"></div>
-            <div className="space-y-4">
-            <div className="flex items-center gap-3 font-mono text-secondary text-xs tracking-[0.3em]">
-                <span className="inline-block w-2 h-2 bg-secondary rounded-full animate-pulse shadow-[0_0_10px_#4cd7f6]"></span>
-                INITIALIZING HANDSHAKE...
+        <header className="mb-20 flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div className="max-w-2xl">
+            <div className="font-mono text-secondary text-sm tracking-[0.3em] mb-4 uppercase">
+                03 // CONNECTION_NODE
             </div>
-            <h1 className="text-5xl md:text-8xl font-black font-headline tracking-tighter text-on-surface leading-none">
-                ESTABLISH_CONNECTION
+            <h1 className="font-headline text-6xl md:text-8xl font-bold tracking-tighter leading-none mb-6">
+                ESTABLISH <span className="text-primary italic">CONNECTION</span>
             </h1>
-            <div className="flex flex-wrap gap-x-8 gap-y-2 font-mono text-[10px] text-on-surface-variant uppercase tracking-widest pt-4">
-                <span>STATUS: <span className="text-secondary">READY</span></span>
-                <span>ENCRYPTION: <span className="text-tertiary">AES_256_GCM</span></span>
-                <span>LATENCY: <span className="text-primary">12MS</span></span>
-                <span>PROTOCOL: <span className="text-on-surface">TCP/IP_V6</span></span>
+            <p className="text-on-surface-variant text-lg font-light leading-relaxed">
+                A collection of high-performance backend systems, distributed architectures, and automated infrastructure deployments. Precision engineered for scale.
+            </p>
+            </div>
+            <div className="flex flex-col items-start md:items-end gap-2">
+            <div className="font-mono text-xs text-outline mb-1 uppercase tracking-widest">SYSTEM_STATUS</div>
+            <div className="flex items-center gap-2 bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant/15">
+                <span className="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_#4cd7f6]"></span>
+                <span className="font-mono text-xs text-secondary">ALL_SYSTEMS_OPERATIONAL</span>
             </div>
             </div>
-        </section>
+        </header>
 
         {/* Main Dossier Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -36,7 +37,7 @@ export default function Contact() {
             animate={{ opacity: 1, x: 0 }}
             className="lg:col-span-7 bg-surface-container-low p-8 md:p-12 relative overflow-hidden group border border-outline-variant/10"
             >
-            <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-outline-variant opacity-30 select-none">
+            <div className="absolute top-0 right-0 p-4 font-mono text-[10px] text-outline-variant opacity-30">
                 MODULE_ID: FORM_771
             </div>
             <div className="space-y-8">
@@ -76,6 +77,12 @@ export default function Contact() {
                     <Send className="text-sm transition-transform group-hover/btn:translate-x-1" size={16} />
                 </button>
                 </form>
+                <div className="flex flex-wrap gap-x-8 gap-y-2 font-mono text-[10px] text-on-surface-variant uppercase tracking-widest pt-4">
+                    <span>STATUS: <span className="text-secondary">READY</span></span>
+                    <span>ENCRYPTION: <span className="text-tertiary">AES_256_GCM</span></span>
+                    <span>LATENCY: <span className="text-primary">12MS</span></span>
+                    <span>PROTOCOL: <span className="text-on-surface">TCP/IP_V6</span></span>
+                </div>
             </div>
             </motion.div>
 
