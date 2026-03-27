@@ -182,7 +182,7 @@ export default function Home() {
                                 <span className="font-mono text-xs tracking-[0.3em] text-tertiary uppercase mb-4 block">02 // CORE_ARCHITECTURE</span>
                                 <h2 className="font-headline text-4xl font-bold tracking-tight text-on-surface">ENGINEERING THE <span className="text-primary">BACKBONE</span></h2>
                             </div>
-                            <p className="font-body text-on-surface-variant max-w-xs text-right hidden md:block">
+                            <p className="font-body text-on-surface-variant max-w-sm text-right hidden md:block">
                                 Developing secure, high-utility backend layers with a focus on optimization and scale.
                             </p>
                         </div>
@@ -230,15 +230,16 @@ export default function Home() {
                             {/* Grid Item 4 (Image) */}
                             <div className="md:col-span-3 h-64 relative rounded overflow-hidden group">
                                 <img
-                                    src="https://picsum.photos/seed/server/1200/400?grayscale"
-                                    alt="Infrastructure"
-                                    className="w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-700"
+                                    src="/images/project_background.png"
+                                    alt="Project Orchestrator Visual"
+                                    className="w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-700 grayscale"
                                     referrerPolicy="no-referrer"
                                 />
+
                                 <div className="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent"></div>
                                 <div className="absolute bottom-6 left-6">
-                                    <div className="font-mono text-[10px] text-primary uppercase tracking-[0.4em] mb-1">DATA_LAKE_PROJECT</div>
-                                    <div className="font-headline font-bold text-xl uppercase">REAL-TIME TELEMETRY</div>
+                                    <div className="font-mono text-[10px] text-primary uppercase tracking-[0.4em] mb-1">FINAL_DEGREE_PROJECT</div>
+                                    <div className="font-headline font-bold text-xl uppercase">PROJECT_ORCHESTRATOR</div>
                                 </div>
                             </div>
                         </div>
