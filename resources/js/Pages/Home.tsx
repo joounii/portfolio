@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Database, Activity, Terminal, Server, Zap, Shield } from 'lucide-react';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
 import UptimeCounter from '@/Components/time';
 
@@ -12,8 +12,8 @@ export default function Home() {
                 {/* Hero Section */}
                 <section className="relative min-h-screen flex flex-col justify-center px-6 lg:px-24 overflow-hidden">
                     {/* Background Ambiance */}
-                    <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none"></div>
-                    <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 blur-[120px] rounded-full"></div>
+                    {/* <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none"></div> */}
+                    {/* <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 blur-[120px] rounded-full"></div> */}
 
                     <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                         {/* Content Block */}
@@ -44,12 +44,20 @@ export default function Home() {
                             </p>
 
                             <div className="flex flex-wrap gap-4 pt-4">
-                                <button className="px-8 py-4 bg-gradient-to-br from-primary to-primary-container rounded text-on-primary font-headline font-bold tracking-wide shadow-[0_0_30px_-5px_rgba(160,120,255,0.5)] hover:shadow-[0_0_40px_-5px_rgba(160,120,255,0.7)] transition-all active:scale-95">
+                                <Link
+                                    href={route('projects')}
+                                    as="button"
+                                    className="px-8 py-4 bg-gradient-to-br from-primary to-primary-container rounded text-on-primary font-headline font-bold tracking-wide shadow-[0_0_30px_-5px_rgba(160,120,255,0.5)] hover:shadow-[0_0_40px_-5px_rgba(160,120,255,0.7)] transition-all active:scale-95"
+                                >
                                     EXPLORE MY SYSTEMS
-                                </button>
-                                <button className="px-8 py-4 bg-transparent border border-secondary/20 rounded text-secondary font-headline font-bold tracking-wide hover:bg-secondary/5 transition-all">
+                                </Link>
+                                <Link
+                                    href={route('contact')}
+                                    as="button"
+                                    className="px-8 py-4 bg-transparent border border-secondary/20 rounded text-secondary font-headline font-bold tracking-wide hover:bg-secondary/5 transition-all"
+                                >
                                     GET IN TOUCH
-                                </button>
+                                </Link>
                             </div>
                         </motion.div>
 
@@ -189,9 +197,8 @@ export default function Home() {
 
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                             {/* Grid Item 1 */}
-                            <motion.div
-                                whileHover={{ backgroundColor: 'var(--color-surface-container-high)' }}
-                                className="md:col-span-2 bg-surface-container-low p-10 rounded group transition-colors"
+                            <div
+                                className="md:col-span-2 bg-surface-container p-10 rounded group transition-colors flex flex-col justify-between"
                             >
                                 <Server className="text-primary mb-6" size={40} />
                                 <h3 className="font-headline text-2xl font-bold mb-4">MODERN_FULLSTACK</h3>
@@ -202,11 +209,10 @@ export default function Home() {
                                     <span className="px-3 py-1 bg-tertiary-container/10 text-tertiary font-mono text-[10px] rounded-full uppercase tracking-tighter">TYPESCRIPT</span>
                                     <span className="px-3 py-1 bg-tertiary-container/10 text-tertiary font-mono text-[10px] rounded-full uppercase tracking-tighter">MYSQL</span>
                                 </div>
-                            </motion.div>
+                            </div>
 
                             {/* Grid Item 2 */}
-                            <motion.div
-                                whileHover={{ backgroundColor: 'var(--color-surface-container-highest)' }}
+                            <div
                                 className="md:col-span-2 bg-surface-container p-10 rounded group transition-colors flex flex-col justify-between"
                             >
                                 <div>
@@ -218,7 +224,7 @@ export default function Home() {
                                     <span className="text-4xl font-headline font-bold text-secondary">&lt; 100ms</span>
                                     <span className="font-mono text-[10px] text-on-secondary-fixed-variant uppercase tracking-widest">avg_request_time</span>
                                 </div>
-                            </motion.div>
+                            </div>
 
                             {/* Grid Item 3 */}
                             <div className="md:col-span-1 bg-surface-container-low p-8 rounded border border-outline-variant/5">

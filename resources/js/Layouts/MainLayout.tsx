@@ -8,10 +8,6 @@ import Footer from '@/Components/Footer';
 export default function MainLayout({ children }: { children: React.ReactNode }) {
     const { url } = usePage();
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [url]);
-
     return (
         <div className="min-h-screen bg-surface-container-lowest selection:bg-primary/30 selection:text-primary overflow-x-hidden flex flex-col relative">
             <Navbar />
