@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -24,14 +25,22 @@ Route::get('/stack', function () { return Inertia::render('Stack'); })->name('st
 Route::get('/contact', function () { return Inertia::render('Contact'); })->name('contact');
 Route::get('/logs', function () { return Inertia::render('Logs'); })->name('logs');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::post('/api/handshake', [ContactController::class, 'store'])->name('contact.store');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+Route::middleware(['auth', 'verified'])
+    ->prefix('admin')
+    ->group(function () {
+
+        Route::get('/dashboard', function () {
+            return Inertia::render('Admin/Dashboard');
+        })->name('dashboard');
+
+        Route::get('/inbox', [ContactController::class, 'index'])->name('admin.inbox');
+        Route::delete('/inbox/{message}', [ContactController::class, 'destroy'])->name('contact.destroy');
+
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
 
 require __DIR__.'/auth.php';

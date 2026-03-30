@@ -1,12 +1,39 @@
 import { motion } from 'framer-motion';
 import { Send, Terminal, Code, Mail, Network, MessageSquare, MapPin, ExternalLink } from 'lucide-react';
-import { Head } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
 import ZurichClock from '@/Components/ZurichClock';
+import { useForm, usePage, Head } from '@inertiajs/react';
+import React from 'react';
+
+interface PageProps extends Record<string, any> {
+    auth: {
+        user: any;
+    };
+    flash: {
+        success: string | null;
+    };
+}
 
 export default function Contact() {
     const offset = new Date().getTimezoneOffset();
     const gmtLabel = offset === -120 ? "CEST // GMT+2" : "CET // GMT+1";
+
+    const { flash } = usePage<PageProps>().props;
+    const isSuccess = flash.success === 'PAYLOAD_RECEIVED';
+
+    const { data, setData, post, processing, reset, errors } = useForm({
+        identifier_name: '',
+        return_path_email: '',
+        payload_message: '',
+    });
+
+    const submit = (e: React.FormEvent) => {
+        e.preventDefault();
+        post(route('contact.store'), {
+            onSuccess: () => reset(),
+            onError: (err) => console.error("HANDSHAKE_FAILED", err),
+        });
+    };
 
     return (
         <MainLayout>
@@ -33,9 +60,7 @@ export default function Contact() {
                     </div>
                 </header>
 
-                {/* Main Dossier Layout */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    {/* Handshake Module (Contact Form) */}
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -49,11 +74,13 @@ export default function Contact() {
                                 <Terminal className="text-primary" size={24} />
                                 <h2 className="font-headline text-xl font-bold tracking-tight">THE_HANDSHAKE_MODULE</h2>
                             </div>
-                            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                            <form className="space-y-6" onSubmit={submit}>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <label className="block font-mono text-[10px] text-on-surface-variant tracking-widest uppercase">IDENTIFIER_NAME</label>
                                         <input
+                                            value={data.identifier_name}
+                                            onChange={e => setData('identifier_name', e.target.value)}
                                             className="w-full bg-surface-container-high border-none text-on-surface font-mono focus:ring-1 focus:ring-secondary/50 p-4 transition-all rounded"
                                             placeholder="GUEST_USER"
                                             type="text"
@@ -62,27 +89,40 @@ export default function Contact() {
                                     <div className="space-y-2">
                                         <label className="block font-mono text-[10px] text-on-surface-variant tracking-widest uppercase">RETURN_PATH_EMAIL</label>
                                         <input
+                                            value={data.return_path_email}
+                                            onChange={e => setData('return_path_email', e.target.value)}
                                             className="w-full bg-surface-container-high border-none text-on-surface font-mono focus:ring-1 focus:ring-secondary/50 p-4 transition-all rounded"
                                             placeholder="USER@NETWORK.COM"
                                             type="email"
                                         />
+                                        {errors.return_path_email && (
+                                            <div className="text-[10px] font-mono text-error uppercase tracking-tighter mt-1">
+                                                &lt; [ERROR]: {errors.return_path_email}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="block font-mono text-[10px] text-on-surface-variant tracking-widest uppercase">PAYLOAD_MESSAGE</label>
                                     <textarea
+                                        value={data.payload_message}
+                                        onChange={e => setData('payload_message', e.target.value)}
                                         className="w-full bg-surface-container-high border-none text-on-surface font-mono focus:ring-1 focus:ring-secondary/50 p-4 transition-all resize-none rounded custom-scrollbar"
                                         placeholder="TYPE_YOUR_REQUEST_HERE..."
                                         rows={6}
                                     ></textarea>
                                 </div>
-                                <button className="w-full md:w-auto px-10 py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-bold text-sm tracking-widest rounded-lg flex items-center justify-center gap-3 group/btn transition-all active:scale-95 neon-glow-primary">
-                                    SEND_PACKET
+                                <button disabled={processing} className="w-full md:w-auto px-10 py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-bold text-sm tracking-widest rounded-lg flex items-center justify-center gap-3 group/btn transition-all active:scale-95 neon-glow-primary">
+                                    {processing ? 'UPLOADING_PACKET...' : isSuccess ? 'PAYLOAD_DELIVERED' : 'SEND_PACKET'}
                                     <Send className="text-sm transition-transform group-hover/btn:translate-x-1" size={16} />
                                 </button>
                             </form>
                             <div className="flex flex-wrap gap-x-8 gap-y-2 font-mono text-[10px] text-on-surface-variant uppercase tracking-widest pt-4">
-                                <span>STATUS: <span className="text-secondary">READY</span></span>
+                                <span>STATUS:
+                                    <span className={isSuccess ? "text-primary" : "text-secondary"}>
+                                        {isSuccess ? 'SUCCESS_SENT' : 'READY'}
+                                    </span>
+                                </span>
                                 <span>ENCRYPTION: <span className="text-tertiary">AES_256_GCM</span></span>
                                 <span>LATENCY: <span className="text-primary">12MS</span></span>
                                 <span>PROTOCOL: <span className="text-on-surface">TCP/IP_V6</span></span>
@@ -90,9 +130,7 @@ export default function Contact() {
                         </div>
                     </motion.div>
 
-                    {/* Sidebar Dossier Cards */}
                     <div className="lg:col-span-5 space-y-8">
-                        {/* Social & Professional Nodes */}
                         <div className="grid grid-cols-2 gap-4">
                             {[
                                 { label: 'SOURCE_CONTROL', value: 'GITHUB', icon: Code, color: 'text-secondary' },
@@ -107,7 +145,6 @@ export default function Contact() {
                                     animate={{ opacity: 1, scale: 1 }}
                                     transition={{ delay: i * 0.1 }}
                                     className="group block bg-surface-container-low p-8 space-y-4 hover:bg-surface-container-high transition-colors border border-outline-variant/10 rounded"
-                                    // className="group block bg-surface-container p-6 space-y-4 hover:bg-surface-container-high transition-colors border border-outline-variant/5"
                                 >
                                     <div className="flex justify-between items-start">
                                         <node.icon className={node.color} size={20} />
@@ -121,7 +158,6 @@ export default function Contact() {
                             ))}
                         </div>
 
-                        {/* Location & Availability Card */}
                         <div className="bg-surface-container-low overflow-hidden relative group border border-outline-variant/10 rounded-xl">
                             <div
                                 className="absolute inset-0 opacity-20 pointer-events-none grayscale brightness-50 contrast-125 transition-transform duration-700 group-hover:scale-105"
@@ -160,7 +196,6 @@ export default function Contact() {
                             </div>
                         </div>
 
-                        {/* System Metadata Card */}
                         <div className="p-6 border border-outline-variant/10 font-mono text-[9px] text-on-surface-variant leading-relaxed rounded-lg">
                             <div className="flex items-center gap-2 mb-2 text-primary">
                                 <Terminal size={12} />

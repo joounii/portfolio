@@ -33,6 +33,12 @@ export default function Authenticated({
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    href={route('admin.inbox')}
+                                    active={route().current('admin.inbox')}
+                                >
+                                    Inbox
+                                </NavLink>
                             </div>
                         </div>
 
@@ -138,7 +144,6 @@ export default function Authenticated({
                             Dashboard
                         </ResponsiveNavLink>
                     </div>
-
                     <div className="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
                         <div className="px-4">
                             <div className="text-base font-medium text-gray-800 dark:text-gray-200">

@@ -23,7 +23,7 @@
   }
   .glass-panel {
     /* v3 doesn't support the /40 syntax for custom theme vars easily,
-       so we'll use a standard rgba or hex for now if needed */
+       so we'll use a standard rgba for now if needed */
     background-color: rgba(31, 31, 31, 0.4);
     @apply backdrop-blur-xl border border-white/10;
   }
