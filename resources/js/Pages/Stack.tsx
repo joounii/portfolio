@@ -79,7 +79,7 @@ export default function Stack() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.1 }}
-                className="group relative bg-surface-container-low rounded-xl p-6 transition-all duration-300 hover:bg-surface-container hover:-translate-y-1 border border-outline-variant/10 neon-glow-secondary"
+                className="group relative bg-surface-container-low rounded p-10 transition-all duration-300 border border-outline-variant/10"
             >
                 <div className="flex justify-between items-start mb-8">
                 <div className="font-mono text-[10px] text-outline tracking-widest uppercase">{engine.experience}</div>
@@ -119,7 +119,7 @@ export default function Stack() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="group bg-surface-container-low rounded-xl p-6 border border-outline-variant/10 hover:bg-surface-container transition-all text-center neon-glow-primary"
+                className="group bg-surface-container-low rounded p-8 border border-outline-variant/10 transition-all text-center"
             >
                 <item.icon className={`${item.color} text-3xl mb-3 mx-auto opacity-60 group-hover:opacity-100 transition-opacity`} size={32} />
                 <div className="font-mono text-[10px] text-outline tracking-widest uppercase">{item.name}</div>
@@ -132,7 +132,7 @@ export default function Stack() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="mt-24 group relative bg-surface-container-low rounded-xl p-8 transition-all duration-300 hover:bg-surface-container hover:-translate-y-1 border border-outline-variant/10 neon-glow-primary flex flex-col md:flex-row gap-8"
+            className="mt-24 group relative bg-surface-container-low rounded p-10 transition-all duration-300 border border-outline-variant/10 flex flex-col md:flex-row gap-8"
         >
             <div className="flex-1">
             <div className="flex justify-between items-start mb-8">

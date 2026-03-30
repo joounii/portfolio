@@ -72,7 +72,7 @@ export default function Projects() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="group relative bg-surface-container-low rounded-xl p-6 transition-all duration-300 hover:bg-surface-container hover:-translate-y-1 border border-outline-variant/10 neon-glow-primary"
+                className="group relative bg-surface-container-low rounded p-10 transition-all duration-300 border border-outline-variant/10"
             >
                 <div className="flex justify-between items-start mb-8">
                 <div className="font-mono text-[10px] text-outline tracking-widest uppercase">{project.id}</div>
@@ -99,7 +99,7 @@ export default function Projects() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="md:col-span-2 group relative bg-surface-container-low rounded-xl p-8 transition-all duration-300 hover:bg-surface-container hover:-translate-y-1 border border-outline-variant/10 neon-glow-primary flex flex-col md:flex-row gap-8"
+            className="md:col-span-2 group relative bg-surface-container-low rounded p-10 transition-all duration-300 border border-outline-variant/10 flex flex-col md:flex-row gap-8"
             >
             <div className="flex-1">
                 <div className="flex justify-between items-start mb-8">
