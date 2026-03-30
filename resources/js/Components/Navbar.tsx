@@ -27,7 +27,10 @@ export default function Navbar() {
                 href="/"
                 className="text-xl font-bold tracking-tighter text-on-surface font-headline uppercase whitespace-nowrap cursor-pointer"
             >
-                //JOOUNII
+                <span className="text-primary opacity-80 text-[0.85em] leading-none inline-block -translate-y-[2.8px] mr-0.4">
+                    //
+                </span>
+                JOOUNII
             </Link>
 
             <div className="hidden md:flex items-center gap-6">
