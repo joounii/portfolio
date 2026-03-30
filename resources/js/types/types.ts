@@ -5,7 +5,7 @@ export interface Project {
   title: string;
   description: string;
   tags: string[];
-  status: 'ACTIVE_DEPLOYS' | 'STABLE' | 'MAINTENANCE' | 'R&D' | 'CORE_INFRA';
+  status: string;
   statusColor: string;
 }
 

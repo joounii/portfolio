@@ -6,36 +6,28 @@ import MainLayout from '@/Layouts/MainLayout';
 
 const projects: Project[] = [
   {
-    id: '#7F8A9_X1',
-    title: 'NEURAL_SYNC_GATE',
-    description: 'High-throughput gRPC gateway facilitating real-time state synchronization across distributed edge nodes with sub-5ms latency.',
-    tags: ['GO', 'GRPC', 'REDIS'],
-    status: 'ACTIVE_DEPLOYS',
+    id: '#OC_03Y',
+    title: 'INTERNAL_AUTOMATION',
+    description: 'Engineered enterprise management flows for hardware provisioning and desktop virtualization. Focused on high-concurrency background automation.',
+    tags: ['ROR', 'DOCKER', 'SIDEKIQ'],
+    status: 'OC_COCKPIT',
     statusColor: 'text-tertiary bg-tertiary-container/10'
   },
   {
-    id: '#BD2F1_Y4',
-    title: 'VOID_KUBE_ORCH',
-    description: 'Custom Kubernetes operator designed for zero-trust ephemeral environment provisioning and automated resource cleanup.',
-    tags: ['K8S', 'OPERATOR_SDK', 'DOCKER'],
-    status: 'STABLE',
+    id: '#DEG_01',
+    title: 'PROJECT_ORCHESTRATOR',
+    description: 'A full-stack management suite focused on organizational logic. Features dynamic team allocation, permission-centric security (PBAC), and high-utility data dashboards.',
+    tags: ['LARAVEL', 'PBAC', 'BLADE'],
+    status: 'DEGREE_PROJECT',
     statusColor: 'text-secondary bg-secondary-container/10'
   },
   {
-    id: '#AC992_Z9',
-    title: 'PULSE_STREAM_V2',
-    description: 'Event-driven data pipeline leveraging Kafka for processing multi-terabyte log streams with integrated anomaly detection.',
-    tags: ['KAFKA', 'JAVA', 'POSTGRES'],
-    status: 'MAINTENANCE',
+    id: '#NODE_CH_01',
+    title: 'SELF_HOSTED_INFRA',
+    description: 'A secure Ubuntu environment hosting this portfolio and high-concurrency game servers. Managed via a local-only Cockpit instance, shielded by a private WireGuard VPN node on a Raspberry Pi gateway.',
+    tags: ['LINUX', 'WIREGUARD', 'NGINX'],
+    status: 'HOME_NODE',
     statusColor: 'text-error bg-error-container/10'
-  },
-  {
-    id: '#55ED2_K2',
-    title: 'CRYPTO_LEDGER_API',
-    description: 'Highly secure REST API layer for multi-chain asset management with hardware security module (HSM) integration.',
-    tags: ['RUST', 'ACTIX', 'HSM'],
-    status: 'R&D',
-    statusColor: 'text-tertiary bg-tertiary-container/10'
   }
 ];
 
@@ -53,7 +45,7 @@ export default function Projects() {
                 PROJECT <span className="text-primary italic">DOSSIER</span>
             </h1>
             <p className="text-on-surface-variant text-lg font-light leading-relaxed">
-                A collection of high-performance backend systems, distributed architectures, and automated infrastructure deployments. Precision engineered for scale.
+                Showcasing my experience in building robust internal systems and functional management tools. Focused on solving complex logic problems with clean, future-proof code.
             </p>
             </div>
             <div className="flex flex-col items-start md:items-end gap-2">
@@ -81,7 +73,7 @@ export default function Projects() {
                 </div>
                 </div>
                 <h3 className="font-headline text-2xl font-bold mb-3 group-hover:text-primary transition-colors">{project.title}</h3>
-                <p className="text-on-surface-variant text-sm font-light mb-6 line-clamp-3">{project.description}</p>
+                <p className="text-on-surface-variant text-sm font-light mb-6 line-clamp-4">{project.description}</p>
                 <div className="flex flex-wrap gap-2 mb-8">
                 {project.tags.map(tag => (
                     <span key={tag} className="font-mono text-[10px] px-2 py-1 bg-surface-container-highest text-secondary rounded">{tag}</span>
@@ -95,7 +87,7 @@ export default function Projects() {
             ))}
 
             {/* Large Feature Card */}
-            <motion.div
+            {/* <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -135,7 +127,7 @@ export default function Projects() {
                 <Network className="text-primary opacity-30" size={64} />
                 </div>
             </div>
-            </motion.div>
+            </motion.div> */}
         </div>
         </div>
     </MainLayout>
