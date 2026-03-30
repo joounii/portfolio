@@ -28,3 +28,26 @@
     @apply backdrop-blur-xl border border-white/10;
   }
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #4cd7f6;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #03b5d3;
+}
+
+/* For Firefox support */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #4cd7f6 transparent;
+}

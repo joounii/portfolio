@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Terminal, Diamond, Database, Layers, Cloud, Zap, Rocket, Settings, Code } from 'lucide-react';
+import { Terminal, Gem, Database, Container, Cloud, Server, FolderGit2, Settings, Braces, ShieldCheck, Send } from 'lucide-react';
 import { TechStack } from '@/types/types';
 import { Head } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
@@ -8,36 +8,36 @@ const coreEngines: TechStack[] = [
   {
     name: 'PYTHON',
     experience: 'EXP_5_YEARS',
-    description: 'Asynchronous programming, data pipelines, and high-performance API development. Highly optimized for machine learning orchestration.',
-    tags: ['FASTAPI', 'PYTEST', 'PANDAS'],
-    category: 'PRIMARY_ENGINE',
+    description: 'The go-to language for rapid tool development, automation scripts, and solving unique data problems. Used to build flexible, high-utility scripts when speed and simplicity are the priority.',
+    tags: ['TKINTER', 'DISCORD.PY', 'ASYNCIO'],
+    category: 'UTILITY_SCRIPTS',
     icon: 'terminal'
   },
   {
     name: 'RUBY ON RAILS',
     experience: 'EXP_3_YEARS',
-    description: 'Rapid application development with a focus on domain-driven design and clean architecture. Optimized for developer productivity.',
-    tags: ['HOTWIRE', 'SIDEKIQ', 'RSPEC'],
-    category: 'STABLE',
-    icon: 'diamond'
+    description: 'Utilized for 3 years in an enterprise environment to build complex automation engines. Focused on rapid development and managing large-scale data flows with asynchronous processing.',
+    tags: ['RSPEC', 'SIDEKIQ', 'DEVISE'],
+    category: 'PROFESSIONAL_EXP',
+    icon: 'gem'
   },
   {
     name: 'LARAVEL',
     experience: 'EXP_2_YEARS',
-    description: 'Building robust MVC applications with deep integration of enterprise design patterns. Focus on scalable backend systems.',
-    tags: ['ELOQUENT', 'HORIZON', 'LIVEWIRE'],
-    category: 'LEGACY_MOD',
+    description: 'Currently my primary framework for building robust, modern web applications. Focused on architecting clean, maintainable backends with a deep emphasis on security and permission systems.',
+    tags: ['ELOQUENT', 'SANCTUM', 'SPATIE'],
+    category: 'CURRENT_FOCUS',
     icon: 'code'
   }
 ];
 
 const toolkit = [
-  { name: 'POSTGRESQL', icon: Database, color: 'text-secondary' },
-  { name: 'DOCKER', icon: Layers, color: 'text-primary' },
-  { name: 'K8S', icon: Cloud, color: 'text-tertiary' },
-  { name: 'AWS', icon: Cloud, color: 'text-secondary' },
-  { name: 'REDIS', icon: Zap, color: 'text-primary' },
-  { name: 'GO_LANG', icon: Rocket, color: 'text-tertiary' },
+  { name: 'MYSQL/POSTGRESQL', icon: Database, color: 'text-secondary' },
+  { name: 'DOCKER', icon: Container, color: 'text-primary' },
+  { name: 'NGINX', icon: Cloud, color: 'text-tertiary' },
+  { name: 'WIREGUARD', icon: ShieldCheck, color: 'text-secondary' },
+  { name: 'LINUX/UBUNTU', icon: Server, color: 'text-primary' },
+  { name: 'GIT', icon: FolderGit2, color: 'text-tertiary' },
 ];
 
 export default function Stack() {
@@ -54,7 +54,7 @@ export default function Stack() {
                 STACK <span className="text-primary italic">REGISTRY</span>
             </h1>
             <p className="text-on-surface-variant text-lg font-light leading-relaxed">
-                A high-performance ecosystem built on distributed systems and rigorous backend architecture. Engineered for scale, optimized for resilience.
+                From rapid automation scripts to enterprise-scale management engines. This is the stack I trust to build resilient systems that solve real problems while remaining maintainable for the long term.
             </p>
             </div>
             <div className="flex flex-col items-start md:items-end gap-2">
@@ -92,7 +92,7 @@ export default function Stack() {
                 </div>
                 </div>
                 <h3 className="font-headline text-2xl font-bold mb-3 group-hover:text-primary transition-colors uppercase">{engine.name}</h3>
-                <p className="text-on-surface-variant text-sm font-light mb-6 line-clamp-3">{engine.description}</p>
+                <p className="text-on-surface-variant text-sm font-light mb-6 line-clamp-4">{engine.description}</p>
                 <div className="flex flex-wrap gap-2 mb-8">
                 {engine.tags.map(tag => (
                     <span key={tag} className="font-mono text-[10px] px-2 py-1 bg-surface-container-highest text-secondary rounded">{tag}</span>
@@ -100,7 +100,7 @@ export default function Stack() {
                 </div>
                 <button className="w-full py-3 rounded-lg border border-outline-variant/20 font-headline text-xs font-bold tracking-widest uppercase hover:bg-primary hover:text-on-primary transition-all flex items-center justify-center gap-2">
                 ENGINE SPECS
-                {engine.icon === 'terminal' ? <Terminal size={14} /> : engine.icon === 'diamond' ? <Diamond size={14} /> : <Code size={14} />}
+                {engine.icon === 'terminal' ? <Terminal size={14} /> : engine.icon === 'gem' ? <Gem size={14} /> : <Braces size={14} />}
                 </button>
             </motion.div>
             ))}
@@ -141,27 +141,27 @@ export default function Stack() {
             </div>
             <h3 className="font-headline text-4xl font-bold mb-4 group-hover:text-primary transition-colors">INFRASTRUCTURE PHILOSOPHY</h3>
             <p className="text-on-surface-variant text-base font-light mb-8 max-w-lg">
-                "Scaling is not about adding more resources; it's about removing bottlenecks. I architect systems that are immutable, observable, and resilient to chaos."
+                "A tool is only as good as the logic behind it. I don’t just write code; I design systems that solve problems today while remaining flexible enough for the requirements of tomorrow."
             </p>
             <div className="flex flex-wrap gap-3 mb-8">
-                <span className="font-mono text-xs px-3 py-1.5 bg-surface-container-highest text-secondary rounded">IMMUTABILITY</span>
-                <span className="font-mono text-xs px-3 py-1.5 bg-surface-container-highest text-secondary rounded">OBSERVABILITY</span>
-                <span className="font-mono text-xs px-3 py-1.5 bg-surface-container-highest text-secondary rounded">RESILIENCE</span>
+                <span className="font-mono text-xs px-3 py-1.5 bg-surface-container-highest text-secondary rounded">SCALABLE_LOGIC</span>
+                <span className="font-mono text-xs px-3 py-1.5 bg-surface-container-highest text-secondary rounded">SYSTEM_INTEGRITY</span>
+                <span className="font-mono text-xs px-3 py-1.5 bg-surface-container-highest text-secondary rounded">ADAPTIVE_DESIGN</span>
             </div>
             <button className="w-fit px-8 py-3 rounded-lg bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline text-xs font-bold tracking-widest uppercase hover:scale-105 transition-all flex items-center justify-center gap-2">
-                VIEW ARCHITECTURE DOCS
-                <Terminal size={14} />
+                GET IN TOUCH
+                <Send size={14} />
             </button>
             </div>
             <div className="hidden md:block w-1/3 bg-surface-container-lowest rounded-lg border border-outline-variant/5 p-4 relative overflow-hidden">
             <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#d0bcff 1px, transparent 1px)', backgroundSize: '10px 10px' }}></div>
             <div className="font-mono text-[8px] text-primary/50 overflow-hidden leading-tight">
-                &gt; INITIALIZING PHILOSOPHY_CORE...<br />
-                &gt; LOADING DESIGN_PATTERNS... [OK]<br />
-                &gt; ANALYZING SCALE_BOTTLENECKS... [NONE]<br />
-                &gt; DEPLOYING RESILIENT_GRID... [OK]<br />
-                &gt; SYSTEM_OBSERVABILITY: 100%<br />
-                &gt; ARCHITECTURE_STABLE.
+                &gt; INITIALIZING CORE_LOGIC...<br />
+                &gt; VERIFYING PERMISSIONS... [OK]<br />
+                &gt; SECURING LOCAL_NODES... [ACTIVE]<br />
+                &gt; MAPPING ADAPTIVE_FLOWS... [OK]<br />
+                &gt; INTEGRITY_STATUS: 100%<br />
+                &gt; SYSTEM_READY.
             </div>
             <div className="mt-4 flex justify-center">
                 <Settings className="text-primary opacity-30 animate-spin-slow" size={64} />

@@ -14,6 +14,6 @@ export interface TechStack {
   experience: string;
   description: string;
   tags: string[];
-  category: 'PRIMARY_ENGINE' | 'STABLE' | 'LEGACY_MOD';
+  category: string;
   icon: string;
 }

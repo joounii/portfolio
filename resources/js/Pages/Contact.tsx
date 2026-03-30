@@ -71,7 +71,7 @@ export default function Contact() {
                                 <div className="space-y-2">
                                     <label className="block font-mono text-[10px] text-on-surface-variant tracking-widest uppercase">PAYLOAD_MESSAGE</label>
                                     <textarea
-                                        className="w-full bg-surface-container-high border-none text-on-surface font-mono focus:ring-1 focus:ring-secondary/50 p-4 transition-all resize-none rounded"
+                                        className="w-full bg-surface-container-high border-none text-on-surface font-mono focus:ring-1 focus:ring-secondary/50 p-4 transition-all resize-none rounded custom-scrollbar"
                                         placeholder="TYPE_YOUR_REQUEST_HERE..."
                                         rows={6}
                                     ></textarea>
