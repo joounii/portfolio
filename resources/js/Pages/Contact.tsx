@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
-import { Send, Terminal, Code, Mail, Network, MessageSquare, MapPin, ExternalLink } from 'lucide-react';
+import { Send, Terminal, MapPin } from 'lucide-react';
 import MainLayout from '@/Layouts/MainLayout';
 import ZurichClock from '@/Components/ZurichClock';
+import ContactGrid from '@/Components/ContactGrid';
 import { useForm, usePage, Head } from '@inertiajs/react';
 import React from 'react';
 
@@ -131,32 +132,7 @@ export default function Contact() {
                     </motion.div>
 
                     <div className="lg:col-span-5 space-y-8">
-                        <div className="grid grid-cols-2 gap-4">
-                            {[
-                                { label: 'SOURCE_CONTROL', value: 'GITHUB', icon: Code, color: 'text-secondary' },
-                                { label: 'DIRECT_MAIL', value: 'EMAIL_CLIENT', icon: Mail, color: 'text-tertiary' },
-                                { label: 'B2B_PROTOCOL', value: 'LINKEDIN', icon: Network, color: 'text-primary' },
-                                { label: 'VOIP_NODE', value: 'DISCORD', icon: MessageSquare, color: 'text-secondary' },
-                            ].map((node, i) => (
-                                <motion.a
-                                    key={node.value}
-                                    href="#"
-                                    initial={{ opacity: 0, scale: 0.9 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ delay: i * 0.1 }}
-                                    className="group block bg-surface-container-low p-8 space-y-4 hover:bg-surface-container-high transition-colors border border-outline-variant/10 rounded"
-                                >
-                                    <div className="flex justify-between items-start">
-                                        <node.icon className={node.color} size={20} />
-                                        <ExternalLink className="text-[10px] opacity-0 group-hover:opacity-100 transition-opacity text-on-surface-variant" size={12} />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <div className="font-mono text-[10px] text-on-surface-variant uppercase tracking-tighter">{node.label}</div>
-                                        <div className="font-headline font-bold text-on-surface">{node.value}</div>
-                                    </div>
-                                </motion.a>
-                            ))}
-                        </div>
+                        <ContactGrid />
 
                         <div className="bg-surface-container-low overflow-hidden relative group border border-outline-variant/10 rounded-xl">
                             <div
