@@ -11,7 +11,7 @@ export default function Home() {
 
             <div className="relative min-h-screen">
                 {/* Hero Section */}
-                <section className="relative min-h-screen pt-20 lg:pt-0 flex flex-col justify-center px-6 lg:px-24 overflow-hidden">
+                <section className="relative min-h-screen flex flex-col justify-start lg:justify-center pt-24 lg:pt-0 px-6 lg:px-24 overflow-hidden">
                     {/* Background Ambiance */}
                     {/* <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none"></div> */}
                     {/* <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 blur-[120px] rounded-full"></div> */}
