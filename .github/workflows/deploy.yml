@@ -16,8 +16,9 @@ jobs:
       - name: Build and Deploy Containers
         env:
           TUNNEL_TOKEN: ${{ secrets.TUNNEL_TOKEN }}
-          DOCKER_METADATA_ANNOTATIONS: "false"
         run: |
+          export DOCKER_METADATA_ANNOTATIONS=false
+          export BUILDX_NO_DEFAULT_ATTESTATIONS=1
           docker compose --env-file .env up -d --build
           sleep 10
           docker compose exec -T app php artisan migrate --force
