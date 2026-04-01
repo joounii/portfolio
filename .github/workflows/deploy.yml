@@ -13,6 +13,11 @@ jobs:
         with:
           clean: false
 
+      - name: Install Node and Build Assets
+        run: |
+          npm install
+          npm run build
+
       - name: Build and Deploy Containers
         env:
           TUNNEL_TOKEN: ${{ secrets.TUNNEL_TOKEN }}
@@ -21,8 +26,6 @@ jobs:
         run: |
           docker compose --env-file .env build --provenance=false
           docker compose --env-file .env up -d
-          docker compose exec -T app npm install
-          docker compose exec -T app npm run build
           sleep 10
           docker compose exec -T app php artisan migrate --force
           docker compose exec -T app php artisan optimize
