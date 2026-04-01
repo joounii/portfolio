@@ -28,13 +28,13 @@ services:
         - app-network
 
     tunnel:
-    image: cloudflare/cloudflared:latest
-    restart: unless-stopped
-    command: tunnel run
-    environment:
-        - TUNNEL_TOKEN=${TUNNEL_TOKEN}
-    depends_on:
-        - webserver
+        image: cloudflare/cloudflared:latest
+        restart: unless-stopped
+        command: tunnel run
+        environment:
+            - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+        depends_on:
+            - webserver
 
 networks:
     app-network:
