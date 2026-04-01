@@ -18,9 +18,10 @@ services:
     db:
         image: mysql:8.0
         restart: unless-stopped
+        env_file: .env
         environment:
-        MYSQL_DATABASE: ${DB_DATABASE}
-        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            - MYSQL_DATABASE=${DB_DATABASE}
+            - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
         volumes:
         - dbdata:/var/lib/mysql
         networks:
@@ -31,7 +32,7 @@ services:
     restart: unless-stopped
     command: tunnel run
     environment:
-        - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+        - TUNNEL_TOKEN=${TUNNEL_TOKEN}
     depends_on:
         - webserver
 
