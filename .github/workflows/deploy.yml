@@ -15,6 +15,6 @@ jobs:
         env:
           TUNNEL_TOKEN: ${{ secrets.TUNNEL_TOKEN }}
         run: |
-          docker compose up -d --build
+          docker compose --env-file .env up -d --build
           docker compose exec -T app php artisan migrate --force
           docker compose exec -T app php artisan optimize
