@@ -16,8 +16,10 @@ jobs:
       - name: Build and Deploy Containers
         env:
           TUNNEL_TOKEN: ${{ secrets.TUNNEL_TOKEN }}
+          DOCKER_BUILD_RECORD_PROVENANCE: "false"
+          DOCKER_BUILD_RECORD_SBOM: "false"
         run: |
-          docker compose --env-file .env build
+          docker compose --env-file .env build --provenance=false
           docker compose --env-file .env up -d
           sleep 10
           docker compose exec -T app php artisan migrate --force
