@@ -17,7 +17,7 @@ jobs:
         env:
           TUNNEL_TOKEN: ${{ secrets.TUNNEL_TOKEN }}
         run: |
-          docker compose --env-file .env build --no-cache --provenance=false
+          docker compose --env-file .env build
           docker compose --env-file .env up -d
           sleep 10
           docker compose exec -T app php artisan migrate --force
