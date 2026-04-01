@@ -13,20 +13,6 @@ jobs:
         with:
           clean: false
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.5.3'
-          extensions: mbstring, xml, bcmath, curl
-
-      - name: Install Composer Dependencies
-        run: composer install --no-dev --optimize-autoloader
-
-      - name: Install Node and Build Assets
-        run: |
-          npm install
-          npm run build
-
       - name: Build and Deploy Containers
         env:
           TUNNEL_TOKEN: ${{ secrets.TUNNEL_TOKEN }}

@@ -28,6 +28,8 @@ COPY --from=build-assets /app/public/build ./public/build
 RUN composer install --no-dev --optimize-autoloader
 
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/public
+RUN php artisan config:clear && php artisan view:clear
 
 EXPOSE 9000
 CMD ["php-fpm"]
