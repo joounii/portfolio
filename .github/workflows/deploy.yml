@@ -19,8 +19,8 @@ jobs:
           DOCKER_BUILD_RECORD_PROVENANCE: "false"
           DOCKER_BUILD_RECORD_SBOM: "false"
         run: |
-          docker compose --env-file .env build --provenance=false --force-recreate --renew-anon-volumes
-          docker compose --env-file .env up -d
+          docker compose --env-file .env build --provenance=false
+          docker compose --env-file .env up -d --force-recreate --renew-anon-volumes
           sleep 10
           docker compose exec -T app php artisan migrate --force
           docker compose exec -T app php artisan optimize
