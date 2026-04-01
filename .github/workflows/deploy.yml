@@ -12,6 +12,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build and Deploy Containers
+        env:
+          TUNNEL_TOKEN: ${{ secrets.TUNNEL_TOKEN }}
         run: |
           docker compose up -d --build
           docker compose exec -T app php artisan migrate --force
