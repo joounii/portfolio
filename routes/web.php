@@ -15,10 +15,7 @@ use Inertia\Inertia;
 //     ]);
 // });
 
-Route::get('/', function () {
-    return redirect(route('home'));
-});
-
+Route::get('/', function () { return Inertia::render('Home'); });
 Route::get('/home', function () { return Inertia::render('Home'); })->name('home');
 Route::get('/projects', function () { return Inertia::render('Projects'); })->name('projects');
 Route::get('/stack', function () { return Inertia::render('Stack'); })->name('stack');
