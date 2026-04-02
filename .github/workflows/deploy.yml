@@ -19,13 +19,13 @@ jobs:
           DOCKER_BUILD_RECORD_PROVENANCE: "false"
           DOCKER_BUILD_RECORD_SBOM: "false"
         run: |
-          docker compose down -v
           docker compose --env-file .env build --provenance=false
+          docker volume rm -f portfolio_build-assets || true
           docker compose --env-file .env up -d --force-recreate --renew-anon-volumes
           sleep 10
+
+          docker compose exec -T app php artisan migrate --force
           docker compose exec -T app php artisan view:clear
           docker compose exec -T app php artisan config:clear
           docker compose exec -T app php artisan cache:clear
-
-          docker compose exec -T app php artisan migrate --force
           docker compose exec -T app php artisan optimize
