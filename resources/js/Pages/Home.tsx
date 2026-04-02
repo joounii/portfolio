@@ -8,6 +8,7 @@ export default function Home() {
     return (
         <MainLayout>
             <Head title="Home" />
+            <link rel="canonical" href="https://joounii.ch/" />
 
             <div className="relative min-h-screen">
                 {/* Hero Section */}
