@@ -13,6 +13,10 @@ jobs:
         with:
           clean: true
 
+      - name: Restore Environment File
+        run: |
+          cp ~/actions-runner/_work/portfolio/.env ~/actions-runner/_work/portfolio/portfolio/.env
+
       - name: Build and Deploy Containers
         env:
           TUNNEL_TOKEN: ${{ secrets.TUNNEL_TOKEN }}
