@@ -20,6 +20,7 @@ jobs:
           DOCKER_BUILD_RECORD_SBOM: "false"
         run: |
           docker compose --env-file .env build --provenance=false
+          docker compose down
           docker volume rm -f portfolio_build-assets || true
           docker compose --env-file .env up -d --force-recreate --renew-anon-volumes
           sleep 10
