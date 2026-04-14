@@ -161,9 +161,9 @@ export default function Contact() {
                                     </div>
                                     <div className="pt-4 border-t border-outline-variant/10">
                                         <h3 className="font-mono text-[10px] text-on-surface-variant tracking-widest uppercase mb-2">TIMEZONE_SYNC</h3>
-                                        <div className="flex items-center gap-2 font-mono text-sm">
+                                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-2 font-mono text-sm">
                                             <span className="text-on-surface">{ gmtLabel }</span>
-                                            <span className="text-primary-container px-2 bg-primary-container/10 rounded">
+                                            <span className="text-primary-container px-2 bg-primary-container/10 rounded w-fit">
                                                 <ZurichClock />
                                             </span>
                                         </div>
