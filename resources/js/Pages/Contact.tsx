@@ -72,7 +72,7 @@ export default function Contact() {
                         </div>
                         <div className="space-y-8">
                             <div className="flex items-center gap-4">
-                                <Terminal className="text-primary" size={24} />
+                                <Terminal className="hidden sm:block text-primary" size={24} />
                                 <h2 className="font-headline text-xl font-bold tracking-tight">THE_HANDSHAKE_MODULE</h2>
                             </div>
                             <form className="space-y-6" onSubmit={submit}>
@@ -161,9 +161,9 @@ export default function Contact() {
                                     </div>
                                     <div className="pt-4 border-t border-outline-variant/10">
                                         <h3 className="font-mono text-[10px] text-on-surface-variant tracking-widest uppercase mb-2">TIMEZONE_SYNC</h3>
-                                        <div className="flex items-center gap-2 font-mono text-sm">
+                                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-2 font-mono text-sm">
                                             <span className="text-on-surface">{ gmtLabel }</span>
-                                            <span className="text-primary-container px-2 bg-primary-container/10 rounded">
+                                            <span className="text-primary-container px-2 bg-primary-container/10 rounded w-fit">
                                                 <ZurichClock />
                                             </span>
                                         </div>
@@ -177,7 +177,7 @@ export default function Contact() {
                                 <Terminal size={12} />
                                 TRANSMISSION_NOTICE
                             </div>
-                            ALL INCOMING DATA PACKETS ARE SUBJECT TO AUTOMATIC SPAM FILTERING PROTOCOLS. PLEASE ENSURE IDENTIFIER_NAME MATCHES RECORDED ENTITIES FOR FASTER PROCESSING. RESPONSE LATENCY MAY VARY BETWEEN 24-48 CYCLES.
+                            ALL INCOMING PACKETS ARE ROUTED THROUGH A CUSTOM MIDDLWARE LAYER FOR INTEGRITY VERIFICATION. ONCE VALIDATED, THE PAYLOAD IS PERSISTED TO THE PRIMARY CLUSTER. I MONITOR THESE STREAMING LOGS MANUALLY; EXPECT AN ACKNOWLEDGMENT SIGNAL WITHIN 24-48 HOURS.
                         </div>
                     </div>
                 </div>

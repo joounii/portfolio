@@ -139,7 +139,7 @@ export default function Stack() {
                 <div className="font-mono text-[10px] text-outline tracking-widest uppercase">#MANIFESTO_S1</div>
                 <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-mono tracking-tighter uppercase">ARCH_PHILOSOPHY</div>
             </div>
-            <h3 className="font-headline text-4xl font-bold mb-4 group-hover:text-primary transition-colors">INFRASTRUCTURE PHILOSOPHY</h3>
+            <h3 className="font-headline text-2xl sm:text-4xl font-bold mb-4 group-hover:text-primary transition-colors">INFRASTRUCTURE PHILOSOPHY</h3>
             <p className="text-on-surface-variant text-base font-light mb-8 max-w-lg">
                 "A tool is only as good as the logic behind it. I don’t just write code; I design systems that solve problems today while remaining flexible enough for the requirements of tomorrow."
             </p>

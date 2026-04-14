@@ -13,10 +13,6 @@ export default function Home() {
             <div className="relative min-h-screen">
                 {/* Hero Section */}
                 <section className="relative min-h-screen flex flex-col justify-start lg:justify-center pt-24 lg:pt-0 px-6 lg:px-24 overflow-hidden">
-                    {/* Background Ambiance */}
-                    {/* <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none"></div> */}
-                    {/* <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 blur-[120px] rounded-full"></div> */}
-
                     <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                         {/* Content Block */}
                         <motion.div
@@ -68,7 +64,7 @@ export default function Home() {
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
-                            className="lg:col-span-4 flex flex-col gap-6"
+                            className="hidden lg:flex lg:col-span-4 flex-col gap-6"
                         >
                             {/* Metric Card */}
                             <div className="bg-surface-container/40 backdrop-blur-md p-8 rounded border border-outline-variant/10 shadow-2xl self-end w-full max-w-xs rotate-2">
@@ -166,19 +162,19 @@ export default function Home() {
                         While I work across the full stack, my focus on the frontend is purely functional. I build dashboards that prioritize usability and efficiency, ensuring that complex data remains easy to manage and interpret. In the backend, I write code that doesn't just work today, but is ready to be expanded tomorrow.
                         </p>
 
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-8 pt-4">
-                        <div>
-                            <div className="font-mono text-[10px] text-secondary uppercase tracking-widest mb-1">Location</div>
-                            <div className="font-headline font-bold text-lg">EUROPE_ZURICH</div>
-                        </div>
-                        <div>
-                            <div className="font-mono text-[10px] text-secondary uppercase tracking-widest mb-1">Focus</div>
-                            <div className="font-headline font-bold text-lg">BACKEND_INFRA</div>
-                        </div>
-                        <div>
-                            <div className="font-mono text-[10px] text-secondary uppercase tracking-widest mb-1">Status</div>
-                            <div className="font-headline font-bold text-lg text-secondary">AVAILABLE</div>
-                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 pt-4">
+                            <div>
+                                <div className="font-mono text-[10px] text-secondary uppercase tracking-widest mb-1">Location</div>
+                                <div className="font-headline font-bold text-lg">EUROPE_ZURICH</div>
+                            </div>
+                            <div>
+                                <div className="font-mono text-[10px] text-secondary uppercase tracking-widest mb-1">Focus</div>
+                                <div className="font-headline font-bold text-lg">BACKEND_INFRA</div>
+                            </div>
+                            <div className='hidden sm:block'>
+                                <div className="font-mono text-[10px] text-secondary uppercase tracking-widest mb-1">Status</div>
+                                <div className="font-headline font-bold text-lg text-secondary">AVAILABLE</div>
+                            </div>
                         </div>
                     </motion.div>
                     </div>
@@ -187,7 +183,7 @@ export default function Home() {
                 {/* Specialties Section */}
                 <section className="py-24 px-6 lg:px-24">
                     <div className="max-w-7xl mx-auto">
-                        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+                        <div className="flex md:flex-row justify-between items-end mb-16 gap-4">
                             <div className="max-w-md">
                                 <span className="font-mono text-xs tracking-[0.3em] text-tertiary uppercase mb-4 block">02 // CORE_ARCHITECTURE</span>
                                 <h2 className="font-headline text-4xl font-bold tracking-tight text-on-surface">ENGINEERING THE <span className="text-primary">BACKBONE</span></h2>
@@ -208,7 +204,7 @@ export default function Home() {
                                 <div className="flex gap-2">
                                     <span className="px-3 py-1 bg-tertiary-container/10 text-tertiary font-mono text-[10px] rounded-full uppercase tracking-tighter">LARAVEL</span>
                                     <span className="px-3 py-1 bg-tertiary-container/10 text-tertiary font-mono text-[10px] rounded-full uppercase tracking-tighter">REACT</span>
-                                    <span className="px-3 py-1 bg-tertiary-container/10 text-tertiary font-mono text-[10px] rounded-full uppercase tracking-tighter">TYPESCRIPT</span>
+                                    <span className="hidden sm:inline-block px-3 py-1 bg-tertiary-container/10 text-tertiary font-mono text-[10px] rounded-full uppercase tracking-tighter">TYPESCRIPT</span>
                                     <span className="px-3 py-1 bg-tertiary-container/10 text-tertiary font-mono text-[10px] rounded-full uppercase tracking-tighter">MYSQL</span>
                                 </div>
                             </div>

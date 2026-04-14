@@ -57,7 +57,7 @@ export default function Projects() {
             </div>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
             {projects.map((project, index) => (
             <motion.div
                 key={project.id}
@@ -67,17 +67,17 @@ export default function Projects() {
                 className="group relative bg-surface-container-low rounded p-10 transition-all duration-300 border border-outline-variant/10"
             >
                 <div className="flex justify-between items-start mb-8">
-                <div className="font-mono text-[10px] text-outline tracking-widest uppercase">{project.id}</div>
-                <div className={`${project.statusColor} px-3 py-1 rounded-full text-[10px] font-mono tracking-tighter uppercase`}>
-                    {project.status}
+                    <div className="font-mono text-[10px] text-outline tracking-widest uppercase">{project.id}</div>
+                    <div className={`${project.statusColor} px-3 py-1 rounded-full text-[10px] font-mono tracking-tighter uppercase`}>
+                        {project.status}
+                    </div>
                 </div>
-                </div>
-                <h3 className="font-headline text-2xl font-bold mb-3 group-hover:text-primary transition-colors">{project.title}</h3>
+                <h3 className="font-headline text-xl sm:text-2xl font-bold mb-3 group-hover:text-primary transition-colors">{project.title}</h3>
                 <p className="text-on-surface-variant text-sm font-light mb-6 line-clamp-4">{project.description}</p>
                 <div className="flex flex-wrap gap-2 mb-8">
-                {project.tags.map(tag => (
-                    <span key={tag} className="font-mono text-[10px] px-2 py-1 bg-surface-container-highest text-secondary rounded">{tag}</span>
-                ))}
+                    {project.tags.map(tag => (
+                        <span key={tag} className="font-mono text-[10px] px-2 py-1 bg-surface-container-highest text-secondary rounded">{tag}</span>
+                    ))}
                 </div>
                 <button className="w-full py-3 rounded-lg border border-outline-variant/20 font-headline text-xs font-bold tracking-widest uppercase hover:bg-primary hover:text-on-primary transition-all flex items-center justify-center gap-2">
                 VIEW ARCHITECTURE
