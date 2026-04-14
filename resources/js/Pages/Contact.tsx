@@ -72,7 +72,7 @@ export default function Contact() {
                         </div>
                         <div className="space-y-8">
                             <div className="flex items-center gap-4">
-                                <Terminal className="text-primary" size={24} />
+                                <Terminal className="hidden sm:block text-primary" size={24} />
                                 <h2 className="font-headline text-xl font-bold tracking-tight">THE_HANDSHAKE_MODULE</h2>
                             </div>
                             <form className="space-y-6" onSubmit={submit}>
