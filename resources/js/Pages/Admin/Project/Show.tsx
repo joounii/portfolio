@@ -93,7 +93,9 @@ export default function Show({ auth, project }: { auth: any, project: Project })
                                     <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                                         {project.description}
                                     </p>
-                                    <div className="mt-4 flex flex-wrap gap-2">
+                                    <p className="mt-2 text-xs text-gray-500 uppercase font-mono mb-1">Tags</p>
+                                    <div className="flex flex-wrap gap-2">
+
                                         {project.tags.map(tag => (
                                             <span key={tag} className="text-[10px] font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-600 dark:text-gray-400">
                                                 {tag}
