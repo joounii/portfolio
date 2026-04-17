@@ -2,18 +2,10 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
 
 Route::get('/', function () { return Inertia::render('Home'); });
 Route::get('/home', function () { return Inertia::render('Home'); })->name('home');
@@ -31,6 +23,8 @@ Route::middleware(['auth', 'verified'])
         Route::get('/dashboard', function () {
             return Inertia::render('Admin/Dashboard');
         })->name('dashboard');
+
+        Route::get('/projects', [ProjectController::class, 'index'])->name('admin.projects.index');
 
         Route::get('/inbox', [ContactController::class, 'index'])->name('admin.inbox');
         Route::delete('/inbox/{message}', [ContactController::class, 'destroy'])->name('contact.destroy');
