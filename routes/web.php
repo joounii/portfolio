@@ -25,6 +25,12 @@ Route::middleware(['auth', 'verified'])
         })->name('dashboard');
 
         Route::get('/projects', [ProjectController::class, 'index'])->name('admin.projects.index');
+        Route::get('/projects/create', [ProjectController::class, 'create'])->name('admin.projects.create');
+        Route::post('/projects', [ProjectController::class, 'store'])->name('admin.projects.store');
+        Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('admin.projects.show');
+        Route::get('/projects/{project}/edit', [ProjectController::class, 'edit'])->name('admin.projects.edit');
+        Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('admin.projects.update');
+        Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('admin.projects.destroy');
 
         Route::get('/inbox', [ContactController::class, 'index'])->name('admin.inbox');
         Route::delete('/inbox/{message}', [ContactController::class, 'destroy'])->name('contact.destroy');

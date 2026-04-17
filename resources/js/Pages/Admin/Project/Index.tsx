@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
-import { Plus, Edit, FileText, ExternalLink } from 'lucide-react';
+import { Head, Link, router } from '@inertiajs/react';
+import { Plus, Edit, Eye, ExternalLink } from 'lucide-react';
 
 interface Project {
     id: number;
@@ -16,6 +16,10 @@ interface Props {
 }
 
 export default function Index({ auth, projects }: Props) {
+    const handleRowClick = (id: number) => {
+        router.get(route('admin.projects.show', id));
+    };
+
     return (
         <AuthenticatedLayout
             header={
@@ -30,7 +34,7 @@ export default function Index({ auth, projects }: Props) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex justify-end mb-6">
                         <Link
-                            // href={route('admin.projects.create')}
+                            href={route('admin.projects.create')}
                             className="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 transition ease-in-out duration-150"
                         >
                             <Plus size={16} className="mr-2" />
@@ -59,7 +63,11 @@ export default function Index({ auth, projects }: Props) {
                                             </tr>
                                         ) : (
                                             projects.map((project) => (
-                                                <tr key={project.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                                <tr
+                                                    key={project.id}
+                                                    onClick={() => handleRowClick(project.id)}
+                                                    className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer"
+                                                >
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-600 dark:text-gray-400">
                                                         {project.custom_id}
                                                     </td>
@@ -79,21 +87,24 @@ export default function Index({ auth, projects }: Props) {
                                                         )}
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                        <div className="flex justify-end space-x-3">
+                                                        <div
+                                                            className="flex justify-end space-x-3"
+                                                            onClick={(e) => e.stopPropagation()}
+                                                        >
                                                             <Link
-                                                                // href={route('admin.projects.edit', project.id)}
+                                                                href={route('admin.projects.edit', project.id)}
                                                                 className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300"
                                                             >
                                                                 <Edit size={18} />
                                                             </Link>
                                                             <Link
-                                                                // href={route('admin.projects.content.index', project.id)}
+                                                                href={route('admin.projects.show', project.id)}
                                                                 className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300"
                                                             >
-                                                                <FileText size={18} />
+                                                                <Eye size={18} />
                                                             </Link>
                                                             <a
-                                                                // href={`/projects/${project.id}`}
+                                                                href={`/projects/${project.id}`}
                                                                 target="_blank"
                                                                 className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
                                                             >

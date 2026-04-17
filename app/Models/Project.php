@@ -9,6 +9,7 @@ class Project extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['custom_id', 'title', 'description', 'tags', 'status', 'status_color', 'slug'];
     protected $casts = ['tags' => 'array'];
     public function pages() {
         return $this->hasMany(ProjectPage::class);
