@@ -13,12 +13,20 @@ interface Props {
 export default function TextEditor({ content, onChange }: Props) {
     const editor = useEditor({
         extensions: [StarterKit, TextStyle, Color],
-        content: content || '<p>Start typing documentation...</p>',
         editorProps: {
+            handleDOMEvents: {
+                keydown: (view, event) => {
+                    if (event.target instanceof HTMLInputElement) {
+                        return true;
+                    }
+                    return false;
+                },
+            },
             attributes: {
                 class: 'prose dark:prose-invert max-w-none focus:outline-none min-h-[400px] p-4 bg-gray-50 dark:bg-gray-900 rounded-b-md border border-gray-300 dark:border-gray-700',
             },
         },
+        content: content || '<p>Start typing documentation...</p>',
         onUpdate: ({ editor }) => {
             onChange(editor.getJSON());
         },
