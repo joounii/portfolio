@@ -43,7 +43,7 @@ export default function Home() {
 
                             <div className="flex flex-wrap gap-4 pt-4">
                                 <Link
-                                    href={route('projects')}
+                                    href={route('projects.index')}
                                     as="button"
                                     className="px-8 py-4 bg-gradient-to-br from-primary to-primary-container rounded text-on-primary font-headline font-bold tracking-wide shadow-[0_0_30px_-5px_rgba(160,120,255,0.5)] hover:shadow-[0_0_40px_-5px_rgba(160,120,255,0.7)] transition-all active:scale-95"
                                 >
