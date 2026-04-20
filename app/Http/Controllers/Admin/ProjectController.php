@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\ProjectPage;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
 
@@ -86,5 +87,18 @@ class ProjectController extends Controller
 
         return redirect()->route('admin.projects.index')
             ->with('message', 'Project deleted successfully.');
+    }
+
+    public function toggleActivePage(Project $project, ProjectPage $page)
+    {
+        if ($project->active_page_id === $page->id) {
+            $project->update(['active_page_id' => null]);
+            $message = 'DOCUMENTATION_OFFLINE';
+        } else {
+            $project->update(['active_page_id' => $page->id]);
+            $message = 'SYSTEM_LIVE_ON_NODE_' . $page->id;
+        }
+
+        return back()->with('message', $message);
     }
 }

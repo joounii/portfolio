@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
+use App\Http\Controllers\Admin\ProjectPageController as AdminProjectPageController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,12 @@ Route::middleware(['auth', 'verified'])
         Route::get('/projects/{project}/edit', [AdminProjectController::class, 'edit'])->name('admin.projects.edit');
         Route::put('/projects/{project}', [AdminProjectController::class, 'update'])->name('admin.projects.update');
         Route::delete('/projects/{project}', [AdminProjectController::class, 'destroy'])->name('admin.projects.destroy');
+        Route::patch('/projects/{project}/pages/{page}/toggle', [AdminProjectController::class, 'toggleActivePage'])->name('admin.projects.page.toggle');
+
+        Route::get('/projects/{project}/pages/create', [AdminProjectPageController::class, 'create'])->name('admin.projects.page.create');
+        Route::post('/projects/{project}/pages', [AdminProjectPageController::class, 'store'])->name('admin.projects.page.store');
+        Route::get('/projects/{project}/pages/{page}/edit', [AdminProjectPageController::class, 'edit'])->name('admin.projects.page.edit');
+        Route::put('/projects/{project}/pages/{page}', [AdminProjectPageController::class, 'update'])->name('admin.projects.page.update');
 
         Route::get('/inbox', [ContactController::class, 'index'])->name('admin.inbox');
         Route::delete('/inbox/{message}', [ContactController::class, 'destroy'])->name('contact.destroy');

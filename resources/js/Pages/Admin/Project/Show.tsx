@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { Edit, FileText, ArrowLeft, CheckCircle2, Clock, Plus, AlertTriangle, Trash2 } from 'lucide-react';
+import { Edit, FileText, ArrowLeft, CheckCircle2, Clock, Plus, AlertTriangle, Trash2, Eye, EyeOff } from 'lucide-react';
 import Modal from '@/Components/Modal';
 import DangerButton from '@/Components/DangerButton';
 import SecondaryButton from '@/Components/SecondaryButton';
@@ -115,7 +115,7 @@ export default function Show({ auth, project }: { auth: any, project: Project })
                                     <FileText className="text-indigo-500" /> Architectural Documentation
                                 </h3>
                                 <Link
-                                    // href={route('admin.projects.content.create', project.id)}
+                                    href={route('admin.projects.page.create', project.id)}
                                     className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition"
                                 >
                                     <Plus size={14} className="mr-1" /> New Version
@@ -124,50 +124,73 @@ export default function Show({ auth, project }: { auth: any, project: Project })
 
                             <div className="space-y-4">
                                 {project.pages.length === 0 ? (
-                                    <div className="text-center py-10 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-lg">
-                                        <p className="text-sm text-gray-500">No documentation pages created for this project yet.</p>
+                                    <div className="text-center py-10 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-lg text-gray-500">
+                                        No documentation pages created yet.
                                     </div>
                                 ) : (
                                     <div className="overflow-hidden rounded-md border border-gray-200 dark:border-gray-700">
-                                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                            <thead className="bg-gray-50 dark:bg-gray-900">
+                                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-left">
+                                            <thead className="bg-gray-50 dark:bg-gray-900/50 text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 <tr>
-                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Version Name</th>
-                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Created</th>
-                                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Status</th>
-                                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Action</th>
+                                                    <th className="px-6 py-3">Version Name</th>
+                                                    <th className="px-6 py-3">Created</th>
+                                                    <th className="px-6 py-3">Status</th>
+                                                    <th className="px-6 py-3 text-right">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                                                {project.pages.map((page) => (
-                                                    <tr key={page.id} className={project.active_page_id === page.id ? 'bg-indigo-50/30 dark:bg-indigo-900/10' : ''}>
-                                                        <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
-                                                            {page.version_name || `Version #${page.id}`}
-                                                        </td>
-                                                        <td className="px-6 py-4 text-xs text-gray-500 font-mono">
-                                                            {new Date(page.created_at).toLocaleDateString()}
-                                                        </td>
-                                                        <td className="px-6 py-4 text-right">
-                                                            {project.active_page_id === page.id ? (
-                                                                <span className="inline-flex items-center gap-1 text-green-600 dark:text-green-400 text-xs font-bold">
-                                                                    <CheckCircle2 size={14} /> LIVE
-                                                                </span>
-                                                            ) : (
-                                                                <span className="inline-flex items-center gap-1 text-gray-400 text-xs font-medium">
-                                                                    <Clock size={14} /> ARCHIVED
-                                                                </span>
-                                                            )}
-                                                        </td>
-                                                        <td className="px-6 py-4 text-right">
-                                                            <Link
-                                                                href={route('admin.projects.content.edit', [project.id, page.id])}
-                                                                className="text-indigo-600 hover:text-indigo-900 text-xs font-bold uppercase tracking-widest"
-                                                            >
-                                                                Open Editor
-                                                            </Link>
-                                                        </td>
-                                                    </tr>
-                                                ))}
+                                                {project.pages.map((page) => {
+                                                    const isActive = project.active_page_id === page.id;
+                                                    return (
+                                                        <tr key={page.id} className={isActive ? 'bg-indigo-50/30 dark:bg-indigo-900/10' : ''}>
+                                                            <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
+                                                                {page.version_name || `Version #${page.id}`}
+                                                            </td>
+                                                            <td className="px-6 py-4 text-xs text-gray-500 font-mono">
+                                                                {new Date(page.created_at).toLocaleDateString()}
+                                                            </td>
+                                                            <td className="px-6 py-4">
+                                                                {isActive ? (
+                                                                    <span className="inline-flex items-center gap-1 text-green-600 dark:text-green-400 text-xs font-bold uppercase tracking-tighter">
+                                                                        <CheckCircle2 size={14} /> Live
+                                                                    </span>
+                                                                ) : (
+                                                                    <span className="inline-flex items-center gap-1 text-gray-400 text-xs font-medium uppercase tracking-tighter">
+                                                                        <Clock size={14} /> Archived
+                                                                    </span>
+                                                                )}
+                                                            </td>
+                                                            <td className="px-6 py-4 text-right space-x-4">
+                                                                {/* Toggle Activation Link */}
+                                                                <Link
+                                                                    href={route('admin.projects.page.toggle', [project.id, page.id])}
+                                                                    method="patch"
+                                                                    as="button"
+                                                                    className={`text-xs font-bold uppercase tracking-widest transition-colors ${
+                                                                        isActive
+                                                                        ? 'text-amber-600 hover:text-amber-800'
+                                                                        : 'text-emerald-600 hover:text-emerald-800'
+                                                                    }`}
+                                                                >
+                                                                    <div className="flex items-center gap-1 justify-end">
+                                                                        {isActive ? (
+                                                                            <><EyeOff size={14} /> Deactivate</>
+                                                                        ) : (
+                                                                            <><Eye size={14} /> Activate</>
+                                                                        )}
+                                                                    </div>
+                                                                </Link>
+
+                                                                <Link
+                                                                    href={route('admin.projects.page.edit', [project.id, page.id])}
+                                                                    className="text-indigo-600 hover:text-indigo-900 text-xs font-bold uppercase tracking-widest"
+                                                                >
+                                                                    Open Editor
+                                                                </Link>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })}
                                             </tbody>
                                         </table>
                                     </div>
