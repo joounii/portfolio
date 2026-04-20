@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
-import PageEditor from './Partials/PageEditor';
+import TextEditor from '@/Components/Editor/TextEditor';
 import PrimaryButton from '@/Components/PrimaryButton';
 import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
@@ -47,7 +47,7 @@ export default function Edit({ auth, project, page }: any) {
                             />
                         </div>
 
-                        <PageEditor
+                        <TextEditor
                             content={data.content}
                             onChange={(json) => setData('content', json)}
                         />
