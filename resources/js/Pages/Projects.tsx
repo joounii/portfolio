@@ -24,7 +24,7 @@ const projects: Project[] = [
   {
     id: '#NODE_CH_01',
     title: 'SELF_HOSTED_INFRA',
-    description: 'A secure Ubuntu environment hosting this portfolio and high-concurrency game servers. Managed via a local-only Cockpit instance, shielded by a private WireGuard VPN node on a Raspberry Pi gateway.',
+    description: 'A secure Ubuntu environment hosting this portfolio and resource-intensive game servers. Managed via a local-only Cockpit instance, shielded by a private WireGuard VPN node on a Raspberry Pi gateway.',
     tags: ['LINUX', 'WIREGUARD', 'NGINX'],
     status: 'HOME_NODE',
     statusColor: 'text-error bg-error-container/10'
