@@ -17,7 +17,14 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
 
-        //
+        $middleware->trimStrings([
+            'content',
+            'content.*',
+        ]);
+
+        $middleware->convertEmptyStringsToNull([
+            fn ($request) => $request->has('content'),
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

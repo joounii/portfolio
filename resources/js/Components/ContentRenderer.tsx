@@ -36,7 +36,7 @@ export default function ContentRenderer({ json }: { json: any }) {
     };
 
     return (
-        <div className="content-renderer">
+        <div className="content-renderer" style={{ whiteSpace: 'pre-wrap' }}>
             {json.content.map((block: Node, index: number) => renderNode(block, index))}
         </div>
     );
