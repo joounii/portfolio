@@ -14,6 +14,7 @@ export default function ContentRenderer({ json }: { json: any }) {
     const renderNode = (node: Node, index: number): React.ReactNode => {
         if (node.type === 'text') {
             let element: React.ReactNode = node.text;
+            let textStyle: React.CSSProperties = {};
 
             node.marks?.forEach((mark, i) => {
                 switch (mark.type) {
@@ -23,8 +24,11 @@ export default function ContentRenderer({ json }: { json: any }) {
                     case 'italic':
                         element = <em key={i}>{element}</em>;
                         break;
+                    case 'underline':
+                        element = <u key={i} style={{ textDecorationColor: 'inherit' }}>{element}</u>;
+                        break;
                     case 'strike':
-                        element = <s key={i}>{element}</s>;
+                        element = <s key={i} style={{ textDecorationColor: 'inherit' }}>{element}</s>;
                         break;
                     case 'link':
                         element = (
@@ -40,16 +44,17 @@ export default function ContentRenderer({ json }: { json: any }) {
                         break;
                     case 'textStyle':
                         if (mark.attrs?.color) {
-                            element = (
-                                <span key={i} style={{ color: mark.attrs.color }}>
-                                    {element}
-                                </span>
-                            );
+                            textStyle.color = mark.attrs.color;
                         }
                         break;
                 }
             });
-            return <React.Fragment key={index}>{element}</React.Fragment>;
+
+            return (
+                <span key={index} style={textStyle}>
+                    {element}
+                </span>
+            );
         }
 
         const children = node.content?.map((child, i) => renderNode(child, i));
@@ -76,7 +81,6 @@ export default function ContentRenderer({ json }: { json: any }) {
             case 'hardBreak':
                 return <br key={index} />;
             default:
-                // Fallback for unknown nodes
                 return <div key={index}>{children}</div>;
         }
     };

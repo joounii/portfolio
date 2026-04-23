@@ -5,6 +5,11 @@ import { TextStyle } from '@tiptap/extension-text-style';
 import { useEffect, useRef } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import FontColor from './Partials/FontColor';
+import BoldButton from './Partials/BoldButton';
+import ItalicButton from './Partials/ItalicButton';
+import UnderlineButton from './Partials/UnderlineButton';
+import StrikeButton from './Partials/StrikeButton';
+import Underline from '@tiptap/extension-underline';
 
 interface Props {
     content: any;
@@ -15,7 +20,7 @@ export default function TextEditor({ content, onChange }: Props) {
     const contentRef = useRef(content);
 
     const editor = useEditor({
-        extensions: [StarterKit, TextStyle, Color],
+        extensions: [StarterKit, TextStyle, Color, Underline],
         content: content || '<p></p>',
         immediatelyRender: false,
         editorProps: {
@@ -47,8 +52,22 @@ export default function TextEditor({ content, onChange }: Props) {
         <div className="space-y-2">
             <InputLabel value="Documentation Content" />
 
-            <div className="flex items-center gap-4 p-2 bg-gray-100 dark:bg-gray-800 border border-b-0 border-gray-300 dark:border-gray-700 rounded-t-md sticky top-0 z-10">
+            {/* Main Toolbar Container */}
+            <div className="flex items-center gap-1 p-1.5 bg-gray-100 dark:bg-gray-800 border border-b-0 border-gray-300 dark:border-gray-700 rounded-t-md sticky top-0 z-10">
+
+                {/* Text Formatting Group */}
+                <div className="flex items-center gap-1">
+                    <BoldButton editor={editor} />
+                    <ItalicButton editor={editor} />
+                    <UnderlineButton editor={editor} />
+                    <StrikeButton editor={editor} />
+                </div>
+
+                <div className="w-px h-6 bg-gray-300 dark:bg-gray-700 mx-1" />
+
+                {/* Color Group */}
                 <FontColor editor={editor} />
+
             </div>
 
             <EditorContent editor={editor} />
