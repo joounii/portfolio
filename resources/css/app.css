@@ -54,3 +54,13 @@
   scrollbar-width: thin;
   scrollbar-color: #4cd7f6 transparent;
 }
+
+.tiptap .editor-link {
+    pointer-events: none;
+    cursor: text;
+}
+
+.is-linking .tiptap .editor-link {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}

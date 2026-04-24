@@ -35,7 +35,8 @@ export default function ContentRenderer({ json }: { json: any }) {
                             <a
                                 key={i}
                                 href={mark.attrs?.href}
-                                target={mark.attrs?.target}
+                                target={mark.attrs?.target || '_blank'}
+                                rel="noopener noreferrer"
                                 className="text-blue-500 underline"
                             >
                                 {element}
