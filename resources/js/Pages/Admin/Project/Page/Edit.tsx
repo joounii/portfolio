@@ -36,7 +36,7 @@ export default function Edit({ auth, project, page }: any) {
             <Head title="Edit Page Version" />
 
             <div className="py-12">
-                <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <form onSubmit={submit} className="bg-white dark:bg-gray-800 p-6 shadow sm:rounded-lg space-y-6">
                         <div>
                             <InputLabel value="Version Name" />

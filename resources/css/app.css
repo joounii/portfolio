@@ -64,3 +64,9 @@
     pointer-events: auto !important;
     cursor: pointer !important;
 }
+
+.content-renderer p:empty::before,
+.content-renderer div:empty::before {
+    content: "\00a0";
+    visibility: hidden;
+}
