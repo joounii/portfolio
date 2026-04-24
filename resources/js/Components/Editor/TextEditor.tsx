@@ -26,7 +26,6 @@ export default function TextEditor({ content, onChange }: Props) {
     const contentRef = useRef(content);
     const [isCtrlPressed, setIsCtrlPressed] = useState(false);
 
-    // Monitor Ctrl/Cmd key for the "Link Mode" toggle
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Control' || e.metaKey) setIsCtrlPressed(true);
@@ -54,7 +53,7 @@ export default function TextEditor({ content, onChange }: Props) {
             Color,
             Underline,
             Link.configure({
-                openOnClick: false, // Handled by our CSS/Ctrl toggle
+                openOnClick: false,
                 HTMLAttributes: {
                     class: 'editor-link text-blue-500 underline',
                 },
@@ -70,14 +69,12 @@ export default function TextEditor({ content, onChange }: Props) {
             },
             handleDOMEvents: {
                 keydown: (view, event) => {
-                    // Prevent editor shortcuts from firing when typing in popups/inputs
                     if (event.target instanceof HTMLInputElement) return true;
                     return false;
                 },
             },
         },
         onUpdate: ({ editor }) => {
-            // Debounced update to prevent Inertia lag
             const timer = setTimeout(() => {
                 onChange(editor.getJSON());
             }, 300);
@@ -85,7 +82,6 @@ export default function TextEditor({ content, onChange }: Props) {
         },
     });
 
-    // Synchronize external content changes
     useEffect(() => {
         if (editor && content !== contentRef.current) {
             contentRef.current = content;

@@ -39,7 +39,6 @@ export default function LinkButton({ editor }: { editor: Editor }) {
             return;
         }
 
-        // 1. Sanitize the URL
         let finalUrl = url.trim();
         if (!/^(https?:\/\/|mailto:|tel:|#)/i.test(finalUrl)) {
             finalUrl = `https://${finalUrl}`;
@@ -47,9 +46,7 @@ export default function LinkButton({ editor }: { editor: Editor }) {
 
         const targetAttr = newTab ? '_blank' : '_self';
 
-        // 2. Check if we have a selection or are inside a link
         if (editor.state.selection.empty && !editor.isActive('link')) {
-            // CASE: Empty selection - Insert the URL as clickable text
             editor
                 .chain()
                 .focus()
@@ -68,7 +65,6 @@ export default function LinkButton({ editor }: { editor: Editor }) {
                 })
                 .run();
         } else {
-            // CASE: Text is selected or we are updating an existing link
             editor
                 .chain()
                 .focus()
@@ -146,7 +142,7 @@ export default function LinkButton({ editor }: { editor: Editor }) {
                                     </button>
                                 </div>
 
-                                {/* Checkbox Section - Matches the spacing of your Color Picker */}
+                                {/* Checkbox Section */}
                                 <div className="flex items-center justify-between pt-1">
                                     <label className="flex items-center gap-2 cursor-pointer group">
                                         <div className="relative flex items-center">
