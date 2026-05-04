@@ -129,6 +129,17 @@ export default function ContentRenderer({ json }: { json: any }) {
                         />
                     </pre>
                 );
+            case 'image':
+                return (
+                    <div key={index} className="my-8 flex justify-center">
+                        <img
+                            src={node.attrs?.src}
+                            alt={node.attrs?.alt || ''}
+                            title={node.attrs?.title}
+                            className="rounded-lg border border-gray-200 dark:border-gray-800 max-w-full h-auto"
+                        />
+                    </div>
+                );
         }
     };
 

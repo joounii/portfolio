@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\ProjectPageController as AdminProjectPageController;
+use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,10 @@ Route::get('/contact', function () { return Inertia::render('Contact'); })->name
 Route::get('/logs', function () { return Inertia::render('Logs'); })->name('logs');
 
 Route::post('/api/handshake', [ContactController::class, 'store'])->name('contact.store');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('/api/upload-image', [ImageUploadController::class, 'store'])->name('image.upload');
+});
 
 Route::middleware(['auth', 'verified'])
     ->prefix('admin')

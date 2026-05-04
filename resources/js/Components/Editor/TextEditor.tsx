@@ -3,6 +3,7 @@ import StarterKit from '@tiptap/starter-kit';
 import { useEffect, useRef, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
 import { all, createLowlight } from 'lowlight';
+import axios from 'axios';
 
 // Extensions
 import Underline from '@tiptap/extension-underline';
@@ -11,6 +12,7 @@ import Color from '@tiptap/extension-color';
 import { TextStyle } from '@tiptap/extension-text-style';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import Code from '@tiptap/extension-code';
+import Image from '@tiptap/extension-image';
 
 // Components
 import FontColor from './Partials/FontColor';
@@ -28,6 +30,18 @@ interface Props {
 }
 
 const lowlight = createLowlight(all);
+
+const uploadFile = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const response = await axios.post(route('image.upload'), formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+    return response.data.url;
+};
 
 export default function TextEditor({ content, onChange }: Props) {
     const contentRef = useRef(content);
@@ -77,12 +91,59 @@ export default function TextEditor({ content, onChange }: Props) {
                     class: 'inline-code bg-gray-100 dark:bg-gray-800 text-red-500 dark:text-red-400 px-1.5 py-0.5 rounded font-mono text-[0.9em]',
                 },
             }),
+            Image.configure({
+                HTMLAttributes: { class: 'editor-image' },
+            }).extend({
+                addAttributes() {
+                    return {
+                        ...this.parent?.(),
+                        'data-master-id': {
+                            default: null,
+                        },
+                    }
+                },
+            }),
         ],
         content: content || '<p></p>',
         immediatelyRender: false,
         editorProps: {
             attributes: {
                 class: 'prose dark:prose-invert max-w-none focus:outline-none min-h-[400px] p-4 bg-gray-50 dark:bg-gray-900 rounded-b-md border border-gray-300 dark:border-gray-700',
+            },
+            handleDrop: (view, event, slice, moved) => {
+                if (!moved && event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0]) {
+                    const file = event.dataTransfer.files[0];
+                    const isImage = file.type.startsWith('image/');
+
+                    if (isImage) {
+                        uploadFile(file).then(url => {
+                            const { schema } = view.state;
+                            const node = schema.nodes.image.create({ src: url });
+                            const transaction = view.state.tr.replaceSelectionWith(node);
+                            view.dispatch(transaction);
+                        });
+                        return true;
+                    }
+                }
+                return false;
+            },
+            handlePaste: (view, event) => {
+                const items = Array.from(event.clipboardData?.items || []);
+                for (const item of items) {
+                    if (item.type.startsWith('image/')) {
+                        const file = item.getAsFile();
+                        if (file) {
+                            uploadFile(file).then(url => {
+                                const { schema } = view.state;
+                                const node = schema.nodes.image.create({ src: url });
+                                const transaction = view.state.tr.replaceSelectionWith(node);
+                                view.dispatch(transaction);
+                            });
+                            return true;
+                        }
+                    }
+                }
+                return false;
             },
             handleDOMEvents: {
                 keydown: (view, event) => {
