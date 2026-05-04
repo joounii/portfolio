@@ -1,13 +1,15 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import Color from '@tiptap/extension-color';
-import { TextStyle } from '@tiptap/extension-text-style';
 import { useEffect, useRef, useState } from 'react';
 import InputLabel from '@/Components/InputLabel';
+import { all, createLowlight } from 'lowlight';
 
 // Extensions
 import Underline from '@tiptap/extension-underline';
 import Link from '@tiptap/extension-link';
+import Color from '@tiptap/extension-color';
+import { TextStyle } from '@tiptap/extension-text-style';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 
 // Components
 import FontColor from './Partials/FontColor';
@@ -16,11 +18,14 @@ import ItalicButton from './Partials/ItalicButton';
 import UnderlineButton from './Partials/UnderlineButton';
 import StrikeButton from './Partials/StrikeButton';
 import LinkButton from './Partials/LinkButton';
+import CodeBlockButton from './Partials/CodeBlockButton';
 
 interface Props {
     content: any;
     onChange: (json: any) => void;
 }
+
+const lowlight = createLowlight(all);
 
 export default function TextEditor({ content, onChange }: Props) {
     const contentRef = useRef(content);
@@ -59,6 +64,10 @@ export default function TextEditor({ content, onChange }: Props) {
                 },
                 linkOnPaste: true,
                 autolink: true,
+            }),
+            CodeBlockLowlight.configure({
+                lowlight,
+                defaultLanguage: 'javascript',
             }),
         ],
         content: content || '<p></p>',
@@ -117,6 +126,24 @@ export default function TextEditor({ content, onChange }: Props) {
 
                 {/* Color Tool */}
                 <FontColor editor={editor} />
+
+                <div className="w-px h-6 bg-gray-300 dark:bg-gray-700 mx-1" />
+
+                {/* Code */}
+                <CodeBlockButton editor={editor} />
+                {editor.isActive('codeBlock') && (
+                    <select
+                        className="text-[10px] bg-gray-200 dark:bg-gray-700 border-none rounded px-2 py-1 uppercase font-bold"
+                        value={editor.getAttributes('codeBlock').language || 'javascript'}
+                        onChange={e => editor.chain().focus().updateAttributes('codeBlock', { language: e.target.value }).run()}
+                    >
+                        <option value="javascript">Javascript</option>
+                        <option value="php">PHP</option>
+                        <option value="python">Python</option>
+                        <option value="html">HTML</option>
+                        <option value="css">CSS</option>
+                    </select>
+                )}
             </div>
 
             <EditorContent editor={editor} />

@@ -70,3 +70,18 @@
     content: "\00a0";
     visibility: hidden;
 }
+
+.tiptap pre {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.hljs-comment, .hljs-quote { color: #6a9955; }
+.hljs-keyword, .hljs-selector-tag { color: #569cd6; }
+.hljs-string, .hljs-doctag { color: #ce9178; }
+.hljs-title, .hljs-section, .hljs-selector-id { color: #dcdcaa; }
+.hljs-variable, .hljs-template-variable { color: #9cdcfe; }
+.hljs-number, .hljs-literal { color: #b5cea8; }

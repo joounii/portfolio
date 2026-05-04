@@ -1,4 +1,5 @@
 import React from 'react';
+import { all, createLowlight } from 'lowlight';
 
 interface Node {
     type: string;
@@ -7,6 +8,29 @@ interface Node {
     marks?: { type: string; attrs?: any }[];
     content?: Node[];
 }
+
+const lowlight = createLowlight(all);
+
+const renderLowlightNodes = (nodes: any[]): string => {
+    return nodes
+        .map((node) => {
+            if (node.type === 'text') {
+                return node.value
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#039;');
+            }
+            if (node.type === 'element') {
+                const classes = node.properties?.className?.join(' ') || '';
+                const content = renderLowlightNodes(node.children);
+                return `<span class="${classes}">${content}</span>`;
+            }
+            return '';
+        })
+        .join('');
+};
 
 export default function ContentRenderer({ json }: { json: any }) {
     if (!json || !json.content) return null;
@@ -83,6 +107,21 @@ export default function ContentRenderer({ json }: { json: any }) {
                 return <br key={index} />;
             default:
                 return <div key={index}>{children}</div>;
+            case 'codeBlock':
+                const lang = node.attrs?.language || 'javascript';
+                const codeContent = node.content?.[0]?.text || '';
+                const highlighted = lowlight.highlight(lang, codeContent);
+
+                return (
+                    <pre key={index} className="rounded-lg p-4 bg-gray-900 overflow-x-auto my-6 border border-gray-800">
+                        <code
+                            className={`language-${lang} hljs`}
+                            dangerouslySetInnerHTML={{
+                                __html: renderLowlightNodes(highlighted.children)
+                            }}
+                        />
+                    </pre>
+                );
         }
     };
 
