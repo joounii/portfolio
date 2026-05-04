@@ -32,6 +32,7 @@ const lowlight = createLowlight(all);
 export default function TextEditor({ content, onChange }: Props) {
     const contentRef = useRef(content);
     const [isCtrlPressed, setIsCtrlPressed] = useState(false);
+    const hasInitialized = useRef(false);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -91,21 +92,19 @@ export default function TextEditor({ content, onChange }: Props) {
             },
         },
         onUpdate: ({ editor }) => {
-            const timer = setTimeout(() => {
-                onChange(editor.getJSON());
-            }, 300);
-            return () => clearTimeout(timer);
+            const json = editor.getJSON();
+            contentRef.current = json;
+
+            onChange(json);
         },
     });
 
     useEffect(() => {
-        if (editor && content !== contentRef.current) {
-            contentRef.current = content;
-            if (JSON.stringify(editor.getJSON()) !== JSON.stringify(content)) {
-                editor.commands.setContent(content, { emitUpdate: false });
-            }
+        if (editor && content && !hasInitialized.current) {
+            editor.commands.setContent(content, { emitUpdate: false });
+            hasInitialized.current = true;
         }
-    }, [content, editor]);
+    }, [editor, content]);
 
     if (!editor) return null;
 
