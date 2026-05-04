@@ -20,6 +20,7 @@ import UnderlineButton from './Partials/UnderlineButton';
 import StrikeButton from './Partials/StrikeButton';
 import LinkButton from './Partials/LinkButton';
 import CodeBlockButton from './Partials/CodeBlockButton';
+import InlineCodeButton from './Partials/InlineCodeButton';
 
 interface Props {
     content: any;
@@ -137,6 +138,7 @@ export default function TextEditor({ content, onChange }: Props) {
 
                 {/* Code */}
                 <CodeBlockButton editor={editor} />
+                <InlineCodeButton editor={editor} />
 
             </div>
 

@@ -72,6 +72,13 @@ export default function ContentRenderer({ json }: { json: any }) {
                             textStyle.color = mark.attrs.color;
                         }
                         break;
+                    case 'code':
+                        element = (
+                            <code key={i} className="bg-gray-100 dark:bg-gray-800 text-red-500 dark:text-red-400 px-1.5 py-0.5 rounded font-mono text-[0.9em] border border-gray-200 dark:border-gray-700">
+                                {element}
+                            </code>
+                        );
+                        break;
                 }
             });
 
