@@ -10,6 +10,7 @@ import Link from '@tiptap/extension-link';
 import Color from '@tiptap/extension-color';
 import { TextStyle } from '@tiptap/extension-text-style';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import Code from '@tiptap/extension-code';
 
 // Components
 import FontColor from './Partials/FontColor';
@@ -68,6 +69,11 @@ export default function TextEditor({ content, onChange }: Props) {
             CodeBlockLowlight.configure({
                 lowlight,
                 defaultLanguage: 'javascript',
+            }),
+            Code.configure({
+                HTMLAttributes: {
+                    class: 'inline-code bg-gray-100 dark:bg-gray-800 text-red-500 dark:text-red-400 px-1.5 py-0.5 rounded font-mono text-[0.9em]',
+                },
             }),
         ],
         content: content || '<p></p>',
@@ -131,19 +137,7 @@ export default function TextEditor({ content, onChange }: Props) {
 
                 {/* Code */}
                 <CodeBlockButton editor={editor} />
-                {editor.isActive('codeBlock') && (
-                    <select
-                        className="text-[10px] bg-gray-200 dark:bg-gray-700 border-none rounded px-2 py-1 uppercase font-bold"
-                        value={editor.getAttributes('codeBlock').language || 'javascript'}
-                        onChange={e => editor.chain().focus().updateAttributes('codeBlock', { language: e.target.value }).run()}
-                    >
-                        <option value="javascript">Javascript</option>
-                        <option value="php">PHP</option>
-                        <option value="python">Python</option>
-                        <option value="html">HTML</option>
-                        <option value="css">CSS</option>
-                    </select>
-                )}
+
             </div>
 
             <EditorContent editor={editor} />
