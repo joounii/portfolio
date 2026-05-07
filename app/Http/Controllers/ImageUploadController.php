@@ -27,7 +27,6 @@ class ImageUploadController extends Controller
             $file = $request->file('image');
             $filename = time() . '_' . $file->getClientOriginalName();
 
-            // 1. Always store the High-Res Master first
             $file->storeAs('masters', $filename, 'local');
 
             $manager = new ImageManager(new Driver());
@@ -36,16 +35,12 @@ class ImageUploadController extends Controller
             $width = $image->width();
             $proxyPath = 'editor-proxies/' . pathinfo($filename, PATHINFO_FILENAME);
 
-            // 2. Conditional Processing
             if ($width <= 1200) {
-                // Image is small enough. Just copy the original to public storage.
-                // We keep the original extension (jpg, png, etc.) in this case.
                 $extension = $file->getClientOriginalExtension();
                 $proxyPath .= '.' . $extension;
 
                 Storage::disk('public')->put($proxyPath, file_get_contents($file));
             } else {
-                // Image is large. Scale down to 1200px and convert to JPG.
                 $image->scale(width: 1200);
                 $encoded = $image->toJpeg(80);
                 $proxyPath .= '.jpg';

@@ -29,11 +29,6 @@ class ProjectPageController extends Controller
             'version_name' => $validated['version_name'],
         ]);
 
-        // TODO: Remove this once we have a better way to manage active pages
-        if (!$project->active_page_id) {
-            $project->update(['active_page_id' => $page->id]);
-        }
-
         return redirect()->route('admin.projects.show', $project->id)
             ->with('message', 'New version saved.');
     }

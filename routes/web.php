@@ -40,6 +40,7 @@ Route::middleware(['auth', 'verified'])
         Route::put('/projects/{project}', [AdminProjectController::class, 'update'])->name('admin.projects.update');
         Route::delete('/projects/{project}', [AdminProjectController::class, 'destroy'])->name('admin.projects.destroy');
         Route::patch('/projects/{project}/pages/{page}/toggle', [AdminProjectController::class, 'toggleActivePage'])->name('admin.projects.page.toggle');
+        Route::post('/projects/{project}/pages/import', [AdminProjectController::class, 'import'])->name('admin.projects.page.import');
 
         Route::get('/projects/{project}/pages/create', [AdminProjectPageController::class, 'create'])->name('admin.projects.page.create');
         Route::post('/projects/{project}/pages', [AdminProjectPageController::class, 'store'])->name('admin.projects.page.store');

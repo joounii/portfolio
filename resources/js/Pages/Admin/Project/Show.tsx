@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { Edit, FileText, ArrowLeft, CheckCircle2, Clock, Plus, AlertTriangle, Trash2, Eye, EyeOff } from 'lucide-react';
+import { Edit, FileText, ArrowLeft, CheckCircle2, Clock, Plus, AlertTriangle, Trash2, Eye, EyeOff, Upload, Download } from 'lucide-react';
 import Modal from '@/Components/Modal';
 import DangerButton from '@/Components/DangerButton';
 import SecondaryButton from '@/Components/SecondaryButton';
@@ -36,6 +36,62 @@ export default function Show({ auth, project }: { auth: any, project: Project })
         e.preventDefault();
         destroy(route('admin.projects.destroy', project.id), {
             onSuccess: () => setConfirmingDeletion(false),
+        });
+    };
+
+    const handleExport = (page: any) => {
+        const exportData = {
+            version_name: page.version_name,
+            content: page.content,
+            exported_at: new Date().toISOString(),
+        };
+
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+
+        link.href = url;
+        link.download = `PAGE_${project.slug}_${page.version_name.replace(/\s+/g, '_')}.json`;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
+    const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+
+    const { data, setData, post, processing: importProcessing, reset, errors: importErrors } = useForm({
+        version_name: '',
+        content: null as any,
+    });
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const json = JSON.parse(event.target?.result as string);
+                setData({
+                    version_name: json.version_name || 'Imported Version',
+                    content: json.content
+                });
+            } catch (err) {
+                alert("Invalid JSON file. Please check the file format.");
+            }
+        };
+        reader.readAsText(file);
+    };
+
+    const submitImport = (e: React.FormEvent) => {
+        e.preventDefault();
+        post(route('admin.projects.page.import', project.id), {
+            onSuccess: () => {
+                setIsImportModalOpen(false);
+                reset();
+            },
         });
     };
 
@@ -114,12 +170,21 @@ export default function Show({ auth, project }: { auth: any, project: Project })
                                 <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 flex items-center gap-2">
                                     <FileText className="text-indigo-500" /> Architectural Documentation
                                 </h3>
-                                <Link
-                                    href={route('admin.projects.page.create', project.id)}
-                                    className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition"
-                                >
-                                    <Plus size={14} className="mr-1" /> New Version
-                                </Link>
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        onClick={() => setIsImportModalOpen(true)}
+                                        className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-xs rounded hover:bg-indigo-700 transition"
+                                    >
+                                        <Upload size={14} className="mr-1" /> Import JSON
+                                    </button>
+
+                                    <Link
+                                        href={route('admin.projects.page.create', project.id)}
+                                        className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition"
+                                    >
+                                        <Plus size={14} className="mr-1" /> New Version
+                                    </Link>
+                                </div>
                             </div>
 
                             <div className="space-y-4">
@@ -161,6 +226,13 @@ export default function Show({ auth, project }: { auth: any, project: Project })
                                                                 )}
                                                             </td>
                                                             <td className="px-6 py-4 text-right space-x-4">
+                                                                <button
+                                                                    onClick={() => handleExport(page)}
+                                                                    className="text-gray-500 hover:text-indigo-600 transition-colors p-1"
+                                                                    title="Export Version"
+                                                                >
+                                                                    <Download size={16} />
+                                                                </button>
                                                                 {/* Toggle Activation Link */}
                                                                 <Link
                                                                     href={route('admin.projects.page.toggle', [project.id, page.id])}
@@ -253,6 +325,56 @@ export default function Show({ auth, project }: { auth: any, project: Project })
                         <DangerButton disabled={processing}>
                             Delete Project
                         </DangerButton>
+                    </div>
+                </form>
+            </Modal>
+
+            {/* Import Modal */}
+            <Modal show={isImportModalOpen} onClose={() => setIsImportModalOpen(false)}>
+                <form onSubmit={submitImport} className="p-6">
+                    <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
+                        Import Documentation Version
+                    </h2>
+
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block text-xs font-mono text-gray-500 uppercase mb-2">Select JSON File</label>
+                            <input
+                                type="file"
+                                accept=".json"
+                                onChange={handleFileChange}
+                                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                            />
+                        </div>
+
+                        {data.content && (
+                            <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-700">
+                                <p className="text-xs text-gray-500 uppercase font-mono mb-1">Detected Version Name</p>
+                                <input
+                                    type="text"
+                                    value={data.version_name}
+                                    onChange={e => setData('version_name', e.target.value)}
+                                    className="w-full bg-transparent border-gray-300 dark:border-gray-700 rounded text-sm focus:ring-indigo-500"
+                                />
+                                <p className="mt-2 text-[10px] text-green-600 dark:text-green-400 font-mono italic">
+                                    ✓ Data Stream Validated (Size: {JSON.stringify(data.content).length} bytes)
+                                </p>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="mt-6 flex justify-end gap-3">
+                        <SecondaryButton onClick={() => setIsImportModalOpen(false)}>
+                            Cancel
+                        </SecondaryButton>
+
+                        <button
+                            type="submit"
+                            disabled={importProcessing || !data.content}
+                            className={`inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded hover:bg-indigo-700 transition ${(!data.content || importProcessing) && 'opacity-50 cursor-not-allowed'}`}
+                        >
+                            {importProcessing ? 'Importing...' : 'Confirm Import'}
+                        </button>
                     </div>
                 </form>
             </Modal>

@@ -101,4 +101,19 @@ class ProjectController extends Controller
 
         return back()->with('message', $message);
     }
+
+    public function import(Request $request, Project $project)
+    {
+        $request->validate([
+            'version_name' => 'required|string|max:255',
+            'content' => 'required|array',
+        ]);
+
+        $project->pages()->create([
+            'version_name' => $request->input('version_name') . ' (Imported)',
+            'content' => $request->input('content'),
+        ]);
+
+        return back()->with('success', 'Documentation version imported successfully.');
+    }
 }
