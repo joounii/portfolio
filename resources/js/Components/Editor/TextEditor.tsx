@@ -23,6 +23,7 @@ import StrikeButton from './Partials/StrikeButton';
 import LinkButton from './Partials/LinkButton';
 import CodeBlockButton from './Partials/CodeBlockButton';
 import InlineCodeButton from './Partials/InlineCodeButton';
+import { BulletListButton, OrderedListButton } from './Partials/ListButton';
 
 interface Props {
     content: any;
@@ -70,7 +71,23 @@ export default function TextEditor({ content, onChange }: Props) {
 
     const editor = useEditor({
         extensions: [
-            StarterKit,
+            StarterKit.configure({
+                bulletList: {
+                    HTMLAttributes: {
+                        class: 'list-disc ml-6 space-y-1',
+                    },
+                },
+                orderedList: {
+                    HTMLAttributes: {
+                        class: 'list-decimal ml-6 space-y-1',
+                    },
+                },
+                listItem: {
+                    HTMLAttributes: {
+                        class: 'pl-1',
+                    },
+                },
+            }),
             TextStyle,
             Color,
             Underline,
@@ -199,6 +216,12 @@ export default function TextEditor({ content, onChange }: Props) {
                 {/* Code */}
                 <CodeBlockButton editor={editor} />
                 <InlineCodeButton editor={editor} />
+
+                {/* List Group */}
+                <div className="flex items-center gap-1">
+                    <BulletListButton editor={editor} />
+                    <OrderedListButton editor={editor} />
+                </div>
 
             </div>
 
