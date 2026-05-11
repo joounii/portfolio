@@ -20,7 +20,7 @@ export default function ContactGrid() {
     const nodes: ContactNode[] = [
         { label: 'SOURCE_CONTROL', value: 'GITHUB', icon: Code, color: 'text-secondary', href: "https://github.com/joounii" },
         { label: 'B2B_PROTOCOL', value: 'LINKEDIN', icon: Network, color: 'text-primary', href: "https://linkedin.com/in/jonathan-furrer-632733252" },
-        { label: 'DIRECT_MAIL', value: 'EMAIL_CLIENT', icon: Mail, color: 'text-tertiary', copyValue: 'jonifu06@gmail.com' },
+        { label: 'DIRECT_MAIL', value: 'EMAIL_CLIENT', icon: Mail, color: 'text-tertiary', copyValue: 'jonathanfurrer.it@gmail.com' },
         { label: 'VOIP_NODE', value: 'DISCORD', icon: MessageSquare, color: 'text-secondary', copyValue: 'joounii' },
     ];
 
