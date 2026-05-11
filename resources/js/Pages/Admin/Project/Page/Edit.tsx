@@ -2,12 +2,13 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
 import TextEditor from '@/Components/Editor/TextEditor';
 import PrimaryButton from '@/Components/PrimaryButton';
+import SecondaryButton from '@/Components/SecondaryButton';
 import InputLabel from '@/Components/InputLabel';
 import TextInput from '@/Components/TextInput';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Check, Save } from 'lucide-react';
 
 export default function Edit({ auth, project, page }: any) {
-    const { data, setData, put, processing } = useForm({
+    const { data, setData, put, processing, recentlySuccessful } = useForm({
         version_name: page.version_name,
         content: page.content,
     });
@@ -15,6 +16,12 @@ export default function Edit({ auth, project, page }: any) {
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
         put(route('admin.projects.page.update', [project.id, page.id]));
+    };
+
+    const quickSave = () => {
+        put(route('admin.projects.page.update', [project.id, page.id]), {
+            preserveScroll: true,
+        });
     };
 
     return (
@@ -52,8 +59,28 @@ export default function Edit({ auth, project, page }: any) {
                             onChange={(json) => setData('content', json)}
                         />
 
-                        <div className="flex justify-end pt-4">
-                            <PrimaryButton disabled={processing}>Update Version</PrimaryButton>
+                        <div className="flex justify-end items-center gap-3 pt-4 border-t border-gray-100 dark:border-gray-700">
+                            {/* Status Indicator for UX */}
+                            {recentlySuccessful && (
+                                <span className="text-sm text-green-600 dark:text-green-400 flex items-center gap-1 mr-4 animate-fade-out">
+                                    <Check size={16} /> Changes Saved
+                                </span>
+                            )}
+
+                            {/* Action 1: Quick Save */}
+                            <SecondaryButton
+                                type="button"
+                                onClick={quickSave}
+                                disabled={processing}
+                            >
+                                <Save size={14} className="mr-2" />
+                                {processing ? 'Saving...' : 'Quick Save'}
+                            </SecondaryButton>
+
+                            {/* Action 2: Save & Close */}
+                            <PrimaryButton disabled={processing}>
+                                {processing ? 'Processing...' : 'Save & Close'}
+                            </PrimaryButton>
                         </div>
                     </form>
                 </div>

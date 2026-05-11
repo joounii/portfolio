@@ -50,6 +50,10 @@ class ProjectPageController extends Controller
 
         $page->update($validated);
 
+        if ($request->has('stay')) {
+            return back()->with('success', 'Changes saved.');
+        }
+
         return redirect()->route('admin.projects.show', $project->id)
             ->with('message', 'Version updated.');
     }
