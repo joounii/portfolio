@@ -16,4 +16,5 @@ export interface TechStack {
   tags: string[];
   category: string;
   icon: string;
+  link: string;
 }
