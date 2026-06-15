@@ -18,6 +18,12 @@ export default function Edit({ auth, project, page }: any) {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        transform((data) => {
+            const { stay, ...cleanData } = data as any;
+            return cleanData;
+        });
+
         put(route('admin.projects.page.update', [project.id, page.id]));
     };
 
