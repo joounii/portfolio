@@ -174,9 +174,9 @@ export default function TextEditor({ content, onChange }: Props) {
                 renderHTML({ node, HTMLAttributes }) {
                     const align = node.attrs.alignment || 'center';
                     const alignClasses: Record<string, string> = {
-                        left: 'mr-auto ml-0 block float-left mr-4 my-2',
+                        left: 'mr-auto ml-0 block clear-both my-4',
                         center: 'mx-auto block clear-both my-4',
-                        right: 'ml-auto mr-0 block float-right ml-4 my-2',
+                        right: 'ml-auto mr-0 block clear-both my-4',
                     };
 
                     return [
