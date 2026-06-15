@@ -66,7 +66,7 @@ export default function ContentRenderer({ json }: { json: any }) {
                                 href={mark.attrs?.href}
                                 target={mark.attrs?.target || '_blank'}
                                 rel="noopener noreferrer"
-                                className="text-blue-500 underline"
+                                className="text-secondary transition-all duration-200 underline decoration-secondary/20 hover:decoration-secondary underline-offset-4 font-medium inline-block"
                             >
                                 {element}
                             </a>
@@ -79,7 +79,10 @@ export default function ContentRenderer({ json }: { json: any }) {
                         break;
                     case 'code':
                         element = (
-                            <code key={i} className="bg-gray-100 dark:bg-gray-800 text-red-500 dark:text-red-400 px-1.5 py-0.5 rounded font-mono text-[0.9em] border border-gray-200 dark:border-gray-700 before:content-[''] after:content-['']">
+                            <code
+                                key={i}
+                                className="bg-surface-container-high/60 text-secondary border border-outline-variant/20 px-1.5 py-0.5 rounded font-mono text-[0.85em] mx-0.5 tracking-normal before:content-[''] after:content-[''] inline-block"
+                            >
                                 {element}
                             </code>
                         );
@@ -124,9 +127,9 @@ export default function ContentRenderer({ json }: { json: any }) {
                 }
 
                 const headingClasses: Record<1 | 2 | 3, string> = {
-                    1: 'text-3xl font-bold mt-8 mb-4 tracking-tight text-gray-900 dark:text-white first:mt-0 clear-both scroll-mt-32',
-                    2: 'text-2xl font-semibold mt-6 mb-3 tracking-tight text-gray-900 dark:text-white clear-both scroll-mt-32',
-                    3: 'text-xl font-medium mt-5 mb-2 tracking-tight text-gray-900 dark:text-white clear-both scroll-mt-32',
+                    1: 'text-3xl font-bold mt-10 mb-4 tracking-tight text-on-surface border-b border-outline-variant/10 pb-2 first:mt-0 clear-both scroll-mt-32 font-headline uppercase',
+                    2: 'text-2xl font-semibold mt-8 mb-3 tracking-wide text-on-surface first:mt-0 clear-both scroll-mt-32 font-headline',
+                    3: 'text-xl font-medium mt-6 mb-2 tracking-wide text-on-surface first:mt-0 clear-both scroll-mt-32 font-headline opacity-90',
                 };
 
                 return (
@@ -156,14 +159,28 @@ export default function ContentRenderer({ json }: { json: any }) {
                 const highlighted = lowlight.highlight(lang, codeContent);
 
                 return (
-                    <pre key={index} className="rounded-lg p-4 bg-gray-900 overflow-x-auto my-6 border border-gray-800">
-                        <code
-                            className={`language-${lang} hljs`}
-                            dangerouslySetInnerHTML={{
-                                __html: renderLowlightNodes(highlighted.children)
-                            }}
-                        />
-                    </pre>
+                    <div key={index} className="bg-surface-container-low p-6 rounded border border-outline-variant/10 w-full my-6 shadow-sm overflow-hidden block">
+
+                        {/* Terminal Window look */}
+                        <div className="flex items-center gap-2 mb-4 select-none pointer-events-none">
+                            <div className="w-3 h-3 rounded-full bg-error/40"></div>
+                            <div className="w-3 h-3 rounded-full bg-secondary/40"></div>
+                            <div className="w-3 h-3 rounded-full bg-primary/40"></div>
+                            <div className="ml-auto font-mono text-[9px] text-outline-variant uppercase tracking-widest px-1.5 opacity-60">
+                                {lang}
+                            </div>
+                        </div>
+
+                        {/* Dynamic Syntax Renderer */}
+                        <pre className="overflow-x-auto bg-transparent p-0 m-0 border-0 custom-scrollbar nav-scrollbar">
+                            <code
+                                className={`language-${lang} hljs font-mono text-sm text-on-surface-variant block leading-relaxed`}
+                                dangerouslySetInnerHTML={{
+                                    __html: renderLowlightNodes(highlighted.children)
+                                }}
+                            />
+                        </pre>
+                    </div>
                 );
 
             case 'image':
