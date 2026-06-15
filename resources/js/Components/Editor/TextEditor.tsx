@@ -13,6 +13,7 @@ import { TextStyle } from '@tiptap/extension-text-style';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import Code from '@tiptap/extension-code';
 import Image from '@tiptap/extension-image';
+import Heading from '@tiptap/extension-heading';
 
 // Components
 import FontColor from './Partials/FontColor';
@@ -24,6 +25,8 @@ import LinkButton from './Partials/LinkButton';
 import CodeBlockButton from './Partials/CodeBlockButton';
 import InlineCodeButton from './Partials/InlineCodeButton';
 import { BulletListButton, OrderedListButton } from './Partials/ListButton';
+import HeadingSelector from './Partials/HeadingButton';
+import ImageMenu from './Partials/ImageMenu';
 
 interface Props {
     content: any;
@@ -48,6 +51,7 @@ export default function TextEditor({ content, onChange }: Props) {
     const contentRef = useRef(content);
     const [isCtrlPressed, setIsCtrlPressed] = useState(false);
     const hasInitialized = useRef(false);
+    const [selectionKey, setSelectionKey] = useState(0);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -87,6 +91,35 @@ export default function TextEditor({ content, onChange }: Props) {
                         class: 'pl-1',
                     },
                 },
+                heading: {
+                    levels: [1, 2, 3],
+                    HTMLAttributes: {
+                        class: 'text-gray-900 dark:text-white tracking-tight font-bold block',
+                    },
+                },
+            }),
+            Heading.configure({
+                levels: [1, 2, 3],
+            }).extend({
+                renderHTML({ node, HTMLAttributes }) {
+                    const hasLevel = this.options.levels.includes(node.attrs.level);
+                    const level = hasLevel ? node.attrs.level : this.options.levels[0];
+
+                    const classes: Record<number, string> = {
+                        1: 'text-3xl font-bold tracking-tight text-gray-900 dark:text-white block mt-6 mb-3',
+                        2: 'text-2xl font-semibold tracking-tight text-gray-900 dark:text-white block mt-5 mb-2',
+                        3: 'text-xl font-medium tracking-tight text-gray-900 dark:text-white block mt-4 mb-2',
+                    };
+
+                    return [
+                        `h${level}`,
+                        {
+                            ...HTMLAttributes,
+                            class: `${HTMLAttributes.class || ''} ${classes[level]}`.trim()
+                        },
+                        0
+                    ];
+                },
             }),
             TextStyle,
             Color,
@@ -105,27 +138,62 @@ export default function TextEditor({ content, onChange }: Props) {
             }),
             Code.configure({
                 HTMLAttributes: {
-                    class: 'inline-code bg-gray-100 dark:bg-gray-800 text-red-500 dark:text-red-400 px-1.5 py-0.5 rounded font-mono text-[0.9em]',
+                    class: 'editor-image transition-all duration-200'
                 },
             }),
             Image.configure({
-                HTMLAttributes: { class: 'editor-image' },
+                HTMLAttributes: { class: 'editor-image transition-all duration-200' },
             }).extend({
                 addAttributes() {
                     return {
                         ...this.parent?.(),
                         'data-master-id': {
                             default: null,
+                            parseHTML: element => element.getAttribute('data-master-id'),
+                            renderHTML: attributes => {
+                                if (!attributes['data-master-id']) return {};
+                                return { 'data-master-id': attributes['data-master-id'] };
+                            }
+                        },
+                        width: {
+                            default: '100%',
+                            parseHTML: element => element.style.width || element.getAttribute('width'),
+                            renderHTML: attributes => ({
+                                style: `width: ${attributes.width}`,
+                            }),
+                        },
+                        alignment: {
+                            default: 'center',
+                            parseHTML: element => element.getAttribute('data-alignment'),
+                            renderHTML: attributes => ({
+                                'data-alignment': attributes.alignment,
+                            }),
                         },
                     }
                 },
+                renderHTML({ node, HTMLAttributes }) {
+                    const align = node.attrs.alignment || 'center';
+                    const alignClasses: Record<string, string> = {
+                        left: 'mr-auto ml-0 block float-left mr-4 my-2',
+                        center: 'mx-auto block clear-both my-4',
+                        right: 'ml-auto mr-0 block float-right ml-4 my-2',
+                    };
+
+                    return [
+                        'img',
+                        {
+                            ...HTMLAttributes,
+                            class: `${HTMLAttributes.class || ''} ${alignClasses[align]}`.trim()
+                        }
+                    ];
+                }
             }),
         ],
         content: content || '<p></p>',
         immediatelyRender: false,
         editorProps: {
             attributes: {
-                class: 'prose dark:prose-invert max-w-none focus:outline-none min-h-[400px] p-4 bg-gray-50 dark:bg-gray-900 rounded-b-md border border-gray-300 dark:border-gray-700',
+                class: 'prose dark:prose-invert max-w-none focus:outline-none min-h-[400px] p-4 bg-gray-50 dark:bg-gray-900 rounded-b-md border border-gray-300 dark:border-gray-700 flow-root prose-img:clear-both',
             },
             handleDrop: (view, event, slice, moved) => {
                 if (!moved && event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0]) {
@@ -175,6 +243,9 @@ export default function TextEditor({ content, onChange }: Props) {
 
             onChange(json);
         },
+        onSelectionUpdate: () => {
+            setSelectionKey(prev => prev + 1);
+        },
     });
 
     useEffect(() => {
@@ -192,6 +263,11 @@ export default function TextEditor({ content, onChange }: Props) {
 
             {/* Toolbar */}
             <div className="flex items-center gap-1 p-1.5 bg-gray-100 dark:bg-gray-800 border border-b-0 border-gray-300 dark:border-gray-700 rounded-t-md sticky top-0 z-10">
+
+                {/* Block Selection */}
+                <HeadingSelector editor={editor} />
+
+                <div className="w-px h-6 bg-gray-300 dark:bg-gray-700 mx-1" />
 
                 {/* Formatting Group */}
                 <div className="flex items-center gap-1">
@@ -224,6 +300,8 @@ export default function TextEditor({ content, onChange }: Props) {
                 </div>
 
             </div>
+
+            <ImageMenu editor={editor} />
 
             <EditorContent editor={editor} />
         </div>

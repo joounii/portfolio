@@ -12,9 +12,20 @@ class ProjectPageController extends Controller
 {
     public function create(Project $project)
     {
-        return Inertia::render('Admin/Project/Page/Create', [
-            'project' => $project
+        $defaultContent = [
+            'type' => 'doc',
+            'content' => [
+                ['type' => 'paragraph']
+            ]
+        ];
+
+        $page = $project->pages()->create([
+            'version_name' => 'V1_DRAFT',
+            'content' => $defaultContent,
         ]);
+
+        return redirect()->route('admin.projects.page.edit', [$project->id, $page->id])
+            ->with('message', 'Draft initialized.');
     }
 
     public function store(Request $request, Project $project)
@@ -50,8 +61,11 @@ class ProjectPageController extends Controller
 
         $page->update($validated);
 
-        if ($request->has('stay')) {
-            return back()->with('success', 'Changes saved.');
+        if ($request->has('stay') || $request->header('X-Quick-Save')) {
+            return back()->with([
+                'success' => 'Changes saved.',
+                'page' => $page->fresh()
+            ]);
         }
 
         return redirect()->route('admin.projects.show', $project->id)

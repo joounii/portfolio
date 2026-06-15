@@ -8,7 +8,7 @@ import TextInput from '@/Components/TextInput';
 import { ArrowLeft, Check, Save } from 'lucide-react';
 
 export default function Edit({ auth, project, page }: any) {
-    const { data, setData, put, processing, recentlySuccessful } = useForm({
+    const { data, setData, put, processing, recentlySuccessful, transform } = useForm({
         version_name: page.version_name,
         content: page.content,
     });
@@ -19,8 +19,17 @@ export default function Edit({ auth, project, page }: any) {
     };
 
     const quickSave = () => {
+        transform((data) => ({
+            ...data,
+            stay: true,
+        }));
+
         put(route('admin.projects.page.update', [project.id, page.id]), {
+            headers: {
+                'X-Quick-Save': 'true',
+            },
             preserveScroll: true,
+            preserveState: true,
         });
     };
 
@@ -67,7 +76,7 @@ export default function Edit({ auth, project, page }: any) {
                                 </span>
                             )}
 
-                            {/* Action 1: Quick Save */}
+                            {/* Quick Save */}
                             <SecondaryButton
                                 type="button"
                                 onClick={quickSave}
@@ -77,7 +86,7 @@ export default function Edit({ auth, project, page }: any) {
                                 {processing ? 'Saving...' : 'Quick Save'}
                             </SecondaryButton>
 
-                            {/* Action 2: Save & Close */}
+                            {/* Save & Close */}
                             <PrimaryButton disabled={processing}>
                                 {processing ? 'Processing...' : 'Save & Close'}
                             </PrimaryButton>
