@@ -30,7 +30,7 @@ import ImageMenu from './Partials/ImageMenu';
 
 interface Props {
     content: any;
-    onChange: (json: any) => void;
+    onChange: (json: any, isExplicitSave?: boolean) => void;
 }
 
 const lowlight = createLowlight(all);
@@ -53,25 +53,7 @@ export default function TextEditor({ content, onChange }: Props) {
     const hasInitialized = useRef(false);
     const [selectionKey, setSelectionKey] = useState(0);
 
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Control' || e.metaKey) setIsCtrlPressed(true);
-        };
-        const handleKeyUp = (e: KeyboardEvent) => {
-            if (e.key === 'Control' || e.metaKey) setIsCtrlPressed(false);
-        };
-        const handleBlur = () => setIsCtrlPressed(false);
 
-        window.addEventListener('keydown', handleKeyDown);
-        window.addEventListener('keyup', handleKeyUp);
-        window.addEventListener('blur', handleBlur);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-            window.removeEventListener('keyup', handleKeyUp);
-            window.removeEventListener('blur', handleBlur);
-        };
-    }, []);
 
     const editor = useEditor({
         extensions: [
@@ -254,6 +236,35 @@ export default function TextEditor({ content, onChange }: Props) {
             hasInitialized.current = true;
         }
     }, [editor, content]);
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Control' || e.metaKey) setIsCtrlPressed(true);
+
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+                e.preventDefault();
+
+                if (editor) {
+                    const currentJson = editor.getJSON();
+                    onChange(currentJson, true);
+                }
+            }
+        };
+        const handleKeyUp = (e: KeyboardEvent) => {
+            if (e.key === 'Control' || e.metaKey) setIsCtrlPressed(false);
+        };
+        const handleBlur = () => setIsCtrlPressed(false);
+
+        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keyup', handleKeyUp);
+        window.addEventListener('blur', handleBlur);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('keyup', handleKeyUp);
+            window.removeEventListener('blur', handleBlur);
+        };
+    }, [editor, onChange]);
 
     if (!editor) return null;
 
