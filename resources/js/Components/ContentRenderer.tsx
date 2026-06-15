@@ -32,7 +32,12 @@ const renderLowlightNodes = (nodes: any[]): string => {
         .join('');
 };
 
+let renderingSlugs: Record<string, number> = {};
+
 export default function ContentRenderer({ json }: { json: any }) {
+
+    renderingSlugs = {};
+
     if (!json || !json.content) return null;
 
     const renderNode = (node: Node, index: number): React.ReactNode => {
@@ -98,16 +103,41 @@ export default function ContentRenderer({ json }: { json: any }) {
             case 'heading':
                 const rawLevel = node.attrs?.level;
                 const level = (rawLevel === 1 || rawLevel === 2 || rawLevel === 3) ? rawLevel : 1;
-
                 const Level = `h${level}` as keyof JSX.IntrinsicElements;
 
+                const headingText = node.content?.map((c: any) => c.text).join('') || 'section';
+
+                let baseId = headingText
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/(^-|-$)/g, '');
+
+                if (!baseId) baseId = 'section';
+
+                let uniqueHeadingId = baseId;
+
+                if (renderingSlugs[baseId] !== undefined) {
+                    renderingSlugs[baseId]++;
+                    uniqueHeadingId = `${baseId}-${renderingSlugs[baseId]}`;
+                } else {
+                    renderingSlugs[baseId] = 0;
+                }
+
                 const headingClasses: Record<1 | 2 | 3, string> = {
-                    1: 'text-3xl font-bold mt-8 mb-4 tracking-tight text-gray-900 dark:text-white first:mt-0',
-                    2: 'text-2xl font-semibold mt-6 mb-3 tracking-tight text-gray-900 dark:text-white',
-                    3: 'text-xl font-medium mt-5 mb-2 tracking-tight text-gray-900 dark:text-white',
+                    1: 'text-3xl font-bold mt-8 mb-4 tracking-tight text-gray-900 dark:text-white first:mt-0 clear-both scroll-mt-32',
+                    2: 'text-2xl font-semibold mt-6 mb-3 tracking-tight text-gray-900 dark:text-white clear-both scroll-mt-32',
+                    3: 'text-xl font-medium mt-5 mb-2 tracking-tight text-gray-900 dark:text-white clear-both scroll-mt-32',
                 };
 
-                return <Level key={index} className={headingClasses[level as 1 | 2 | 3]}>{children}</Level>;
+                return (
+                    <Level
+                        key={index}
+                        id={uniqueHeadingId}
+                        className={headingClasses[level as 1 | 2 | 3]}
+                    >
+                        {children}
+                    </Level>
+                );
 
             case 'bulletList':
                 return <ul key={index} className="list-disc ml-6 mb-4 space-y-1">{children}</ul>;

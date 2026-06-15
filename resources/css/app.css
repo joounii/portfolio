@@ -49,11 +49,25 @@
   background: #03b5d3;
 }
 
-/* For Firefox support */
+.nav-scrollbar::-webkit-scrollbar-thumb {
+  background: #494454;
+}
+
+.nav-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #958ea0;
+}
+
+/* For Firefox scrollbar support */
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: #4cd7f6 transparent;
 }
+
+.nav-scrollbar {
+  scrollbar-color: #494454 transparent !important;
+}
+
+/* ---------------------- */
 
 .tiptap .editor-link {
     pointer-events: none;
