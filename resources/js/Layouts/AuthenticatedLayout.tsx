@@ -39,6 +39,12 @@ export default function Authenticated({
                                 >
                                     Inbox
                                 </NavLink>
+                                <NavLink
+                                    href={route('admin.projects.index')}
+                                    active={route().current('admin.projects.index')}
+                                >
+                                    Projects
+                                </NavLink>
                             </div>
                         </div>
 

@@ -13,7 +13,15 @@ RUN apk add --no-cache \
     zip \
     unzip \
     git \
-    icu-dev
+    icu-dev \
+    imagemagick \
+    imagemagick-dev \
+    $PHPIZE_DEPS
+
+RUN pecl install imagick && \
+    docker-php-ext-enable imagick
+
+RUN apk del $PHPIZE_DEPS
 
 RUN docker-php-ext-configure intl
 RUN docker-php-ext-install pdo_mysql bcmath gd zip intl

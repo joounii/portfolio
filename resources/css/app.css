@@ -1,3 +1,6 @@
+@import '../js/styles/_variables.scss';
+@import '../js/styles/_keyframe-animations.scss';
+
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap');
 
 @tailwind base;
@@ -46,8 +49,109 @@
   background: #03b5d3;
 }
 
-/* For Firefox support */
+.nav-scrollbar::-webkit-scrollbar-thumb {
+  background: #494454;
+}
+
+.nav-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #958ea0;
+}
+
+/* For Firefox scrollbar support */
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: #4cd7f6 transparent;
+}
+
+.nav-scrollbar {
+  scrollbar-color: #494454 transparent !important;
+}
+
+/* ---------------------- */
+
+.tiptap .editor-link {
+    pointer-events: none;
+    cursor: text;
+}
+
+.is-linking .tiptap .editor-link {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+.content-renderer p:empty::before,
+.content-renderer div:empty::before {
+    content: "\00a0";
+    visibility: hidden;
+}
+
+.tiptap pre {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.hljs {
+  background: transparent !important;
+  color: #cbc3d7;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-meta,
+.hljs-meta .hljs-keyword,
+.hljs-meta-keyword,
+.hljs-storage-type,
+.hljs-type {
+  color: #4cd7f6;
+}
+
+.hljs-title,
+.hljs-title.class_,
+.hljs-class .hljs-title,
+.hljs-section,
+.hljs-selector-id,
+.hljs-subst {
+  color: #d0bcff;
+}
+
+.hljs-title.function_,
+.hljs-function .hljs-title,
+.hljs-built_in,
+.hljs-selector-class {
+  color: #fbabff;
+}
+
+.hljs-variable,
+.hljs-property,
+.hljs-attr,
+.hljs-attribute,
+.hljs-params,
+.hljs-template-variable {
+  color: #ffb86c;
+}
+
+.hljs-string,
+.hljs-string .hljs-subst,
+.hljs-char,
+.hljs-number,
+.hljs-literal,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-regexp {
+  color: #ffb4ab;
+}
+
+.hljs-comment,
+.hljs-doctag,
+.hljs-quote {
+  color: #494454;
+  font-style: italic;
+}
+
+.hljs-punctuation,
+.hljs-operator {
+  color: #958ea0;
 }
