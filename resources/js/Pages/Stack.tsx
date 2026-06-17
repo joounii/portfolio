@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Terminal, Gem, Database, Container, Cloud, Server, FolderGit2, Settings, Braces, ShieldCheck, Send } from 'lucide-react';
 import { TechStack } from '@/types/types';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
 
 const coreEngines: TechStack[] = [
@@ -11,7 +11,8 @@ const coreEngines: TechStack[] = [
     description: 'The go-to language for rapid tool development, automation scripts, and solving unique data problems. Used to build flexible, high-utility scripts when speed and simplicity are the priority.',
     tags: ['TKINTER', 'DISCORD.PY', 'ASYNCIO'],
     category: 'UTILITY_SCRIPTS',
-    icon: 'terminal'
+    icon: 'terminal',
+    link: 'https://www.python.org/'
   },
   {
     name: 'RUBY ON RAILS',
@@ -19,7 +20,8 @@ const coreEngines: TechStack[] = [
     description: 'Utilized for 3 years in an enterprise environment to build complex automation engines. Focused on rapid development and managing large-scale data flows with asynchronous processing.',
     tags: ['RSPEC', 'SIDEKIQ', 'DEVISE'],
     category: 'PROFESSIONAL_EXP',
-    icon: 'gem'
+    icon: 'gem',
+    link: 'https://rubyonrails.org/'
   },
   {
     name: 'LARAVEL',
@@ -27,17 +29,18 @@ const coreEngines: TechStack[] = [
     description: 'Currently my primary framework for building robust, modern web applications. Focused on architecting clean, maintainable backends with a deep emphasis on security and permission systems.',
     tags: ['ELOQUENT', 'SANCTUM', 'SPATIE'],
     category: 'CURRENT_FOCUS',
-    icon: 'code'
+    icon: 'code',
+    link: 'https://laravel.com/'
   }
 ];
 
 const toolkit = [
-  { name: 'MYSQL/POSTGRESQL', icon: Database, color: 'text-secondary' },
-  { name: 'DOCKER', icon: Container, color: 'text-primary' },
-  { name: 'NGINX', icon: Cloud, color: 'text-tertiary' },
-  { name: 'WIREGUARD', icon: ShieldCheck, color: 'text-secondary' },
-  { name: 'LINUX/UBUNTU', icon: Server, color: 'text-primary' },
-  { name: 'GIT', icon: FolderGit2, color: 'text-tertiary' },
+  { name: 'MYSQL/POSTGRESQL', icon: Database, color: 'text-secondary', link: 'https://www.postgresql.org/' },
+  { name: 'DOCKER', icon: Container, color: 'text-primary', link: 'https://www.docker.com/' },
+  { name: 'NGINX', icon: Cloud, color: 'text-tertiary', link: 'https://nginx.org/' },
+  { name: 'WIREGUARD', icon: ShieldCheck, color: 'text-secondary', link: 'https://www.wireguard.com/' },
+  { name: 'LINUX/UBUNTU', icon: Server, color: 'text-primary', link: 'https://ubuntu.com/' },
+  { name: 'GIT', icon: FolderGit2, color: 'text-tertiary', link: 'https://git-scm.com/' },
 ];
 
 export default function Stack() {
@@ -98,10 +101,15 @@ export default function Stack() {
                     <span key={tag} className="font-mono text-[10px] px-2 py-1 bg-surface-container-highest text-secondary rounded">{tag}</span>
                 ))}
                 </div>
-                <button className="w-full py-3 rounded-lg border border-outline-variant/20 font-headline text-xs font-bold tracking-widest uppercase hover:bg-primary hover:text-on-primary transition-all flex items-center justify-center gap-2">
-                ENGINE SPECS
-                {engine.icon === 'terminal' ? <Terminal size={14} /> : engine.icon === 'gem' ? <Gem size={14} /> : <Braces size={14} />}
-                </button>
+                <a
+                    href={engine.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-3 rounded-lg border border-outline-variant/20 font-headline text-xs font-bold tracking-widest uppercase hover:bg-primary hover:text-on-primary transition-all flex items-center justify-center gap-2"
+                    >
+                    ENGINE SPECS
+                    {engine.icon === 'terminal' ? <Terminal size={14} /> : engine.icon === 'gem' ? <Gem size={14} /> : <Braces size={14} />}
+                </a>
             </motion.div>
             ))}
         </div>
@@ -114,16 +122,19 @@ export default function Stack() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
             {toolkit.map((item, index) => (
-            <motion.div
+            <motion.a
                 key={item.name}
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="group bg-surface-container-low rounded p-8 border border-outline-variant/10 transition-all text-center"
+                className="group block bg-surface-container-low rounded p-8 border border-outline-variant/10 transition-all text-center hover:border-primary/30 hover:bg-surface-container-low/80 cursor-pointer"
             >
                 <item.icon className={`${item.color} text-3xl mb-3 mx-auto opacity-60 group-hover:opacity-100 transition-opacity`} size={32} />
-                <div className="font-mono text-[10px] text-outline tracking-widest uppercase">{item.name}</div>
-            </motion.div>
+                <div className="font-mono text-[10px] text-outline tracking-widest uppercase group-hover:text-primary transition-colors">{item.name}</div>
+            </motion.a>
             ))}
         </div>
 
@@ -148,10 +159,13 @@ export default function Stack() {
                 <span className="font-mono text-xs px-3 py-1.5 bg-surface-container-highest text-secondary rounded">SYSTEM_INTEGRITY</span>
                 <span className="font-mono text-xs px-3 py-1.5 bg-surface-container-highest text-secondary rounded">ADAPTIVE_DESIGN</span>
             </div>
-            <button className="w-fit px-8 py-3 rounded-lg bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline text-xs font-bold tracking-widest uppercase hover:scale-105 transition-all flex items-center justify-center gap-2">
+            <Link
+                href="/contact"
+                className="w-fit px-8 py-3 rounded-lg bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline text-xs font-bold tracking-widest uppercase hover:scale-105 transition-all flex items-center justify-center gap-2"
+            >
                 GET IN TOUCH
                 <Send size={14} />
-            </button>
+            </Link>
             </div>
             <div className="hidden md:block w-1/3 bg-surface-container-lowest rounded-lg border border-outline-variant/5 p-4 relative overflow-hidden">
             <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#d0bcff 1px, transparent 1px)', backgroundSize: '10px 10px' }}></div>
