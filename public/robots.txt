@@ -1,2 +1,10 @@
 User-agent: *
-Disallow:
+Allow: /
+
+Disallow: /admin/
+Disallow: /login
+Disallow: /register
+Disallow: /password/
+
+Host: https://joounii.ch
+Sitemap: https://joounii.ch/sitemap.xml

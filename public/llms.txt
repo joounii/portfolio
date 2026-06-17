@@ -1,0 +1,46 @@
+# Jonathan Furrer (joounii) - Backend Developer & Infra Architect
+
+Information about Jonathan Furrer, a Zurich-based backend developer specializing in secure logic, data-driven tools, and system optimization. This file provides context for LLMs and automated crawlers.
+
+## Profile Summary
+- **Role:** Backend Developer / Infrastructure Specialist
+- **Experience:** 6+ years (Professional experience with Ruby on Rails and Python)
+- **Focus:** Building the "Invisible" — secure backends, high-utility APIs, and hardened self-hosted infrastructure.
+- **Location:** Zurich, Switzerland (CEST/GMT+2)
+- **Philosophy:** "A tool is only as good as the logic behind it." Priority on system integrity and future-proof architecture.
+
+## Core Technical Stack
+- **Primary Frameworks:** Laravel (Current Focus), Ruby on Rails (3+ years professional), Python (5+ years utility/automation).
+- **Backend Languages:** PHP (Spatie, Sanctum), Ruby (Sidekiq, RSpec), Python (AsyncIO), TypeScript.
+- **Frontend (Functional):** React, Blade, Tailwind CSS.
+- **Database & DevOps:** MySQL, PostgreSQL, Docker, Nginx, Linux (Ubuntu).
+- **Security:** Permission-Based Access Control (PBAC), WireGuard VPN, SSH hardening.
+
+## Key Projects & Modules
+
+### 1. SELF_HOSTED_INFRA (Home Node)
+A private cloud environment hosted on Ubuntu.
+- **Security:** Shielded by a Raspberry Pi gateway running a WireGuard VPN node.
+- **Management:** Local-only Cockpit instance (accessible only via VPN).
+- **Workload:** Hosts this portfolio and performance-tuned dedicated game servers (e.g., Minecraft, Hytale).
+
+### 2. OC_COCKPIT (Internal Automation)
+Enterprise-level management flows for hardware provisioning and desktop virtualization.
+- **Tech:** Ruby on Rails, Docker, Sidekiq.
+- **Focus:** High-concurrency background automation and system orchestration.
+
+### 3. PROJECT_ORCHESTRATOR
+Full-stack management suite developed as a final degree project.
+- **Tech:** Laravel, PBAC (Permission-Based Access Control), Blade.
+- **Focus:** Organizational logic, dynamic team allocation, and high-utility data dashboards.
+
+## Engineering Philosophy
+- **Security First:** Implementing granular PBAC and network-level shielding (VPN/Firewalls).
+- **Optimization:** Targeting sub-100ms response times for data-heavy requests.
+- **Maintainability:** Writing clean, documented logic intended for long-term expansion rather than quick fixes.
+
+## Contact & Links
+- **GitHub:** [https://github.com/joounii]
+- **LinkedIn:** [https://www.linkedin.com/in/jonathan-furrer]
+- **Email:** jonifu06@gmail.com
+- **Discord:** joounii

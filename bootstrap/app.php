@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\AddLinkHeaders;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -24,6 +25,10 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->convertEmptyStringsToNull([
             fn ($request) => $request->has('content'),
+        ]);
+
+        $middleware->web(append: [
+            AddLinkHeaders::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
