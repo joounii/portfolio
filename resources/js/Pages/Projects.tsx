@@ -79,10 +79,10 @@ export default function Projects() {
                         <span key={tag} className="font-mono text-[10px] px-2 py-1 bg-surface-container-highest text-secondary rounded">{tag}</span>
                     ))}
                 </div>
-                <button className="w-full py-3 rounded-lg border border-outline-variant/20 font-headline text-xs font-bold tracking-widest uppercase hover:bg-primary hover:text-on-primary transition-all flex items-center justify-center gap-2">
+                {/* <button className="w-full py-3 rounded-lg border border-outline-variant/20 font-headline text-xs font-bold tracking-widest uppercase hover:bg-primary hover:text-on-primary transition-all flex items-center justify-center gap-2">
                 VIEW ARCHITECTURE
                 <Network size={14} />
-                </button>
+                </button> */}
             </motion.div>
             ))}
 

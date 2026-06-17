@@ -9,14 +9,14 @@ export default function Footer() {
         </div>
 
         <div className="flex gap-10">
-          <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" className="font-mono text-[10px] tracking-widest uppercase text-on-surface-variant hover:text-secondary transition-colors">GITHUB</a>
-          <a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener noreferrer" className="font-mono text-[10px] tracking-widest uppercase text-on-surface-variant hover:text-secondary transition-colors">LINKEDIN</a>
+          <a href="https://github.com/joounii" target="_blank" rel="noopener noreferrer" className="font-mono text-[10px] tracking-widest uppercase text-on-surface-variant hover:text-secondary transition-colors">GITHUB</a>
+          <a href="https://www.linkedin.com/in/jonathan-furrer-632733252/" target="_blank" rel="noopener noreferrer" className="font-mono text-[10px] tracking-widest uppercase text-on-surface-variant hover:text-secondary transition-colors">LINKEDIN</a>
 
           <Link
-            href="/logs"
+            href="/contact"
             className="font-mono text-[10px] tracking-widest uppercase text-on-surface-variant hover:text-secondary transition-colors"
           >
-            SYSTEM_STATUS
+            CONTACT
           </Link>
         </div>
 
