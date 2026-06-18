@@ -27,6 +27,8 @@ import InlineCodeButton from './Partials/InlineCodeButton';
 import { BulletListButton, OrderedListButton } from './Partials/ListButton';
 import HeadingSelector from './Partials/HeadingButton';
 import ImageMenu from './Partials/ImageMenu';
+import { ReactNodeViewRenderer } from '@tiptap/react';
+import ImageNodeView from './Partials/ImageNodeView';
 
 interface Props {
     content: any;
@@ -151,14 +153,28 @@ export default function TextEditor({ content, onChange }: Props) {
                                 'data-alignment': attributes.alignment,
                             }),
                         },
+                        caption: {
+                            default: '',
+                            parseHTML: element => element.getAttribute('data-caption') || element.getAttribute('alt') || '',
+                            renderHTML: attributes => {
+                                if (!attributes.caption) return {};
+                                return { 'data-caption': attributes.caption };
+                            },
+                        },
                     }
                 },
+
+                // 2. Tie the React component directly to the editor workspace
+                addNodeView() {
+                    return ReactNodeViewRenderer(ImageNodeView);
+                },
+
                 renderHTML({ node, HTMLAttributes }) {
                     const align = node.attrs.alignment || 'center';
                     const alignClasses: Record<string, string> = {
-                        left: 'mr-auto ml-0 block clear-both my-4',
-                        center: 'mx-auto block clear-both my-4',
-                        right: 'ml-auto mr-0 block clear-both my-4',
+                        left: 'mr-auto ml-0 block clear-both mt-4 mb-1',
+                        center: 'mx-auto block clear-both mt-4 mb-1',
+                        right: 'ml-auto mr-0 block clear-both mt-4 mb-1',
                     };
 
                     return [

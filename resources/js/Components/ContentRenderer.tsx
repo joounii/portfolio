@@ -186,26 +186,40 @@ export default function ContentRenderer({ json }: { json: any }) {
             case 'image':
                 const align = node.attrs?.alignment || 'center';
                 const width = node.attrs?.width || '100%';
+                const src = node.attrs?.src || '';
+                const caption = node.attrs?.caption || '';
+
+                const isSvg = src.toLowerCase().split(/[?#]/)[0].endsWith('.svg');
 
                 const containerClasses: Record<string, string> = {
-                    left: 'flex justify-start float-left mr-4 my-2 w-full',
-                    center: 'flex justify-center mx-auto clear-both my-4 w-full',
-                    right: 'flex justify-end float-right ml-4 my-2 w-full',
+                    left: 'flex flex-col items-start justify-start mx-0 mr-auto clear-both my-4 w-full block',
+                    center: 'flex flex-col items-center justify-center mx-auto clear-both my-4 w-full block',
+                    right: 'flex flex-col items-end justify-end mx-0 ml-auto clear-both my-4 w-full block',
                 };
 
                 return (
-                    <div
+                    <figure
                         key={index}
                         className={containerClasses[align]}
+                        style={{ width: width }}
                     >
                         <img
-                            src={node.attrs?.src}
-                            alt={node.attrs?.alt || ''}
+                            src={src}
+                            alt={node.attrs?.alt || caption || ''}
                             title={node.attrs?.title}
-                            style={{ width: width }}
-                            className="rounded-lg border border-gray-200 dark:border-gray-800 h-auto max-w-full object-contain shadow-sm"
+                            className={`h-auto max-w-full object-contain ${
+                                isSvg
+                                    ? ''
+                                    : 'rounded-lg border border-gray-200 dark:border-gray-800 shadow-sm'
+                            }`}
+                            style={{ width: '100%' }}
                         />
-                    </div>
+                        {caption && (
+                            <figcaption className="text-xs text-left w-full text-gray-500 dark:text-gray-400 mt-2 italic font-medium leading-relaxed tracking-wide px-1 max-w-xl">
+                                {caption}
+                            </figcaption>
+                        )}
+                    </figure>
                 );
 
             default:
