@@ -9,12 +9,12 @@ interface Props {
 }
 
 const PRESET_COLORS = [
-    { name: 'Red', color: '#ef4444' },
-    { name: 'Orange', color: '#f97316' },
-    { name: 'Green', color: '#22c55e' },
-    { name: 'Blue', color: '#3b82f6' },
-    { name: 'Purple', color: '#a855f7' },
-    { name: 'Gray', color: '#6b7280' },
+    { name: 'Primary', color: '#d0bcff' },
+    { name: 'Secondary', color: '#4cd7f6' },
+    { name: 'Tertiary', color: '#fbabff' },
+    { name: 'Accent', color: '#ffb86c' },
+    { name: 'Surface Variant', color: '#cbc3d7' },
+    { name: 'Error', color: '#ffb4ab' },
 ];
 
 export default function FontColor({ editor }: Props) {
