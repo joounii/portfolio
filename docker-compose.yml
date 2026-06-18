@@ -16,6 +16,7 @@ services:
         restart: unless-stopped
         volumes:
             - ./nginx.conf:/etc/nginx/conf.d/default.conf
+            - ./:/var/www
             - ./public:/var/www/public
             - build-assets:/var/www/public/build
         networks:
