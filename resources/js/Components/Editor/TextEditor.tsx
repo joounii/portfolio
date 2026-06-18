@@ -14,6 +14,10 @@ import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import Code from '@tiptap/extension-code';
 import Image from '@tiptap/extension-image';
 import Heading from '@tiptap/extension-heading';
+import { Table } from '@tiptap/extension-table';
+import TableRow from '@tiptap/extension-table-row';
+import TableHeader from '@tiptap/extension-table-header';
+import TableCell from '@tiptap/extension-table-cell';
 
 // Components
 import FontColor from './Partials/FontColor';
@@ -29,6 +33,8 @@ import HeadingSelector from './Partials/HeadingButton';
 import ImageMenu from './Partials/ImageMenu';
 import { ReactNodeViewRenderer } from '@tiptap/react';
 import ImageNodeView from './Partials/ImageNodeView';
+import TableSelector from './Partials/TableSelector';
+import TableHoverControls from './Partials/TableHoverControls';
 
 interface Props {
     content: any;
@@ -108,6 +114,27 @@ export default function TextEditor({ content, onChange }: Props) {
             TextStyle,
             Color,
             Underline,
+            Table.configure({
+                resizable: true,
+                HTMLAttributes: {
+                    class: 'w-full my-6 border-collapse table-fixed clear-both',
+                },
+            }),
+            TableRow.configure({
+                HTMLAttributes: {
+                    class: 'border-b border-outline-variant/20 last:border-0',
+                },
+            }),
+            TableHeader.configure({
+                HTMLAttributes: {
+                    class: 'border border-outline-variant/40 p-3 font-bold bg-surface-container text-on-surface text-left align-top box-border relative',
+                },
+            }),
+            TableCell.configure({
+                HTMLAttributes: {
+                    class: 'border border-outline-variant/40 p-3 min-w-[60px] text-left align-top box-border relative text-on-surface-variant focus:outline-none',
+                },
+            }),
             Link.configure({
                 openOnClick: false,
                 HTMLAttributes: {
@@ -326,9 +353,16 @@ export default function TextEditor({ content, onChange }: Props) {
                     <OrderedListButton editor={editor} />
                 </div>
 
+                <div className="w-px h-6 bg-gray-300 dark:bg-gray-700 mx-1" />
+
+                {/* Table Selector */}
+                <TableSelector editor={editor} />
+
             </div>
 
             <ImageMenu editor={editor} />
+
+            <TableHoverControls editor={editor} />
 
             <EditorContent editor={editor} />
         </div>
