@@ -35,6 +35,7 @@ import { ReactNodeViewRenderer } from '@tiptap/react';
 import ImageNodeView from './Partials/ImageNodeView';
 import TableSelector from './Partials/TableSelector';
 import TableHoverControls from './Partials/TableHoverControls';
+import TableMenu from './Partials/TableMenu';
 
 interface Props {
     content: any;
@@ -122,17 +123,17 @@ export default function TextEditor({ content, onChange }: Props) {
             }),
             TableRow.configure({
                 HTMLAttributes: {
-                    class: 'border-b border-outline-variant/20 last:border-0',
+                    class: 'border-b border-outline-on-surface last:border-0',
                 },
             }),
             TableHeader.configure({
                 HTMLAttributes: {
-                    class: 'border border-outline-variant/40 p-3 font-bold bg-surface-container text-on-surface text-left align-top box-border relative',
+                    class: 'border border-outline-on-surface p-3 font-bold bg-surface-container text-on-surface text-left align-top box-border relative',
                 },
             }),
             TableCell.configure({
                 HTMLAttributes: {
-                    class: 'border border-outline-variant/40 p-3 min-w-[60px] text-left align-top box-border relative text-on-surface-variant focus:outline-none',
+                    class: 'border border-outline-on-surface p-3 min-w-[60px] text-left align-top box-border relative text-on-surface-variant focus:outline-none',
                 },
             }),
             Link.configure({
@@ -191,7 +192,6 @@ export default function TextEditor({ content, onChange }: Props) {
                     }
                 },
 
-                // 2. Tie the React component directly to the editor workspace
                 addNodeView() {
                     return ReactNodeViewRenderer(ImageNodeView);
                 },
@@ -362,6 +362,7 @@ export default function TextEditor({ content, onChange }: Props) {
 
             <ImageMenu editor={editor} />
 
+            <TableMenu editor={editor} />
             <TableHoverControls editor={editor} />
 
             <EditorContent editor={editor} />

@@ -155,3 +155,28 @@
 .hljs-operator {
   color: #958ea0;
 }
+
+.ProseMirror {
+    outline: none;
+    max-width: 100%;
+}
+
+.ProseMirror .tableWrapper {
+    @apply w-full overflow-x-auto my-8 rounded-xl border border-outline-variant/50 bg-surface-container-lowest shadow-sm custom-scrollbar nav-scrollbar;
+}
+
+/* Ensure the physical table inside behaves correctly */
+.ProseMirror table {
+    @apply w-full text-left text-sm border-collapse min-w-[500px];
+    table-layout: fixed; /* Highly recommended for Tiptap tables so column resizing works perfectly */
+}
+
+/* Optional: Match your editor's internal cell borders to your public page */
+.ProseMirror td,
+.ProseMirror th {
+    @apply border border-outline-variant/40 px-4 py-3 align-top;
+}
+
+.ProseMirror th {
+    @apply bg-surface-container-high/50 font-semibold text-on-surface font-headline tracking-wide;
+}

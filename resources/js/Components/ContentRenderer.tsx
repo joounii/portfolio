@@ -153,6 +153,50 @@ export default function ContentRenderer({ json }: { json: any }) {
             case 'hardBreak':
                 return <br key={index} />;
 
+            case 'table':
+                return (
+                    <div key={index} className="my-8 w-full overflow-x-auto rounded-xl border border-outline-variant/30 bg-surface-container-lowest shadow-sm custom-scrollbar nav-scrollbar">
+                        <table className="w-full text-left text-sm border-collapse min-w-[500px]">
+                            <tbody className="divide-y divide-outline-variant/90">
+                                {children}
+                            </tbody>
+                        </table>
+                    </div>
+                );
+
+            case 'tableRow':
+                return (
+                    <tr key={index} className="divide-x divide-outline-variant/90 hover:bg-surface-container-low/50 transition-colors">
+                        {children}
+                    </tr>
+                );
+
+            case 'tableHeader':
+                return (
+                    <th
+                        key={index}
+                        colSpan={node.attrs?.colspan}
+                        rowSpan={node.attrs?.rowspan}
+                        className="bg-surface-container-high/50 px-4 py-3 font-semibold text-on-surface align-top font-headline tracking-wide border-b-2 border-outline-variant/90"
+                        style={{ width: node.attrs?.colwidth ? `${node.attrs.colwidth[0]}px` : undefined }}
+                    >
+                        {children}
+                    </th>
+                );
+
+            case 'tableCell':
+                return (
+                    <td
+                        key={index}
+                        colSpan={node.attrs?.colspan}
+                        rowSpan={node.attrs?.rowspan}
+                        className="px-4 py-3 align-top text-on-surface-variant"
+                        style={{ width: node.attrs?.colwidth ? `${node.attrs.colwidth[0]}px` : undefined }}
+                    >
+                        {children}
+                    </td>
+                );
+
             case 'codeBlock':
                 const lang = node.attrs?.language || 'javascript';
                 const codeContent = node.content?.[0]?.text || '';
