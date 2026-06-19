@@ -153,6 +153,50 @@ export default function ContentRenderer({ json }: { json: any }) {
             case 'hardBreak':
                 return <br key={index} />;
 
+            case 'table':
+                return (
+                    <div key={index} className="my-8 w-full overflow-x-auto rounded-xl border border-outline-variant/30 bg-surface-container-lowest shadow-sm custom-scrollbar nav-scrollbar">
+                        <table className="w-full text-left text-sm border-collapse min-w-[500px]">
+                            <tbody className="divide-y divide-outline-variant/90">
+                                {children}
+                            </tbody>
+                        </table>
+                    </div>
+                );
+
+            case 'tableRow':
+                return (
+                    <tr key={index} className="divide-x divide-outline-variant/90 hover:bg-surface-container-low/50 transition-colors">
+                        {children}
+                    </tr>
+                );
+
+            case 'tableHeader':
+                return (
+                    <th
+                        key={index}
+                        colSpan={node.attrs?.colspan}
+                        rowSpan={node.attrs?.rowspan}
+                        className="bg-surface-container-high/50 px-4 py-3 font-semibold text-on-surface align-top font-headline tracking-wide border-b-2 border-outline-variant/90"
+                        style={{ width: node.attrs?.colwidth ? `${node.attrs.colwidth[0]}px` : undefined }}
+                    >
+                        {children}
+                    </th>
+                );
+
+            case 'tableCell':
+                return (
+                    <td
+                        key={index}
+                        colSpan={node.attrs?.colspan}
+                        rowSpan={node.attrs?.rowspan}
+                        className="px-4 py-3 align-top text-on-surface-variant"
+                        style={{ width: node.attrs?.colwidth ? `${node.attrs.colwidth[0]}px` : undefined }}
+                    >
+                        {children}
+                    </td>
+                );
+
             case 'codeBlock':
                 const lang = node.attrs?.language || 'javascript';
                 const codeContent = node.content?.[0]?.text || '';
@@ -186,26 +230,40 @@ export default function ContentRenderer({ json }: { json: any }) {
             case 'image':
                 const align = node.attrs?.alignment || 'center';
                 const width = node.attrs?.width || '100%';
+                const src = node.attrs?.src || '';
+                const caption = node.attrs?.caption || '';
+
+                const isSvg = src.toLowerCase().split(/[?#]/)[0].endsWith('.svg');
 
                 const containerClasses: Record<string, string> = {
-                    left: 'flex justify-start float-left mr-4 my-2 w-full',
-                    center: 'flex justify-center mx-auto clear-both my-4 w-full',
-                    right: 'flex justify-end float-right ml-4 my-2 w-full',
+                    left: 'flex flex-col items-start justify-start mx-0 mr-auto clear-both my-4 w-full block',
+                    center: 'flex flex-col items-center justify-center mx-auto clear-both my-4 w-full block',
+                    right: 'flex flex-col items-end justify-end mx-0 ml-auto clear-both my-4 w-full block',
                 };
 
                 return (
-                    <div
+                    <figure
                         key={index}
                         className={containerClasses[align]}
+                        style={{ width: width }}
                     >
                         <img
-                            src={node.attrs?.src}
-                            alt={node.attrs?.alt || ''}
+                            src={src}
+                            alt={node.attrs?.alt || caption || ''}
                             title={node.attrs?.title}
-                            style={{ width: width }}
-                            className="rounded-lg border border-gray-200 dark:border-gray-800 h-auto max-w-full object-contain shadow-sm"
+                            className={`h-auto max-w-full object-contain ${
+                                isSvg
+                                    ? ''
+                                    : 'rounded-lg border border-gray-200 dark:border-gray-800 shadow-sm'
+                            }`}
+                            style={{ width: '100%' }}
                         />
-                    </div>
+                        {caption && (
+                            <figcaption className="text-xs text-left w-full text-gray-500 dark:text-gray-400 mt-2 italic font-medium leading-relaxed tracking-wide px-1 max-w-xl">
+                                {caption}
+                            </figcaption>
+                        )}
+                    </figure>
                 );
 
             default:
