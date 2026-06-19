@@ -1,7 +1,6 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useEffect, useRef, useState } from 'react';
-import InputLabel from '@/Components/InputLabel';
 import { all, createLowlight } from 'lowlight';
 import axios from 'axios';
 
@@ -62,19 +61,17 @@ export default function TextEditor({ content, onChange }: Props) {
     const hasInitialized = useRef(false);
     const [selectionKey, setSelectionKey] = useState(0);
 
-
-
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
                 bulletList: {
                     HTMLAttributes: {
-                        class: 'list-disc ml-6 space-y-1',
+                        class: 'list-disc ml-6 space-y-1 text-admin-on-surface-variant',
                     },
                 },
                 orderedList: {
                     HTMLAttributes: {
-                        class: 'list-decimal ml-6 space-y-1',
+                        class: 'list-decimal ml-6 space-y-1 text-admin-on-surface-variant',
                     },
                 },
                 listItem: {
@@ -85,7 +82,7 @@ export default function TextEditor({ content, onChange }: Props) {
                 heading: {
                     levels: [1, 2, 3],
                     HTMLAttributes: {
-                        class: 'text-gray-900 dark:text-white tracking-tight font-bold block',
+                        class: 'text-admin-on-surface tracking-tight font-bold block',
                     },
                 },
             }),
@@ -97,9 +94,9 @@ export default function TextEditor({ content, onChange }: Props) {
                     const level = hasLevel ? node.attrs.level : this.options.levels[0];
 
                     const classes: Record<number, string> = {
-                        1: 'text-3xl font-bold tracking-tight text-gray-900 dark:text-white block mt-6 mb-3',
-                        2: 'text-2xl font-semibold tracking-tight text-gray-900 dark:text-white block mt-5 mb-2',
-                        3: 'text-xl font-medium tracking-tight text-gray-900 dark:text-white block mt-4 mb-2',
+                        1: 'text-3xl font-bold tracking-tight text-admin-on-surface block mt-8 mb-4',
+                        2: 'text-2xl font-semibold tracking-tight text-admin-on-surface block mt-6 mb-3',
+                        3: 'text-xl font-medium tracking-tight text-admin-on-surface block mt-5 mb-2',
                     };
 
                     return [
@@ -118,28 +115,28 @@ export default function TextEditor({ content, onChange }: Props) {
             Table.configure({
                 resizable: true,
                 HTMLAttributes: {
-                    class: 'w-full my-6 border-collapse table-fixed clear-both',
+                    class: 'w-full my-6 border-collapse table-fixed clear-both border border-admin-outline-variant/30 rounded',
                 },
             }),
             TableRow.configure({
                 HTMLAttributes: {
-                    class: 'border-b border-outline-on-surface last:border-0',
+                    class: 'border-b border-admin-outline-variant/30 last:border-0',
                 },
             }),
             TableHeader.configure({
                 HTMLAttributes: {
-                    class: 'border border-outline-on-surface p-3 font-bold bg-surface-container text-on-surface text-left align-top box-border relative',
+                    class: 'border border-admin-outline-variant/30 p-3 font-bold bg-admin-surface-container-high text-admin-on-surface text-left align-top box-border relative',
                 },
             }),
             TableCell.configure({
                 HTMLAttributes: {
-                    class: 'border border-outline-on-surface p-3 min-w-[60px] text-left align-top box-border relative text-on-surface-variant focus:outline-none',
+                    class: 'border border-admin-outline-variant/30 p-3 min-w-[60px] text-left align-top box-border relative text-admin-on-surface-variant focus:outline-none focus:bg-admin-surface-container-highest/20 transition-colors',
                 },
             }),
             Link.configure({
                 openOnClick: false,
                 HTMLAttributes: {
-                    class: 'editor-link text-blue-500 underline',
+                    class: 'editor-link text-admin-primary underline hover:text-admin-primary-container transition-colors',
                 },
                 linkOnPaste: true,
                 autolink: true,
@@ -147,14 +144,17 @@ export default function TextEditor({ content, onChange }: Props) {
             CodeBlockLowlight.configure({
                 lowlight,
                 defaultLanguage: 'javascript',
+                HTMLAttributes: {
+                    class: 'bg-admin-surface-container-highest text-admin-on-surface p-4 rounded-lg font-mono text-sm border border-admin-outline-variant/20 overflow-x-auto my-4',
+                }
             }),
             Code.configure({
                 HTMLAttributes: {
-                    class: 'editor-image transition-all duration-200'
+                    class: 'bg-admin-surface-container-highest text-admin-accent px-1.5 py-0.5 rounded font-mono text-sm border border-admin-outline-variant/20'
                 },
             }),
             Image.configure({
-                HTMLAttributes: { class: 'editor-image transition-all duration-200' },
+                HTMLAttributes: { class: 'editor-image transition-all duration-200 shadow-md rounded border border-admin-outline-variant/20' },
             }).extend({
                 addAttributes() {
                     return {
@@ -218,7 +218,7 @@ export default function TextEditor({ content, onChange }: Props) {
         immediatelyRender: false,
         editorProps: {
             attributes: {
-                class: 'prose dark:prose-invert max-w-none focus:outline-none min-h-[400px] p-4 bg-gray-50 dark:bg-gray-900 rounded-b-md border border-gray-300 dark:border-gray-700 flow-root prose-img:clear-both',
+                class: 'prose prose-invert max-w-none focus:outline-none min-h-[500px] p-8 bg-admin-surface-container-lowest rounded-b-xl border border-t-0 border-admin-outline-variant/30 text-admin-on-surface-variant flow-root prose-img:clear-both prose-p:leading-relaxed prose-strong:text-admin-on-surface',
             },
             handleDrop: (view, event, slice, moved) => {
                 if (!moved && event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0]) {
@@ -312,16 +312,15 @@ export default function TextEditor({ content, onChange }: Props) {
     if (!editor) return null;
 
     return (
-        <div className={`space-y-2 ${isCtrlPressed ? 'is-linking' : ''}`}>
-            <InputLabel value="Documentation Content" />
+        <div className={`flex flex-col ${isCtrlPressed ? 'is-linking' : ''}`}>
 
-            {/* Toolbar */}
-            <div className="flex items-center gap-1 p-1.5 bg-gray-100 dark:bg-gray-800 border border-b-0 border-gray-300 dark:border-gray-700 rounded-t-md sticky top-0 z-10">
+            {/* Restyled Sticky Toolbar */}
+            <div className="flex flex-wrap items-center gap-1.5 p-2 bg-admin-surface-container-low/90 backdrop-blur-md border border-admin-outline-variant/30 border-b-0 rounded-t-xl sticky top-0 z-40 shadow-sm">
 
                 {/* Block Selection */}
                 <HeadingSelector editor={editor} />
 
-                <div className="w-px h-6 bg-gray-300 dark:bg-gray-700 mx-1" />
+                <div className="w-px h-6 bg-admin-outline-variant/40 mx-1" />
 
                 {/* Formatting Group */}
                 <div className="flex items-center gap-1">
@@ -331,17 +330,17 @@ export default function TextEditor({ content, onChange }: Props) {
                     <StrikeButton editor={editor} />
                 </div>
 
-                <div className="w-px h-6 bg-gray-300 dark:bg-gray-700 mx-1" />
+                <div className="w-px h-6 bg-admin-outline-variant/40 mx-1" />
 
                 {/* Link Tool */}
                 <LinkButton editor={editor} />
 
-                <div className="w-px h-6 bg-gray-300 dark:bg-gray-700 mx-1" />
+                <div className="w-px h-6 bg-admin-outline-variant/40 mx-1" />
 
                 {/* Color Tool */}
                 <FontColor editor={editor} />
 
-                <div className="w-px h-6 bg-gray-300 dark:bg-gray-700 mx-1" />
+                <div className="w-px h-6 bg-admin-outline-variant/40 mx-1" />
 
                 {/* Code */}
                 <CodeBlockButton editor={editor} />
@@ -353,7 +352,7 @@ export default function TextEditor({ content, onChange }: Props) {
                     <OrderedListButton editor={editor} />
                 </div>
 
-                <div className="w-px h-6 bg-gray-300 dark:bg-gray-700 mx-1" />
+                <div className="w-px h-6 bg-admin-outline-variant/40 mx-1" />
 
                 {/* Table Selector */}
                 <TableSelector editor={editor} />
@@ -361,7 +360,6 @@ export default function TextEditor({ content, onChange }: Props) {
             </div>
 
             <ImageMenu editor={editor} />
-
             <TableMenu editor={editor} />
             <TableHoverControls editor={editor} />
 

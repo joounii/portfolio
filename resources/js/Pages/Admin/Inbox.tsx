@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
-import { Trash2, ExternalLink, Mail } from 'lucide-react';
+import { Trash2, Mail } from 'lucide-react';
 
 interface Message {
     id: number;
@@ -24,62 +24,103 @@ export default function Inbox({ auth, messages }: Props) {
     };
 
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Message Inbox
-                </h2>
-            }
-        >
-            <Head title="Inbox" />
+        <AuthenticatedLayout>
+            <Head title="Admin - Inbox" />
 
-            <div className="py-12">
+            <div className="py-10">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="relative overflow-x-auto">
-                                <table className="w-full text-left text-sm">
-                                    <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+
+                    {/* Unified Action Bar */}
+                    <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+                        <div>
+                            <h2 className="text-2xl font-bold text-admin-on-surface tracking-tight">
+                                Message Inbox
+                            </h2>
+                            <p className="text-sm text-admin-on-surface-variant mt-1">
+                                Review and manage incoming communications.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Table Container */}
+                    <div className="bg-admin-surface-container overflow-hidden shadow-sm sm:rounded-xl border border-admin-outline-variant/30">
+                        <div className="p-0 text-admin-on-surface">
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left text-sm divide-y divide-admin-outline-variant/20">
+
+                                    {/* Refined Table Headers */}
+                                    <thead className="bg-admin-surface-container-low/50">
                                         <tr>
-                                            <th className="px-6 py-3">Received</th>
-                                            <th className="px-6 py-3">Sender</th>
-                                            <th className="px-6 py-3">Email</th>
-                                            <th className="px-6 py-3">Message</th>
-                                            <th className="px-6 py-3 text-right">Actions</th>
+                                            <th className="px-6 py-4 text-left text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30">
+                                                Received
+                                            </th>
+                                            <th className="px-6 py-4 text-left text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30">
+                                                Sender
+                                            </th>
+                                            <th className="px-6 py-4 text-left text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30">
+                                                Email
+                                            </th>
+                                            <th className="px-6 py-4 text-left text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30">
+                                                Message
+                                            </th>
+                                            <th className="px-6 py-4 text-right text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30">
+                                                Actions
+                                            </th>
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                                        {messages.map((msg) => (
-                                            <tr key={msg.id} className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700">
-                                                <td className="whitespace-nowrap px-6 py-4 text-xs">
-                                                    {new Date(msg.created_at).toLocaleString()}
-                                                </td>
-                                                <td className="px-6 py-4 font-medium">{msg.identifier_name}</td>
-                                                <td className="px-6 py-4 text-blue-400">{msg.return_path_email}</td>
-                                                <td className="max-w-xs truncate px-6 py-4 italic text-gray-500 dark:text-gray-400">
-                                                    {msg.payload_message}
-                                                </td>
-                                                <td className="px-6 py-4 text-right">
-                                                    <div className="flex justify-end gap-4">
-                                                        <button
-                                                            onClick={() => deleteMessage(msg.id)}
-                                                            className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
-                                                        >
-                                                            <Trash2 size={18} />
-                                                        </button>
+
+                                    <tbody className="divide-y divide-admin-outline-variant/20">
+                                        {messages.length === 0 ? (
+                                            <tr>
+                                                <td colSpan={5} className="px-6 py-16 text-center">
+                                                    <div className="flex flex-col items-center justify-center text-admin-on-surface-variant">
+                                                        <Mail size={48} className="mb-4 opacity-20" />
+                                                        <p className="text-sm tracking-wide">No messages in the buffer.</p>
                                                     </div>
                                                 </td>
                                             </tr>
-                                        ))}
+                                        ) : (
+                                            messages.map((msg) => (
+                                                <tr
+                                                    key={msg.id}
+                                                    className={`hover:bg-admin-surface-container-highest transition-colors group ${!msg.is_read ? 'bg-admin-surface-container-high/30' : ''}`}
+                                                >
+                                                    <td className="whitespace-nowrap px-6 py-4 text-xs font-mono text-admin-on-surface-variant group-hover:text-admin-on-surface transition-colors">
+                                                        {new Date(msg.created_at).toLocaleString()}
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap">
+                                                        <div className="flex items-center gap-2">
+                                                            {/* Unread Indicator */}
+                                                            {!msg.is_read && (
+                                                                <span className="w-1.5 h-1.5 rounded-full bg-admin-primary shadow-[0_0_6px_rgba(255,140,0,0.8)]"></span>
+                                                            )}
+                                                            <div className={`text-sm tracking-wide ${!msg.is_read ? 'font-bold text-admin-on-surface' : 'font-semibold text-admin-on-surface/80'}`}>
+                                                                {msg.identifier_name}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-admin-on-surface-variant group-hover:text-admin-on-surface transition-colors">
+                                                        {msg.return_path_email}
+                                                    </td>
+                                                    <td className="max-w-xs truncate px-6 py-4 italic text-admin-on-surface-variant/70 text-sm">
+                                                        {msg.payload_message}
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                                                        <div className="flex justify-end">
+                                                            <button
+                                                                onClick={() => deleteMessage(msg.id)}
+                                                                className="text-admin-on-surface-variant hover:text-admin-error transition-colors"
+                                                                title="Delete Message"
+                                                            >
+                                                                <Trash2 size={18} />
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
                                     </tbody>
                                 </table>
-
-                                {messages.length === 0 && (
-                                    <div className="flex flex-col items-center justify-center p-12 text-gray-500">
-                                        <Mail size={48} className="mb-4 opacity-20" />
-                                        <p>No messages in the buffer.</p>
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </div>

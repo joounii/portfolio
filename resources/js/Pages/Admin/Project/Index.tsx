@@ -21,43 +21,61 @@ export default function Index({ auth, projects }: Props) {
     };
 
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Projects Index
-                </h2>
-            }
-        >
+        // Notice: The header={...} prop is completely gone.
+        <AuthenticatedLayout>
             <Head title="Admin - Projects" />
 
-            <div className="py-12">
+            <div className="py-10">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="flex justify-end mb-6">
+
+                    {/* NEW: Unified Action Bar */}
+                    <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+                        <div>
+                            <h2 className="text-2xl font-bold text-admin-on-surface tracking-tight">
+                                Projects Index
+                            </h2>
+                            <p className="text-sm text-admin-on-surface-variant mt-1">
+                                Manage, view, and organize all system projects.
+                            </p>
+                        </div>
+
                         <Link
                             href={route('admin.projects.create')}
-                            className="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 transition ease-in-out duration-150"
+                            className="inline-flex items-center px-4 py-2.5 bg-admin-primary rounded-md font-bold text-xs text-admin-on-primary uppercase tracking-wider hover:bg-admin-primary-container focus:outline-none focus:ring-2 focus:ring-admin-primary/50 active:scale-[0.98] transition-all ease-in-out duration-150 shadow-sm shrink-0"
                         >
-                            <Plus size={16} className="mr-2" />
+                            <Plus size={16} className="mr-2" strokeWidth={2.5} />
                             Create Project
                         </Link>
                     </div>
 
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
+                    {/* Table Container */}
+                    <div className="bg-admin-surface-container overflow-hidden shadow-sm sm:rounded-xl border border-admin-outline-variant/30">
+                        <div className="p-0 text-admin-on-surface">
                             <div className="overflow-x-auto">
-                                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                    <thead>
-                                        <tr className="bg-gray-50 dark:bg-gray-900/50">
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">ID</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Title / Status</th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Docs</th>
-                                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                                <table className="min-w-full divide-y divide-admin-outline-variant/20">
+
+                                    {/* NEW: Refined Table Headers */}
+                                    <thead className="bg-admin-surface-container-low/50">
+                                        <tr>
+                                            <th className="px-6 py-4 text-left text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30">
+                                                ID
+                                            </th>
+                                            <th className="px-6 py-4 text-left text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30">
+                                                Title / Status
+                                            </th>
+                                            <th className="px-6 py-4 text-left text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30">
+                                                Docs
+                                            </th>
+                                            <th className="px-6 py-4 text-right text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30">
+                                                Actions
+                                            </th>
                                         </tr>
                                     </thead>
-                                    <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+
+                                    <tbody className="divide-y divide-admin-outline-variant/20">
                                         {projects.length === 0 ? (
                                             <tr>
-                                                <td colSpan={4} className="px-6 py-10 text-center text-gray-500 dark:text-gray-400">
+                                                <td colSpan={4} className="px-6 py-12 text-center text-admin-on-surface-variant text-sm">
                                                     No projects found. Initialize your first project to get started.
                                                 </td>
                                             </tr>
@@ -66,47 +84,51 @@ export default function Index({ auth, projects }: Props) {
                                                 <tr
                                                     key={project.id}
                                                     onClick={() => handleRowClick(project.id)}
-                                                    className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer"
+                                                    className="hover:bg-admin-surface-container-highest transition-colors cursor-pointer group"
                                                 >
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-600 dark:text-gray-400">
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-admin-on-surface-variant group-hover:text-admin-on-surface transition-colors">
                                                         {project.custom_id}
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap">
-                                                        <div className="text-sm font-medium text-gray-900 dark:text-gray-100">{project.title}</div>
-                                                        <div className="text-xs text-gray-500 dark:text-gray-400">{project.status}</div>
+                                                        <div className="text-sm font-semibold text-admin-on-surface tracking-wide">{project.title}</div>
+                                                        <div className="text-xs text-admin-on-surface-variant mt-0.5">{project.status}</div>
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap">
                                                         {project.active_page_id ? (
-                                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400">
+                                                            <span className="px-2 py-0.5 inline-flex text-[10px] uppercase font-bold rounded border tracking-widest transition-colors bg-admin-success/10 text-admin-success border-admin-success/30 shadow-[0_0_8px_rgba(45,212,191,0.05)]">
                                                                 Active
                                                             </span>
                                                         ) : (
-                                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400">
+                                                            <span className="px-2 py-0.5 inline-flex text-[10px] uppercase font-bold rounded border tracking-widest transition-colors bg-admin-warning/10 text-admin-warning border-admin-warning/30 shadow-[0_0_8px_rgba(251,191,36,0.05)]">
                                                                 Draft
                                                             </span>
                                                         )}
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                         <div
-                                                            className="flex justify-end space-x-3"
+                                                            className="flex justify-end space-x-4"
                                                             onClick={(e) => e.stopPropagation()}
                                                         >
                                                             <Link
                                                                 href={route('admin.projects.edit', project.id)}
-                                                                className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300"
+                                                                className="text-admin-on-surface-variant hover:text-admin-primary transition-colors"
+                                                                title="Edit"
                                                             >
                                                                 <Edit size={18} />
                                                             </Link>
                                                             <Link
                                                                 href={route('admin.projects.show', project.id)}
-                                                                className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300"
+                                                                className="text-admin-on-surface-variant hover:text-admin-accent transition-colors"
+                                                                title="View"
                                                             >
                                                                 <Eye size={18} />
                                                             </Link>
                                                             <a
                                                                 href={`/projects/${project.id}`}
                                                                 target="_blank"
-                                                                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+                                                                rel="noreferrer"
+                                                                className="text-admin-on-surface-variant hover:text-admin-on-surface transition-colors"
+                                                                title="Open External"
                                                             >
                                                                 <ExternalLink size={18} />
                                                             </a>

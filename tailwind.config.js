@@ -63,6 +63,55 @@ export default {
                 'error-container': '#93000a',
                 'on-error': '#690005',
                 'on-error-container': '#ffdad6',
+
+                // --------- ADMIN COLORS ----------------
+
+                admin: {
+                    // Primary (The signature vibrant orange)
+                    'primary': '#ff9c30',
+                    'primary-container': '#da7801',
+                    'on-primary': '#1a0e00',
+                    'on-primary-container': '#fff0e0',
+
+                    // Accent (Slightly warmer/lighter orange for highlights)
+                    'accent': '#ffa733',
+                    'accent-container': '#cc8529',
+                    'on-accent': '#1a0e00',
+                    'on-accent-container': '#fff5e6',
+
+                    // Surface (Widened contrast steps for better depth)
+                    'surface': '#09090b', // Deepest matte black for main background
+                    'surface-bright': '#3f3f46',
+                    'surface-container-lowest': '#000000',
+                    'surface-container-low': '#121214',
+                    'surface-container': '#18181b', // Lighter black for cards/tables
+                    'surface-container-high': '#27272a', // Hover states
+                    'surface-container-highest': '#3f3f46', // Active/Focus states
+
+                    // Text & Borders
+                    'on-surface': '#f4f4f5',
+                    'on-surface-variant': '#a1a1aa',
+                    'outline': '#71717a', // Brighter outline for sharper contrast
+                    'outline-variant': '#52525b', // Brighter secondary borders
+
+                    // Error
+                    'error': '#f87171',
+                    'error-container': '#991b1b',
+                    'on-error': '#450a0a',
+                    'on-error-container': '#fecaca',
+
+                    // Success (Cyber-Teal for a tech-focused matte UI)
+                    'success': '#2dd4bf',
+                    'success-container': '#134e4a',
+                    'on-success': '#042f2e',
+                    'on-success-container': '#ccfbf1',
+
+                    // Warning (Muted Gold/Amber)
+                    'warning': '#fbbf24',
+                    'warning-container': '#78350f',
+                    'on-warning': '#451a03',
+                    'on-warning-container': '#fde68a',
+                }
             },
         },
     },

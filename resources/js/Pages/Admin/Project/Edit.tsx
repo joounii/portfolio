@@ -1,9 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
 import { ArrowLeft } from 'lucide-react';
 
 interface Project {
@@ -48,91 +44,112 @@ export default function Edit({ auth, project }: { auth: any, project: Project })
         setData('tags', data.tags.filter((_, index) => index !== indexToRemove));
     };
 
+    // Shared input class for absolute consistency
+    const inputClass = "mt-1.5 block w-full rounded-md bg-admin-surface-container-lowest border border-admin-outline-variant/50 text-admin-on-surface placeholder:text-admin-on-surface-variant/40 focus:border-admin-primary focus:ring-1 focus:ring-admin-primary outline-none shadow-sm transition-colors sm:text-sm";
+    const labelClass = "block font-medium text-sm text-admin-on-surface-variant";
+
     return (
-        <AuthenticatedLayout
-            header={
-                <div className="flex justify-between items-center">
-                    <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                        Edit: {project.slug}
-                    </h2>
-                    <Link href={route('admin.projects.show', project.id)} className="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 flex items-center gap-1">
-                        <ArrowLeft size={16} /> Cancel
-                    </Link>
-                </div>
-            }
-        >
+        <AuthenticatedLayout>
             <Head title={`Edit - ${project.title}`} />
 
-            <div className="py-12">
+            <div className="py-10">
                 <div className="max-w-3xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg border border-gray-200 dark:border-gray-700">
-                        <form onSubmit={handleSubmit} className="p-6 space-y-6">
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Unified Action Bar with Cancel Button */}
+                    <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+                        <div>
+                            <h2 className="text-2xl font-bold text-admin-on-surface tracking-tight uppercase">
+                                Edit: {project.slug}
+                            </h2>
+                            <p className="text-sm text-admin-on-surface-variant mt-1">
+                                Update system metadata and configuration parameters.
+                            </p>
+                        </div>
+
+                        <Link
+                            href={route('admin.projects.show', project.id)}
+                            className="inline-flex items-center px-4 py-2.5 bg-admin-surface-container-high border border-admin-outline-variant/30 rounded-md font-bold text-xs text-admin-on-surface uppercase tracking-wider hover:bg-admin-surface-container-highest focus:outline-none focus:ring-2 focus:ring-admin-outline-variant active:scale-[0.98] transition-all ease-in-out duration-150 shadow-sm shrink-0"
+                        >
+                            <ArrowLeft size={16} className="mr-2" strokeWidth={2.5} />
+                            Cancel
+                        </Link>
+                    </div>
+
+                    <div className="bg-admin-surface-container overflow-hidden shadow-sm sm:rounded-xl border border-admin-outline-variant/30">
+                        <form onSubmit={handleSubmit} className="p-8 space-y-6">
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <InputLabel htmlFor="custom_id" value="System ID" />
-                                    <TextInput
+                                    <label htmlFor="custom_id" className={labelClass}>System ID</label>
+                                    <input
+                                        type="text"
                                         id="custom_id"
-                                        className="mt-1 block w-full"
+                                        className={inputClass}
                                         value={data.custom_id}
                                         onChange={(e) => setData('custom_id', e.target.value)}
                                         required
                                     />
-                                    <InputError message={errors.custom_id} className="mt-2" />
+                                    {errors.custom_id && <p className="mt-2 text-sm text-admin-error">{errors.custom_id}</p>}
                                 </div>
                                 <div>
-                                    <InputLabel htmlFor="title" value="Project Title" />
-                                    <TextInput
+                                    <label htmlFor="title" className={labelClass}>Project Title</label>
+                                    <input
+                                        type="text"
                                         id="title"
-                                        className="mt-1 block w-full"
+                                        className={inputClass}
                                         value={data.title}
                                         onChange={(e) => setData('title', e.target.value)}
                                         required
                                     />
-                                    <InputError message={errors.title} className="mt-2" />
+                                    {errors.title && <p className="mt-2 text-sm text-admin-error">{errors.title}</p>}
                                 </div>
                             </div>
 
                             <div>
-                                <InputLabel htmlFor="description" value="Short Description" />
+                                <label htmlFor="description" className={labelClass}>Short Description</label>
                                 <textarea
                                     id="description"
-                                    className="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                                    className={inputClass}
                                     rows={3}
                                     value={data.description}
                                     onChange={(e) => setData('description', e.target.value)}
                                     required
                                 />
-                                <InputError message={errors.description} className="mt-2" />
+                                {errors.description && <p className="mt-2 text-sm text-admin-error">{errors.description}</p>}
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <InputLabel htmlFor="status" value="Status Label" />
-                                    <TextInput
+                                    <label htmlFor="status" className={labelClass}>Status Label</label>
+                                    <input
+                                        type="text"
                                         id="status"
-                                        className="mt-1 block w-full"
+                                        className={inputClass}
                                         value={data.status}
                                         onChange={(e) => setData('status', e.target.value)}
                                         required
                                     />
-                                    <InputError message={errors.status} className="mt-2" />
+                                    {errors.status && <p className="mt-2 text-sm text-admin-error">{errors.status}</p>}
                                 </div>
                                 <div>
-                                    <InputLabel htmlFor="status_color" value="Status Color Class" />
-                                    <TextInput
+                                    <label htmlFor="status_color" className={labelClass}>Status Color Class</label>
+                                    <input
+                                        type="text"
                                         id="status_color"
-                                        className="mt-1 block w-full"
+                                        className={inputClass}
                                         value={data.status_color}
                                         onChange={(e) => setData('status_color', e.target.value)}
+                                        placeholder="text-admin-success bg-admin-success/10"
                                     />
+                                    {errors.status_color && <p className="mt-2 text-sm text-admin-error">{errors.status_color}</p>}
                                 </div>
                             </div>
 
                             <div>
-                                <InputLabel value="Tags" />
-                                <TextInput
-                                    className="mt-1 block w-full"
+                                <label className={labelClass}>Tags</label>
+                                <input
+                                    type="text"
+                                    className={inputClass}
                                     value={data.tagInput}
                                     onChange={(e) => setData('tagInput', e.target.value)}
                                     onKeyDown={addTag}
@@ -140,20 +157,29 @@ export default function Edit({ auth, project }: { auth: any, project: Project })
                                 />
                                 <div className="flex flex-wrap gap-2 mt-3">
                                     {data.tags.map((tag, index) => (
-                                        <span key={index} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300">
+                                        <span key={index} className="inline-flex items-center px-2.5 py-1 rounded border border-admin-outline-variant/30 text-[11px] uppercase tracking-widest font-bold bg-admin-surface-container-high text-admin-on-surface shadow-sm">
                                             {tag}
-                                            <button type="button" onClick={() => removeTag(index)} className="ml-1.5 text-indigo-400 hover:text-indigo-600">
+                                            <button
+                                                type="button"
+                                                onClick={() => removeTag(index)}
+                                                className="ml-2 text-admin-on-surface-variant hover:text-admin-error transition-colors focus:outline-none"
+                                            >
                                                 &times;
                                             </button>
                                         </span>
                                     ))}
                                 </div>
+                                {errors.tags && <p className="mt-2 text-sm text-admin-error">{errors.tags}</p>}
                             </div>
 
-                            <div className="flex items-center justify-end border-t border-gray-200 dark:border-gray-700 pt-4">
-                                <PrimaryButton disabled={processing}>
+                            <div className="flex items-center justify-end border-t border-admin-outline-variant/20 pt-6 mt-6">
+                                <button
+                                    type="submit"
+                                    className="inline-flex items-center px-6 py-2.5 bg-admin-primary hover:bg-admin-primary-container text-admin-on-primary font-bold text-xs uppercase tracking-widest rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50 transition-colors disabled:opacity-50"
+                                    disabled={processing}
+                                >
                                     Update Metadata
-                                </PrimaryButton>
+                                </button>
                             </div>
                         </form>
                     </div>
