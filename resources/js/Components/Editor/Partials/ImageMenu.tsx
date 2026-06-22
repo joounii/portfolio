@@ -51,6 +51,7 @@ export default function ImageMenu({ editor }: Props) {
             options={{
                 placement: 'top',
                 strategy: 'absolute',
+                offset: 10, // Explicit offset for Floating UI
             }}
             shouldShow={({ editor: currentEditor }: { editor: Editor }) => {
                 if (!currentEditor) return false;
@@ -67,41 +68,41 @@ export default function ImageMenu({ editor }: Props) {
                     <button
                         type="button"
                         onClick={() => editor.chain().focus().updateAttributes('image', { alignment: 'left' }).run()}
-                        className={`p-1.5 rounded-lg transition-colors ${
+                        className={`p-1.5 rounded-lg transition-colors focus:outline-none ${
                             editor.getAttributes('image').alignment === 'left'
-                                ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400'
-                                : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                ? 'bg-admin-primary/10 text-admin-primary shadow-sm'
+                                : 'text-admin-on-surface-variant hover:bg-admin-surface-container-high hover:text-admin-on-surface'
                         }`}
                         title="Align Left"
                     >
-                        <AlignLeft size={16} />
+                        <AlignLeft size={16} strokeWidth={editor.getAttributes('image').alignment === 'left' ? 2.5 : 2} />
                     </button>
                     <button
                         type="button"
                         onClick={() => editor.chain().focus().updateAttributes('image', { alignment: 'center' }).run()}
-                        className={`p-1.5 rounded-lg transition-colors ${
+                        className={`p-1.5 rounded-lg transition-colors focus:outline-none ${
                             editor.getAttributes('image').alignment === 'center'
-                                ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400'
-                                : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                ? 'bg-admin-primary/10 text-admin-primary shadow-sm'
+                                : 'text-admin-on-surface-variant hover:bg-admin-surface-container-high hover:text-admin-on-surface'
                         }`}
                         title="Align Center"
                     >
-                        <AlignCenter size={16} />
+                        <AlignCenter size={16} strokeWidth={editor.getAttributes('image').alignment === 'center' ? 2.5 : 2} />
                     </button>
                     <button
                         type="button"
                         onClick={() => editor.chain().focus().updateAttributes('image', { alignment: 'right' }).run()}
-                        className={`p-1.5 rounded-lg transition-colors ${
+                        className={`p-1.5 rounded-lg transition-colors focus:outline-none ${
                             editor.getAttributes('image').alignment === 'right'
-                                ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400'
-                                : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                ? 'bg-admin-primary/10 text-admin-primary shadow-sm'
+                                : 'text-admin-on-surface-variant hover:bg-admin-surface-container-high hover:text-admin-on-surface'
                         }`}
                         title="Align Right"
                     >
-                        <AlignRight size={16} />
+                        <AlignRight size={16} strokeWidth={editor.getAttributes('image').alignment === 'right' ? 2.5 : 2} />
                     </button>
 
-                    <div className="w-px h-5 bg-gray-200 dark:bg-gray-800 mx-0.5" />
+                    <div className="w-px h-5 bg-admin-outline-variant/30 mx-0.5" />
 
                     {/* Width Sizing Presets */}
                     {(['25%', '50%', '75%', '100%'] as const).map((size) => (
@@ -109,36 +110,36 @@ export default function ImageMenu({ editor }: Props) {
                             key={size}
                             type="button"
                             onClick={() => editor.chain().focus().updateAttributes('image', { width: size }).run()}
-                            className={`px-2 py-1 text-xs font-mono font-bold rounded-md transition-colors ${
+                            className={`px-2 py-1 text-xs font-mono font-bold rounded-md transition-colors focus:outline-none ${
                                 editor.getAttributes('image').width === size
-                                    ? 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900'
-                                    : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                    ? 'bg-admin-primary/10 text-admin-primary shadow-sm'
+                                    : 'text-admin-on-surface-variant hover:bg-admin-surface-container-high hover:text-admin-on-surface'
                             }`}
                         >
                             {size}
                         </button>
                     ))}
 
-                    <div className="w-px h-5 bg-gray-200 dark:bg-gray-800 mx-0.5" />
+                    <div className="w-px h-5 bg-admin-outline-variant/30 mx-0.5" />
 
                     {/* Toggle Caption Drawer */}
                     <button
                         type="button"
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
-                        className={`p-1.5 rounded-lg transition-colors ${
+                        className={`p-1.5 rounded-lg transition-colors focus:outline-none ${
                             isMenuOpen || currentCaption
-                                ? 'bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400'
-                                : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                ? 'bg-admin-primary/10 text-admin-primary shadow-sm'
+                                : 'text-admin-on-surface-variant hover:bg-admin-surface-container-high hover:text-admin-on-surface'
                         }`}
                         title="Toggle Image Caption"
                     >
-                        <Subtitles size={16} />
+                        <Subtitles size={16} strokeWidth={isMenuOpen || currentCaption ? 2.5 : 2} />
                     </button>
                 </div>
 
                 {/* Inline Popup Edit Panel */}
                 {isMenuOpen && (
-                    <div className="flex items-center gap-1.5 border-t border-gray-100 dark:border-gray-800 pt-1.5 mt-0.5 px-0.5">
+                    <div className="flex items-center gap-2 border-t border-admin-outline-variant/20 pt-2 px-0.5 pb-0.5">
                         <input
                             type="text"
                             value={captionText}
@@ -150,15 +151,15 @@ export default function ImageMenu({ editor }: Props) {
                                 }
                             }}
                             placeholder="Type caption description..."
-                            className="flex-1 text-xs px-2.5 py-1.5 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 rounded-lg border border-gray-200 dark:border-gray-800 focus:outline-none focus:border-purple-500 transition-colors"
+                            className="flex-1 font-mono text-xs bg-admin-surface-container-lowest border border-admin-outline-variant/50 text-admin-on-surface placeholder:text-admin-on-surface-variant/40 rounded-md py-1.5 px-2.5 focus:outline-none focus:ring-1 focus:ring-admin-primary focus:border-admin-primary transition-all"
                             autoFocus
                         />
                         <button
                             type="button"
                             onClick={saveCaption}
-                            className="p-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+                            className="p-1.5 bg-admin-primary hover:bg-admin-primary-container text-admin-on-primary rounded-md transition-colors shadow-sm focus:outline-none active:scale-95 border border-admin-primary"
                         >
-                            <Check size={14} />
+                            <Check size={15} strokeWidth={3} />
                         </button>
                     </div>
                 )}

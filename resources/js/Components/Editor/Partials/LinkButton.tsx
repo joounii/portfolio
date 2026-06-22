@@ -97,18 +97,18 @@ export default function LinkButton({ editor }: { editor: Editor }) {
                         initial={{ opacity: 0, y: 8, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                        className="absolute left-0 top-full mt-2 w-72 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-2xl z-50 overflow-hidden"
+                        className="absolute left-0 top-full mt-2 w-72 bg-admin-surface-container border border-admin-outline-variant/30 rounded-xl shadow-2xl z-50 overflow-hidden"
                     >
                         <div className="p-4 space-y-4">
                             {/* Header Section */}
                             <div className="flex items-center justify-between">
-                                <span className="text-[10px] uppercase font-bold text-gray-400 tracking-widest">
+                                <span className="text-[10px] uppercase font-bold text-admin-on-surface-variant tracking-widest">
                                     Edit Link
                                 </span>
                                 <button
                                     type="button"
                                     onClick={() => setIsOpen(false)}
-                                    className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded text-gray-500 transition-colors"
+                                    className="p-1 hover:bg-admin-surface-container-high rounded text-admin-on-surface-variant hover:text-admin-on-surface transition-colors focus:outline-none"
                                 >
                                     <X size={14} />
                                 </button>
@@ -123,7 +123,7 @@ export default function LinkButton({ editor }: { editor: Editor }) {
                                             value={url}
                                             onChange={(e) => setUrl(e.target.value)}
                                             placeholder="google.com"
-                                            className="w-full font-mono text-xs bg-gray-50 dark:bg-gray-950 border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-100 rounded-md py-2 px-3 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                                            className="w-full font-mono text-xs bg-admin-surface-container-lowest border border-admin-outline-variant/50 text-admin-on-surface placeholder:text-admin-on-surface-variant/40 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-admin-primary/30 focus:border-admin-primary transition-all"
                                             autoFocus
                                             onKeyDown={(e) => {
                                                 if (e.key === 'Enter') {
@@ -136,29 +136,28 @@ export default function LinkButton({ editor }: { editor: Editor }) {
                                     <button
                                         type="button"
                                         onClick={setLink}
-                                        className="p-2 bg-blue-600 hover:bg-blue-500 text-white rounded-md shadow-lg transition-all active:scale-95"
+                                        className="p-2 bg-admin-primary hover:bg-admin-primary-container text-admin-on-primary rounded-md shadow-sm transition-all active:scale-95 border border-transparent focus:outline-none focus:ring-2 focus:ring-admin-primary/50"
                                     >
-                                        <ExternalLink size={16} />
+                                        <ExternalLink size={16} strokeWidth={2.5} />
                                     </button>
                                 </div>
 
                                 {/* Checkbox Section */}
                                 <div className="flex items-center justify-between pt-1">
-                                    <label className="flex items-center gap-2 cursor-pointer group">
-                                        <div className="relative flex items-center">
+                                    <label className="flex items-center gap-2.5 cursor-pointer group">
+                                        <div className="relative flex items-center justify-center">
+                                            {/* * group-hover:border-admin-primary connects the hover state to the text */}
                                             <input
                                                 type="checkbox"
                                                 checked={newTab}
                                                 onChange={(e) => setNewTab(e.target.checked)}
-                                                className="peer h-4 w-4 cursor-pointer appearance-none rounded border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 checked:bg-blue-600 checked:border-blue-600 transition-all"
+                                                className="peer appearance-none bg-none checked:bg-none w-4 h-4 border border-admin-outline-variant/50 rounded bg-admin-surface-container-lowest text-admin-primary checked:bg-admin-primary checked:border-admin-primary group-hover:border-admin-primary focus:outline-none focus:ring-2 focus:ring-admin-primary/30 focus:ring-offset-0 transition-all cursor-pointer shadow-sm"
                                             />
-                                            <div className="pointer-events-none absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 text-white opacity-0 peer-checked:opacity-100">
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" stroke="currentColor" strokeWidth="1">
-                                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path>
-                                                </svg>
-                                            </div>
+                                            <svg className="absolute w-2.5 h-2.5 text-admin-on-primary opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
                                         </div>
-                                        <span className="text-[11px] font-medium text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors">
+                                        <span className="text-[11px] font-bold text-admin-on-surface-variant group-hover:text-admin-on-surface transition-colors uppercase tracking-wider">
                                             Open in new tab
                                         </span>
                                     </label>
@@ -167,7 +166,7 @@ export default function LinkButton({ editor }: { editor: Editor }) {
                                         <button
                                             type="button"
                                             onClick={removeLink}
-                                            className="text-[10px] font-bold text-red-500/80 hover:text-red-500 uppercase tracking-tight transition-colors"
+                                            className="text-[10px] font-bold text-admin-error/80 hover:text-admin-error uppercase tracking-widest transition-colors focus:outline-none"
                                         >
                                             Remove
                                         </button>

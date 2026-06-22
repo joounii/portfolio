@@ -49,12 +49,12 @@ export default function ToolbarButton({
             className={`
                 p-2 rounded-md transition-all duration-200
                 ${active
-                    ? 'bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400 shadow-sm'
-                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}
+                    ? 'bg-admin-primary/10 text-admin-primary shadow-sm'
+                    : 'text-admin-on-surface-variant hover:bg-admin-surface-container-high hover:text-admin-on-surface'}
                 ${disabled ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}
             `}
         >
-            <Icon size={18} strokeWidth={2.5} />
+            <Icon size={18} strokeWidth={active ? 2.5 : 2} />
         </motion.button>
     );
 }

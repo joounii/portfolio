@@ -10,32 +10,43 @@ export default function Edit({
     status,
 }: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Profile
-                </h2>
-            }
-        >
-            <Head title="Profile" />
+        <AuthenticatedLayout>
+            <Head title="Profile Configuration" />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
+            <div className="py-10">
+                <div className="mx-auto max-w-7xl space-y-8 sm:px-6 lg:px-8">
+
+                    {/* Unified Action Bar */}
+                    <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+                        <div>
+                            <h2 className="text-2xl font-bold text-admin-on-surface tracking-tight">
+                                Profile Settings
+                            </h2>
+                            <p className="text-sm text-admin-on-surface-variant mt-1">
+                                Manage your account information, security credentials, and data.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Profile Information Section */}
+                    <div className="bg-admin-surface-container border border-admin-outline-variant/30 p-4 shadow-2xl sm:rounded-xl sm:p-8 relative overflow-hidden">
                         <UpdateProfileInformationForm
                             mustVerifyEmail={mustVerifyEmail}
                             status={status}
-                            className="max-w-xl"
+                            className="max-w-xl relative z-10"
                         />
                     </div>
 
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
+                    {/* Update Password Section */}
+                    <div className="bg-admin-surface-container border border-admin-outline-variant/30 p-4 shadow-2xl sm:rounded-xl sm:p-8">
                         <UpdatePasswordForm className="max-w-xl" />
                     </div>
 
-                    <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800">
-                        <DeleteUserForm className="max-w-xl" />
+                    {/* Delete Account Section (Danger Zone) */}
+                    <div className="bg-admin-surface-container border border-admin-error/30 p-4 shadow-2xl sm:rounded-xl sm:p-8 relative overflow-hidden">
+                        <DeleteUserForm className="relative z-10" />
                     </div>
+
                 </div>
             </div>
         </AuthenticatedLayout>

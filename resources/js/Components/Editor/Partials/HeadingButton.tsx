@@ -1,4 +1,3 @@
-// Components/Editor/Partials/HeadingSelector.tsx
 import { Editor } from '@tiptap/react';
 import { Heading1, Heading2, Heading3, Type, ChevronDown } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
@@ -28,7 +27,7 @@ export default function HeadingSelector({ editor }: Props) {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
-    
+
     const getActiveLabel = () => {
         if (editor.isActive('heading', { level: 1 })) return 'Heading 1';
         if (editor.isActive('heading', { level: 2 })) return 'Heading 2';
@@ -41,12 +40,17 @@ export default function HeadingSelector({ editor }: Props) {
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className={`flex items-center gap-1.5 px-2.5 h-9 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 shadow-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                    isOpen ? 'bg-gray-200 dark:bg-gray-700' : ''
+                className={`flex items-center gap-1.5 px-2.5 h-[34px] text-[11px] font-bold uppercase tracking-widest border rounded-md transition-colors focus:outline-none ${
+                    isOpen
+                        ? 'bg-admin-surface-container-highest text-admin-on-surface border-admin-outline-variant/50 shadow-sm'
+                        : 'bg-transparent text-admin-on-surface-variant border-admin-outline-variant/30 hover:bg-admin-surface-container-high hover:text-admin-on-surface hover:border-admin-outline-variant/50'
                 }`}
             >
                 <span className="min-w-[85px] text-left">{getActiveLabel()}</span>
-                <ChevronDown size={14} className="text-gray-400" />
+                <ChevronDown
+                    size={14}
+                    className={`transition-transform duration-200 ${isOpen ? 'rotate-180 text-admin-on-surface' : 'text-admin-on-surface-variant'}`}
+                />
             </button>
 
             <AnimatePresence>
@@ -55,7 +59,7 @@ export default function HeadingSelector({ editor }: Props) {
                         initial={{ opacity: 0, y: 8, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                        className="absolute left-0 top-full mt-2 w-48 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-2xl z-50 p-1"
+                        className="absolute left-0 top-full mt-2 w-48 bg-admin-surface-container border border-admin-outline-variant/30 rounded-xl shadow-2xl z-50 p-1.5"
                     >
                         {OPTIONS.map((opt) => {
                             const Icon = opt.icon;
@@ -71,13 +75,13 @@ export default function HeadingSelector({ editor }: Props) {
                                         opt.action(editor);
                                         setIsOpen(false);
                                     }}
-                                    className={`flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg transition-colors text-left ${
+                                    className={`flex items-center gap-2.5 w-full px-3 py-2.5 text-[11px] font-bold uppercase tracking-widest rounded-lg transition-colors text-left focus:outline-none ${
                                         isActive
-                                            ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 font-medium'
-                                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                            ? 'bg-admin-primary/10 text-admin-primary'
+                                            : 'text-admin-on-surface-variant hover:bg-admin-surface-container-high hover:text-admin-on-surface'
                                     }`}
                                 >
-                                    <Icon size={16} />
+                                    <Icon size={16} strokeWidth={isActive ? 2.5 : 2} />
                                     {opt.label}
                                 </button>
                             );
