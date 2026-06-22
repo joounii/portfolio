@@ -16,6 +16,7 @@ export default function TableMenu({ editor }: Props) {
             options={{
                 placement: 'top',
                 strategy: 'absolute',
+                offset: 10,
             }}
             getReferencedVirtualElement={() => {
                 let actualTable: HTMLTableElement | null = null;
@@ -59,30 +60,30 @@ export default function TableMenu({ editor }: Props) {
         >
             <div
                 data-tiptap-bubble-menu
-                className="flex items-center p-1.5 bg-surface border border-outline-variant rounded-xl shadow-2xl backdrop-blur-sm transition-all text-xs text-on-surface-variant font-medium select-none"
+                className="flex items-center p-1.5 bg-admin-surface-container/95 border border-admin-outline-variant/30 rounded-xl shadow-2xl backdrop-blur-md transition-all text-[11px] uppercase tracking-wider text-admin-on-surface-variant font-bold select-none"
             >
                 {/* Toggle Header Row */}
                 <button
                     type="button"
                     onClick={() => editor.chain().focus().toggleHeaderRow().run()}
-                    className="flex items-center gap-1.5 px-2.5 py-1.5 hover:bg-surface-container-high hover:text-primary rounded-lg transition-colors"
+                    className="flex items-center gap-2 px-2.5 py-1.5 hover:bg-admin-surface-container-high hover:text-admin-primary rounded-lg transition-colors focus:outline-none"
                     title="Toggle Header Row"
                 >
-                    <Heading size={14} />
+                    <Heading size={14} strokeWidth={2.5} />
                     <span>Header</span>
                 </button>
 
-                <div className="w-px h-4 bg-outline-variant/40 mx-1.5" />
+                <div className="w-px h-4 bg-admin-outline-variant/30 mx-1.5" />
 
                 {/* Delete Row & Column Section */}
-                <div className="flex items-center bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-1 py-0.5 gap-0.5">
-                    <span className="text-[10px] uppercase tracking-wider text-outline font-bold ml-1.5 mr-1">
-                        Delete
+                <div className="flex items-center bg-admin-surface-container-lowest/50 border border-admin-outline-variant/20 rounded-lg px-1 py-0.5 gap-0.5">
+                    <span className="text-[9px] uppercase tracking-[0.15em] text-admin-on-surface-variant/50 font-black ml-1.5 mr-1">
+                        DEL
                     </span>
                     <button
                         type="button"
                         onClick={() => editor.chain().focus().deleteRow().run()}
-                        className="p-1.5 hover:bg-surface-container-high hover:text-error rounded-md transition-colors"
+                        className="p-1.5 hover:bg-admin-surface-container-high hover:text-admin-error rounded-md transition-colors focus:outline-none"
                         title="Delete Row"
                     >
                         <Rows size={14} />
@@ -90,24 +91,23 @@ export default function TableMenu({ editor }: Props) {
                     <button
                         type="button"
                         onClick={() => editor.chain().focus().deleteColumn().run()}
-                        className="p-1.5 hover:bg-surface-container-high hover:text-error rounded-md transition-colors"
+                        className="p-1.5 hover:bg-admin-surface-container-high hover:text-admin-error rounded-md transition-colors focus:outline-none"
                         title="Delete Column"
                     >
                         <Columns size={14} />
                     </button>
                 </div>
 
-                {/* Separation Space for Delete Table */}
-                <div className="w-px h-4 bg-outline-variant/40 ml-3 mr-1.5" />
+                <div className="w-px h-4 bg-admin-outline-variant/30 ml-3 mr-1.5" />
 
                 {/* Delete Full Table (Danger Zone) */}
                 <button
                     type="button"
                     onClick={() => editor.chain().focus().deleteTable().run()}
-                    className="p-1.5 hover:bg-error-container/40 text-error rounded-lg transition-colors"
-                    title="Delete Entire Table"
+                    className="p-2 hover:bg-admin-error/10 text-admin-error rounded-lg transition-colors focus:outline-none"
+                    title="Purge Entire Table"
                 >
-                    <Trash2 size={14} />
+                    <Trash2 size={15} strokeWidth={2.5} />
                 </button>
             </div>
         </BubbleMenu>
