@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\ProjectPageController as AdminProjectPageController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Foundation\Application;
@@ -28,9 +29,8 @@ Route::middleware(['auth', 'verified'])
     ->prefix('admin')
     ->group(function () {
 
-        Route::get('/dashboard', function () {
-            return Inertia::render('Admin/Dashboard');
-        })->name('dashboard');
+        // Route::get('/dashboard', function () {return Inertia::render('Admin/Dashboard');})->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/projects', [AdminProjectController::class, 'index'])->name('admin.projects.index');
         Route::get('/projects/create', [AdminProjectController::class, 'create'])->name('admin.projects.create');
