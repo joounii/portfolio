@@ -10,5 +10,6 @@ class ContactMessage extends Model
         'identifier_name',
         'return_path_email',
         'payload_message',
+        'is_read',
     ];
 }

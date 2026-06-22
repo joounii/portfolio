@@ -14,13 +14,18 @@ interface Message {
 interface Props {
     auth: any;
     messages: Message[];
+    currentFilter?: string | null;
 }
 
-export default function Inbox({ auth, messages }: Props) {
+export default function Inbox({ auth, messages, currentFilter }: Props) {
     const deleteMessage = (id: number) => {
         if (confirm('Are you sure you want to delete this message?')) {
             router.delete(route('contact.destroy', id));
         }
+    };
+
+    const setFilter = (filter: string | null) => {
+        router.get(route('admin.inbox'), { filter: filter }, { preserveState: true });
     };
 
     return (
@@ -39,6 +44,26 @@ export default function Inbox({ auth, messages }: Props) {
                             <p className="text-sm text-admin-on-surface-variant mt-1">
                                 Review and manage incoming communications.
                             </p>
+                        </div>
+
+                        {/* Filter Buttons */}
+                        <div className="flex gap-2 bg-admin-surface-container-low p-1 rounded-lg">
+                            <button
+                                onClick={() => setFilter(null)}
+                                className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+                                    !currentFilter ? 'bg-admin-surface text-admin-on-surface shadow-sm' : 'text-admin-on-surface-variant hover:text-admin-on-surface'
+                                }`}
+                            >
+                                All
+                            </button>
+                            <button
+                                onClick={() => setFilter('unread')}
+                                className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+                                    currentFilter === 'unread' ? 'bg-admin-surface text-admin-on-surface shadow-sm' : 'text-admin-on-surface-variant hover:text-admin-on-surface'
+                                }`}
+                            >
+                                Unread
+                            </button>
                         </div>
                     </div>
 
@@ -90,13 +115,15 @@ export default function Inbox({ auth, messages }: Props) {
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap">
                                                         <div className="flex items-center gap-2">
-                                                            {/* Unread Indicator */}
                                                             {!msg.is_read && (
                                                                 <span className="w-1.5 h-1.5 rounded-full bg-admin-primary shadow-[0_0_6px_rgba(255,140,0,0.8)]"></span>
                                                             )}
-                                                            <div className={`text-sm tracking-wide ${!msg.is_read ? 'font-bold text-admin-on-surface' : 'font-semibold text-admin-on-surface/80'}`}>
+                                                            <a
+                                                                href={route('admin.contact.show', msg.id)}
+                                                                className={`text-sm tracking-wide hover:underline ${!msg.is_read ? 'font-bold text-admin-on-surface' : 'font-semibold text-admin-on-surface/80'}`}
+                                                            >
                                                                 {msg.identifier_name}
-                                                            </div>
+                                                            </a>
                                                         </div>
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-admin-on-surface-variant group-hover:text-admin-on-surface transition-colors">

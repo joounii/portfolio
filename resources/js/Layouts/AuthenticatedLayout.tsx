@@ -76,11 +76,11 @@ export default function Authenticated({
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content
-                                        contentClasses="py-1 bg-admin-surface-container border border-admin-outline-variant/30 rounded-xl shadow-2xl"
+                                        contentClasses="py-1 bg-admin-surface-container border border-admin-outline-variant/30 rounded-xl shadow-2xl overflow-hidden"
                                     >
                                         <Dropdown.Link
                                             href={route('profile.edit')}
-                                            className="block px-4 py-2 text-xs font-bold uppercase tracking-widest text-admin-on-surface-variant hover:bg-admin-surface-container-high hover:text-admin-on-surface transition-colors"
+                                            className="block px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-admin-on-surface-variant hover:!bg-admin-surface-container-high hover:!text-admin-on-surface transition-none"
                                         >
                                             Profile
                                         </Dropdown.Link>
@@ -89,7 +89,7 @@ export default function Authenticated({
                                             href={route('logout')}
                                             method="post"
                                             as="button"
-                                            className="block w-full text-left px-4 py-2 text-xs font-bold uppercase tracking-widest text-admin-on-surface-variant hover:bg-admin-surface-container-high hover:text-admin-on-surface transition-colors"
+                                            className="block w-full text-left px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-admin-on-surface-variant hover:!bg-admin-surface-container-high hover:!text-admin-on-surface transition-none"
                                         >
                                             Log Out
                                         </Dropdown.Link>

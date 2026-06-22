@@ -26,22 +26,17 @@ class ImageUploadController extends Controller
             $extension = strtolower($file->getClientOriginalExtension());
             $filename = time() . '_' . $file->getClientOriginalName();
 
-            // 1. Always preserve the exact original file in the private masters storage
             $file->storeAs('masters', $filename, 'local');
 
             $proxyPath = 'editor-proxies/' . pathinfo($filename, PATHINFO_FILENAME);
 
-            // 2. SVG Architectural Short-Circuit
             if ($extension === 'svg') {
                 $proxyPath .= '.svg';
 
-                // Directly move a pristine copy of the SVG into public storage
                 Storage::disk('public')->put($proxyPath, file_get_contents($file));
             } else {
-                // 3. Native Processing for all Modern Raster Formats
                 $imagick = new Imagick($file->getRealPath());
 
-                // Handle multi-frame images safely (GIFs, animated WebPs)
                 if ($imagick->getNumberImages() > 1) {
                     $imagick = $imagick->coalesceImages();
                     $imagick->iterator();
@@ -55,12 +50,10 @@ class ImageUploadController extends Controller
                     $newHeight = (int) (($height / $width) * 1200);
                     $imagick->resizeImage($newWidth, $newHeight, Imagick::FILTER_LANCZOS, 1);
 
-                    // Force downscaled large images to PNG to guarantee transparency support
                     $imagick->setImageFormat('png');
                     $proxyPath .= '.png';
                     $outputContent = $imagick->getImageBlob();
                 } else {
-                    // Small modern raster formats keep their original formatting and footprint
                     $proxyPath .= '.' . $extension;
                     $outputContent = file_get_contents($file);
                 }

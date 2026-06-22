@@ -48,6 +48,7 @@ Route::middleware(['auth', 'verified'])
         Route::put('/projects/{project}/pages/{page}', [AdminProjectPageController::class, 'update'])->name('admin.projects.page.update');
 
         Route::get('/inbox', [ContactController::class, 'index'])->name('admin.inbox');
+        Route::get('/admin/inbox/{message}', [ContactController::class, 'show'])->name('admin.contact.show')->middleware(['auth']);
         Route::delete('/inbox/{message}', [ContactController::class, 'destroy'])->name('contact.destroy');
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
