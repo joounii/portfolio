@@ -37,14 +37,13 @@ export default function HeadingSelector({ editor }: Props) {
 
     return (
         <div className="relative inline-flex items-center" ref={dropdownRef}>
-            {/* Trigger Button */}
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className={`flex items-center gap-1.5 px-2.5 h-9 text-sm font-bold tracking-wide border rounded-md shadow-sm transition-colors ${
+                className={`flex items-center gap-1.5 px-2.5 h-[34px] text-[11px] font-bold uppercase tracking-widest border rounded-md transition-colors focus:outline-none ${
                     isOpen
-                        ? 'bg-admin-surface-container-highest border-admin-outline-variant/50 text-admin-on-surface'
-                        : 'bg-admin-surface-container-lowest border-admin-outline-variant/30 text-admin-on-surface-variant hover:bg-admin-surface-container-high hover:text-admin-on-surface'
+                        ? 'bg-admin-surface-container-highest text-admin-on-surface border-admin-outline-variant/50 shadow-sm'
+                        : 'bg-transparent text-admin-on-surface-variant border-admin-outline-variant/30 hover:bg-admin-surface-container-high hover:text-admin-on-surface hover:border-admin-outline-variant/50'
                 }`}
             >
                 <span className="min-w-[85px] text-left">{getActiveLabel()}</span>
@@ -54,7 +53,6 @@ export default function HeadingSelector({ editor }: Props) {
                 />
             </button>
 
-            {/* Dropdown Menu */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -77,10 +75,10 @@ export default function HeadingSelector({ editor }: Props) {
                                         opt.action(editor);
                                         setIsOpen(false);
                                     }}
-                                    className={`flex items-center gap-2.5 w-full px-3 py-2 text-sm rounded-lg transition-colors text-left tracking-wide ${
+                                    className={`flex items-center gap-2.5 w-full px-3 py-2.5 text-[11px] font-bold uppercase tracking-widest rounded-lg transition-colors text-left focus:outline-none ${
                                         isActive
-                                            ? 'bg-admin-primary/10 text-admin-primary font-bold'
-                                            : 'text-admin-on-surface-variant font-medium hover:bg-admin-surface-container-high hover:text-admin-on-surface'
+                                            ? 'bg-admin-primary/10 text-admin-primary'
+                                            : 'text-admin-on-surface-variant hover:bg-admin-surface-container-high hover:text-admin-on-surface'
                                     }`}
                                 >
                                     <Icon size={16} strokeWidth={isActive ? 2.5 : 2} />

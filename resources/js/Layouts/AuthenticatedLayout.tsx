@@ -16,14 +16,12 @@ export default function Authenticated({
 
     return (
         <div className="min-h-screen bg-admin-surface text-admin-on-surface font-body">
-            {/* Nav container uses slightly elevated container color */}
             <nav className="border-b border-admin-outline-variant/40 bg-admin-surface-container">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
                                 <Link href="/">
-                                    {/* Made the logo pop with the signature admin-primary orange */}
                                     <ApplicationLogo className="block h-9 w-auto fill-current text-admin-primary transition-transform hover:scale-105" />
                                 </Link>
                             </div>
@@ -77,14 +75,21 @@ export default function Authenticated({
                                         </span>
                                     </Dropdown.Trigger>
 
-                                    <Dropdown.Content>
-                                        <Dropdown.Link href={route('profile.edit')}>
+                                    <Dropdown.Content
+                                        contentClasses="py-1 bg-admin-surface-container border border-admin-outline-variant/30 rounded-xl shadow-2xl"
+                                    >
+                                        <Dropdown.Link
+                                            href={route('profile.edit')}
+                                            className="block px-4 py-2 text-xs font-bold uppercase tracking-widest text-admin-on-surface-variant hover:bg-admin-surface-container-high hover:text-admin-on-surface transition-colors"
+                                        >
                                             Profile
                                         </Dropdown.Link>
+
                                         <Dropdown.Link
                                             href={route('logout')}
                                             method="post"
                                             as="button"
+                                            className="block w-full text-left px-4 py-2 text-xs font-bold uppercase tracking-widest text-admin-on-surface-variant hover:bg-admin-surface-container-high hover:text-admin-on-surface transition-colors"
                                         >
                                             Log Out
                                         </Dropdown.Link>
@@ -160,7 +165,6 @@ export default function Authenticated({
             </nav>
 
             {header && (
-                // Header section slightly elevated from the base surface
                 <header className="bg-admin-surface-container-low border-b border-admin-outline-variant/20 shadow-sm">
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                         {header}

@@ -314,48 +314,40 @@ export default function TextEditor({ content, onChange }: Props) {
     return (
         <div className={`flex flex-col ${isCtrlPressed ? 'is-linking' : ''}`}>
 
-            {/* Restyled Sticky Toolbar */}
-            <div className="flex flex-wrap items-center gap-1.5 p-2 bg-admin-surface-container-low/90 backdrop-blur-md border border-admin-outline-variant/30 border-b-0 rounded-t-xl sticky top-0 z-40 shadow-sm">
+            <div className="flex flex-wrap items-center gap-3 p-2.5 bg-admin-surface-container-low/90 backdrop-blur-md border border-admin-outline-variant/30 border-b-0 rounded-t-xl sticky top-0 z-40 shadow-sm">
 
-                {/* Block Selection */}
-                <HeadingSelector editor={editor} />
+                {/* Group 1: Semantics */}
+                <div className="flex items-center p-1 bg-admin-surface-container-lowest border border-admin-outline-variant/20 rounded-lg shadow-inner">
+                    <HeadingSelector editor={editor} />
+                </div>
 
-                <div className="w-px h-6 bg-admin-outline-variant/40 mx-1" />
-
-                {/* Formatting Group */}
-                <div className="flex items-center gap-1">
+                {/* Group 2: Typography */}
+                <div className="flex items-center gap-0.5 p-1 bg-admin-surface-container-lowest border border-admin-outline-variant/20 rounded-lg shadow-inner">
                     <BoldButton editor={editor} />
                     <ItalicButton editor={editor} />
                     <UnderlineButton editor={editor} />
                     <StrikeButton editor={editor} />
                 </div>
 
-                <div className="w-px h-6 bg-admin-outline-variant/40 mx-1" />
-
-                {/* Link Tool */}
-                <LinkButton editor={editor} />
-
-                <div className="w-px h-6 bg-admin-outline-variant/40 mx-1" />
-
-                {/* Color Tool */}
-                <FontColor editor={editor} />
-
-                <div className="w-px h-6 bg-admin-outline-variant/40 mx-1" />
-
-                {/* Code */}
-                <CodeBlockButton editor={editor} />
-                <InlineCodeButton editor={editor} />
-
-                {/* List Group */}
-                <div className="flex items-center gap-1">
-                    <BulletListButton editor={editor} />
-                    <OrderedListButton editor={editor} />
+                {/* Group 3: Formatting & Links */}
+                <div className="flex items-center gap-0.5 p-1 bg-admin-surface-container-lowest border border-admin-outline-variant/20 rounded-lg shadow-inner">
+                    <LinkButton editor={editor} />
+                    <FontColor editor={editor} />
                 </div>
 
-                <div className="w-px h-6 bg-admin-outline-variant/40 mx-1" />
+                {/* Group 4: Code & Dev */}
+                <div className="flex items-center gap-0.5 p-1 bg-admin-surface-container-lowest border border-admin-outline-variant/20 rounded-lg shadow-inner">
+                    <InlineCodeButton editor={editor} />
+                    <CodeBlockButton editor={editor} />
+                </div>
 
-                {/* Table Selector */}
-                <TableSelector editor={editor} />
+                {/* Group 5: Lists & Structure */}
+                <div className="flex items-center gap-0.5 p-1 bg-admin-surface-container-lowest border border-admin-outline-variant/20 rounded-lg shadow-inner ml-auto sm:ml-0">
+                    <BulletListButton editor={editor} />
+                    <OrderedListButton editor={editor} />
+                    <div className="w-px h-5 bg-admin-outline-variant/30 mx-1" />
+                    <TableSelector editor={editor} />
+                </div>
 
             </div>
 
