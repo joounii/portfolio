@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use App\Models\ContactMessage;
+use App\Observers\ContactMessageObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        ContactMessage::observe(ContactMessageObserver::class);
+
         Vite::prefetch(concurrency: 3);
         if ($this->app->environment('production')) {
             URL::forceScheme('https');
