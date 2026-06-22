@@ -60,7 +60,7 @@ export default function ImageMenu({ editor }: Props) {
         >
             <div
                 data-tiptap-bubble-menu
-                className="flex flex-col gap-2 p-1.5 bg-admin-surface-container/95 border border-admin-outline-variant/30 rounded-xl shadow-2xl backdrop-blur-md transition-all max-w-sm"
+                className="flex flex-col gap-2 p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-2xl backdrop-blur-sm transition-all max-w-sm"
             >
                 {/* Primary Toolbar Controls */}
                 <div className="flex items-center gap-1.5">
