@@ -40,6 +40,13 @@ class ContactController extends Controller
             $query->where('is_starred', false);
         }
 
+        $notesFilter = $request->query('notes_filter', 'all');
+        if ($notesFilter === 'has_notes') {
+            $query->whereNotNull('admin_notes')->where('admin_notes', '!=', '');
+        } elseif ($notesFilter === 'no_notes') {
+            $query->whereNull('admin_notes')->orWhere('admin_notes', '=', '');
+        }
+
         if ($request->filled('search')) {
             $search = $request->query('search');
             $query->where(function ($q) use ($search) {
@@ -65,13 +72,14 @@ class ContactController extends Controller
             $query->orderBy($sortField, $sortDir)->orderBy('created_at', 'desc');
         }
 
-        return Inertia::render('Admin/Inbox/Index', [
-            'messages'          => $query->get(),
-            'currentFilter'     => $request->query('filter'),
-            'currentStarFilter' => $starFilter,
-            'currentSearch'     => $request->query('search', ''),
-            'currentSortBy'     => $sortByParam,
-            'currentSortDir'    => $sortDir
+        return Inertia::render('Admin/Inbox', [
+            'messages'           => $query->get(),
+            'currentFilter'      => $request->query('filter'),
+            'currentStarFilter'  => $starFilter,
+            'currentNotesFilter' => $notesFilter,
+            'currentSearch'      => $request->query('search', ''),
+            'currentSortBy'      => $sortByParam,
+            'currentSortDir'     => $sortDir
         ]);
     }
 
@@ -112,5 +120,16 @@ class ContactController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function updateNotes(Request $request, ContactMessage $message)
+    {
+        $validated = $request->validate([
+            'admin_notes' => 'nullable|string',
+        ]);
+
+        $message->update($validated);
+
+        return redirect()->back()->with('success', 'NOTES_MUTATED');
     }
 }

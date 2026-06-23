@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
-import { Trash2, Mail, Search, X, ChevronUp, ChevronDown, Star, StarOff } from 'lucide-react';
+import { Trash2, Mail, Search, X, ChevronUp, ChevronDown, Star, StarOff, FileText, FileX } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 interface Message {
@@ -10,6 +10,7 @@ interface Message {
     payload_message: string;
     is_read: boolean;
     is_starred: boolean;
+    admin_notes: string | null;
     created_at: string;
 }
 
@@ -17,7 +18,8 @@ interface Props {
     auth: any;
     messages: Message[];
     currentFilter?: string | null;
-    currentStarFilter?: 'all' | 'only' | 'exclude'; // Added typed prop
+    currentStarFilter?: 'all' | 'only' | 'exclude';
+    currentNotesFilter?: 'all' | 'has_notes' | 'no_notes';
     currentSearch?: string;
     currentSortBy?: string;
     currentSortDir?: 'asc' | 'desc';
@@ -28,6 +30,7 @@ export default function Inbox({
     messages,
     currentFilter,
     currentStarFilter = 'all',
+    currentNotesFilter = 'all',
     currentSearch = '',
     currentSortBy = 'received',
     currentSortDir = 'desc'
@@ -51,10 +54,11 @@ export default function Inbox({
         });
     };
 
-    // Central parameter management adding 'starFilterValue' dependency
+    // Central state compiler including 'notesFilterValue'
     const applyParameters = (
         filterValue: string | null,
         starFilterValue: 'all' | 'only' | 'exclude',
+        notesFilterValue: 'all' | 'has_notes' | 'no_notes',
         searchValue: string,
         sortByValue: string,
         sortDirValue: 'asc' | 'desc'
@@ -62,7 +66,8 @@ export default function Inbox({
         const params: Record<string, string> = {
             sort_by: sortByValue,
             sort_dir: sortDirValue,
-            star_filter: starFilterValue
+            star_filter: starFilterValue,
+            notes_filter: notesFilterValue
         };
         if (filterValue) params.filter = filterValue;
         if (searchValue.trim()) params.search = searchValue;
@@ -73,13 +78,21 @@ export default function Inbox({
         });
     };
 
-    // Cycles cleanly between: all -> only -> exclude -> all
     const handleCycleStarFilter = () => {
         let nextStarFilter: 'all' | 'only' | 'exclude' = 'all';
         if (currentStarFilter === 'all') nextStarFilter = 'only';
         else if (currentStarFilter === 'only') nextStarFilter = 'exclude';
 
-        applyParameters(currentFilter || null, nextStarFilter, search, currentSortBy, currentSortDir);
+        applyParameters(currentFilter || null, nextStarFilter, currentNotesFilter, search, currentSortBy, currentSortDir);
+    };
+
+    // Cycles cleanly between: all -> has_notes -> no_notes -> all
+    const handleCycleNotesFilter = () => {
+        let nextNotesFilter: 'all' | 'has_notes' | 'no_notes' = 'all';
+        if (currentNotesFilter === 'all') nextNotesFilter = 'has_notes';
+        else if (currentNotesFilter === 'has_notes') nextNotesFilter = 'no_notes';
+
+        applyParameters(currentFilter || null, currentStarFilter, nextNotesFilter, search, currentSortBy, currentSortDir);
     };
 
     const handleSort = (field: string) => {
@@ -89,21 +102,21 @@ export default function Inbox({
         } else {
             nextDir = field === 'received' ? 'desc' : 'asc';
         }
-        applyParameters(currentFilter || null, currentStarFilter, search, field, nextDir);
+        applyParameters(currentFilter || null, currentStarFilter, currentNotesFilter, search, field, nextDir);
     };
 
     const handleFilterChange = (filter: string | null) => {
-        applyParameters(filter, currentStarFilter, search, currentSortBy, currentSortDir);
+        applyParameters(filter, currentStarFilter, currentNotesFilter, search, currentSortBy, currentSortDir);
     };
 
     const handleSearchSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        applyParameters(currentFilter || null, currentStarFilter, search, currentSortBy, currentSortDir);
+        applyParameters(currentFilter || null, currentStarFilter, currentNotesFilter, search, currentSortBy, currentSortDir);
     };
 
     const clearSearch = () => {
         setSearch('');
-        applyParameters(currentFilter || null, currentStarFilter, '', currentSortBy, currentSortDir);
+        applyParameters(currentFilter || null, currentStarFilter, currentNotesFilter, '', currentSortBy, currentSortDir);
     };
 
     const SortableHeader = ({ field, label }: { field: string, label: string }) => {
@@ -130,6 +143,7 @@ export default function Inbox({
     return (
         <AuthenticatedLayout>
             <Head title="Admin - Inbox" />
+
             <div className="py-10">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
 
@@ -144,7 +158,7 @@ export default function Inbox({
                             </p>
                         </div>
 
-                        {/* Controls Toolbar Wrapper */}
+                        {/* Controls Toolbar Wrapper - Kept h-9 aligned layout boundaries */}
                         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                             <form onSubmit={handleSearchSubmit} className="relative flex items-center h-9">
                                 <Search size={16} className="absolute left-3 text-admin-on-surface-variant/60" />
@@ -164,27 +178,18 @@ export default function Inbox({
 
                             {/* Status Segments Control */}
                             <div className="flex items-center h-9 gap-1 bg-admin-surface-container-low p-1 rounded-lg border border-admin-outline-variant/20">
-                                <button
-                                    onClick={() => handleFilterChange(null)}
-                                    className={`px-3 h-full text-xs font-semibold rounded-md transition-colors ${!currentFilter ? 'bg-admin-surface text-admin-on-surface shadow-sm' : 'text-admin-on-surface-variant hover:text-admin-on-surface'}`}
-                                >
+                                <button onClick={() => handleFilterChange(null)} className={`px-3 h-full text-xs font-semibold rounded-md transition-colors ${!currentFilter ? 'bg-admin-surface text-admin-on-surface shadow-sm' : 'text-admin-on-surface-variant hover:text-admin-on-surface'}`}>
                                     All
                                 </button>
-                                <button
-                                    onClick={() => handleFilterChange('unread')}
-                                    className={`px-3 h-full text-xs font-semibold rounded-md transition-colors ${currentFilter === 'unread' ? 'bg-admin-surface text-admin-on-surface shadow-sm' : 'text-admin-on-surface-variant hover:text-admin-on-surface'}`}
-                                >
+                                <button onClick={() => handleFilterChange('unread')} className={`px-3 h-full text-xs font-semibold rounded-md transition-colors ${currentFilter === 'unread' ? 'bg-admin-surface text-admin-on-surface shadow-sm' : 'text-admin-on-surface-variant hover:text-admin-on-surface'}`}>
                                     Unread
                                 </button>
-                                <button
-                                    onClick={() => handleFilterChange('read')}
-                                    className={`px-3 h-full text-xs font-semibold rounded-md transition-colors ${currentFilter === 'read' ? 'bg-admin-surface text-admin-on-surface shadow-sm' : 'text-admin-on-surface-variant hover:text-admin-on-surface'}`}
-                                >
+                                <button onClick={() => handleFilterChange('read')} className={`px-3 h-full text-xs font-semibold rounded-md transition-colors ${currentFilter === 'read' ? 'bg-admin-surface text-admin-on-surface shadow-sm' : 'text-admin-on-surface-variant hover:text-admin-on-surface'}`}>
                                     Read
                                 </button>
                             </div>
 
-                            {/* Star Toggle Action Button */}
+                            {/* Isolated 3-State Star Toggle Action Button */}
                             <button
                                 type="button"
                                 onClick={handleCycleStarFilter}
@@ -197,28 +202,43 @@ export default function Inbox({
                                 }`}
                             >
                                 {currentStarFilter === 'only' && (
-                                    <>
-                                        <Star size={14} className="fill-amber-500 text-amber-500" />
-                                        <span>Starred Only</span>
-                                    </>
+                                    <><Star size={14} className="fill-amber-500 text-amber-500" /><span>Starred Only</span></>
                                 )}
                                 {currentStarFilter === 'exclude' && (
-                                    <>
-                                        <StarOff size={14} />
-                                        <span>No Starred</span>
-                                    </>
+                                    <><StarOff size={14} /><span>No Starred</span></>
                                 )}
                                 {currentStarFilter === 'all' && (
-                                    <>
-                                        <Star size={14} />
-                                        <span>Stars: All</span>
-                                    </>
+                                    <><Star size={14} /><span>Stars: All</span></>
                                 )}
                             </button>
+
+                            {/* Isolated 3-State Personal Notes Toggle Action Button */}
+                            <button
+                                type="button"
+                                onClick={handleCycleNotesFilter}
+                                className={`flex items-center justify-center h-9 gap-2 px-3 text-xs font-semibold rounded-lg border transition-all whitespace-nowrap ${
+                                    currentNotesFilter === 'has_notes'
+                                        ? 'bg-admin-primary/10 text-admin-primary border-admin-primary/30'
+                                        : currentNotesFilter === 'no_notes'
+                                        ? 'bg-admin-on-surface-variant/10 text-admin-on-surface-variant/80 border-admin-outline-variant/30'
+                                        : 'bg-admin-surface-container-low text-admin-on-surface-variant border-admin-outline-variant/20 hover:text-admin-on-surface'
+                                }`}
+                            >
+                                {currentNotesFilter === 'has_notes' && (
+                                    <><FileText size={14} /><span>Has Notes</span></>
+                                )}
+                                {currentNotesFilter === 'no_notes' && (
+                                    <><FileX size={14} /><span>No Notes</span></>
+                                )}
+                                {currentNotesFilter === 'all' && (
+                                    <><FileText size={14} /><span>Notes: All</span></>
+                                )}
+                            </button>
+
                         </div>
                     </div>
 
-                    {/* Table Layout Markup Container */}
+                    {/* Table Layout */}
                     <div className="bg-admin-surface-container overflow-hidden shadow-sm sm:rounded-xl border border-admin-outline-variant/30">
                         <div className="p-0 text-admin-on-surface">
                             <div className="overflow-x-auto">
@@ -277,6 +297,10 @@ export default function Inbox({
                                                             <a href={route('admin.contact.show', msg.id)} className={`text-sm tracking-wide hover:underline ${!msg.is_read ? 'font-bold text-admin-on-surface' : 'font-semibold text-admin-on-surface/80'}`}>
                                                                 {msg.identifier_name}
                                                             </a>
+                                                            {/* Tiny icon badge if a message has notes in the index view list */}
+                                                            {msg.admin_notes && (
+                                                                <FileText size={12} className="text-admin-primary/60 ml-1"/>
+                                                            )}
                                                         </div>
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-admin-on-surface-variant group-hover:text-admin-on-surface transition-colors">
