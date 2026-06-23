@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\ContactMessage;
 use Illuminate\Http\Request;
+use App\Rules\Turnstile;
 use Inertia\Inertia;
 
 class ContactController extends Controller
@@ -13,6 +15,7 @@ class ContactController extends Controller
             'identifier_name' => 'required|string|max:255',
             'return_path_email' => 'required|email',
             'payload_message' => 'required|string',
+            'turnstile_token' => ['required', new Turnstile],
         ]);
 
         ContactMessage::create($validated);

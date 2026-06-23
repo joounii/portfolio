@@ -39,4 +39,9 @@ return [
         'webhook_url' => env('DISCORD_WEBHOOK_URL'),
     ],
 
+    'turnstile' => [
+        'secret' => env('TURNSTILE_SECRET_KEY'),
+        'site' => env('TURNSTILE_SITE_KEY'),
+    ],
+
 ];

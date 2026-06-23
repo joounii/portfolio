@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\ProjectPageController as AdminProjectPageController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -19,7 +19,7 @@ Route::get('/stack', function () { return Inertia::render('Stack'); })->name('st
 Route::get('/contact', function () { return Inertia::render('Contact'); })->name('contact');
 Route::get('/logs', function () { return Inertia::render('Logs'); })->name('logs');
 
-Route::post('/api/handshake', [ContactController::class, 'store'])->name('contact.store');
+Route::post('/api/handshake', [ContactController::class, 'store'])->middleware(['throttle:3,1'])->name('contact.store');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/api/upload-image', [ImageUploadController::class, 'store'])->name('image.upload');

@@ -4,6 +4,7 @@ import MainLayout from '@/Layouts/MainLayout';
 import ZurichClock from '@/Components/ZurichClock';
 import ContactGrid from '@/Components/ContactGrid';
 import { useForm, usePage, Head } from '@inertiajs/react';
+import { Turnstile } from '@marsidev/react-turnstile';
 import React from 'react';
 
 interface PageProps extends Record<string, any> {
@@ -22,17 +23,23 @@ export default function Contact() {
     const { flash } = usePage<PageProps>().props;
     const isSuccess = flash.success === 'PAYLOAD_RECEIVED';
 
+    const isDev = import.meta.env.DEV;
+
     const { data, setData, post, processing, reset, errors } = useForm({
         identifier_name: '',
         return_path_email: '',
         payload_message: '',
+        turnstile_token: isDev ? 'LOCAL_DEV_BYPASS' : '',
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
         post(route('contact.store'), {
             onSuccess: () => reset(),
-            onError: (err) => console.error("HANDSHAKE_FAILED", err),
+            onError: (err) => {
+                console.error("HANDSHAKE_FAILED", err);
+                (window as any).turnstile?.reset();
+            },
         });
     };
 
@@ -113,7 +120,33 @@ export default function Contact() {
                                         rows={6}
                                     ></textarea>
                                 </div>
-                                <button disabled={processing} className="w-full md:w-auto px-10 py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-bold text-sm tracking-widest rounded-lg flex items-center justify-center gap-3 group/btn transition-all active:scale-95 neon-glow-primary">
+                                {!isDev ? (
+                                    <div className="space-y-2">
+                                        <div className="font-mono text-[10px] text-on-surface-variant tracking-widest uppercase mb-1">
+                                            SECURITY_HANDSHAKE
+                                        </div>
+                                        <Turnstile
+                                            siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
+                                            onSuccess={(token) => setData('turnstile_token', token)}
+                                            onExpire={() => setData('turnstile_token', '')}
+                                            onError={() => setData('turnstile_token', '')}
+                                            options={{ theme: 'dark' }}
+                                        />
+                                        {errors.turnstile_token && (
+                                            <div className="text-[10px] font-mono text-error uppercase tracking-tighter mt-1">
+                                                &lt; [SECURITY_EXCEPTION]: {errors.turnstile_token}
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="p-4 border border-dashed border-outline-variant/30 font-mono text-[10px] text-secondary rounded">
+                                        [SYSTEM_NOTICE]: SECURITY_HANDSHAKE_BYPASS_ACTIVE (DEV_MODE)
+                                    </div>
+                                )}
+                                <button
+                                    disabled={processing || !data.turnstile_token}
+                                    className="w-full md:w-auto px-10 py-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-headline font-bold text-sm tracking-widest rounded-lg flex items-center justify-center gap-3 group/btn transition-all active:scale-95 neon-glow-primary disabled:opacity-50 disabled:pointer-events-none"
+                                >
                                     {processing ? 'UPLOADING_PACKET...' : isSuccess ? 'PAYLOAD_DELIVERED' : 'SEND_PACKET'}
                                     <Send className="text-sm transition-transform group-hover/btn:translate-x-1" size={16} />
                                 </button>
