@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
-import { Trash2, Mail } from 'lucide-react';
+import { Trash2, Mail, Search, X, ChevronUp, ChevronDown } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 interface Message {
     id: number;
@@ -15,17 +16,95 @@ interface Props {
     auth: any;
     messages: Message[];
     currentFilter?: string | null;
+    currentSearch?: string;
+    currentSortBy?: string;
+    currentSortDir?: 'asc' | 'desc';
 }
 
-export default function Inbox({ auth, messages, currentFilter }: Props) {
+export default function Inbox({
+    auth,
+    messages,
+    currentFilter,
+    currentSearch = '',
+    currentSortBy = 'received',
+    currentSortDir = 'desc'
+}: Props) {
+    const [search, setSearch] = useState(currentSearch);
+
+    useEffect(() => {
+        setSearch(currentSearch);
+    }, [currentSearch]);
+
     const deleteMessage = (id: number) => {
         if (confirm('Are you sure you want to delete this message?')) {
             router.delete(route('contact.destroy', id));
         }
     };
 
-    const setFilter = (filter: string | null) => {
-        router.get(route('admin.inbox'), { filter: filter }, { preserveState: true });
+    const applyParameters = (
+        filterValue: string | null,
+        searchValue: string,
+        sortByValue: string,
+        sortDirValue: 'asc' | 'desc'
+    ) => {
+        const params: Record<string, string> = {
+            sort_by: sortByValue,
+            sort_dir: sortDirValue
+        };
+        if (filterValue) params.filter = filterValue;
+        if (searchValue.trim()) params.search = searchValue;
+
+        router.get(route('admin.inbox'), params, {
+            preserveState: true,
+            replace: true
+        });
+    };
+
+    const handleSort = (field: string) => {
+        let nextDir: 'asc' | 'desc' = 'asc';
+
+        if (currentSortBy === field) {
+            nextDir = currentSortDir === 'asc' ? 'desc' : 'asc';
+        } else {
+            nextDir = field === 'received' ? 'desc' : 'asc';
+        }
+
+        applyParameters(currentFilter || null, search, field, nextDir);
+    };
+
+    const handleFilterChange = (filter: string | null) => {
+        applyParameters(filter, search, currentSortBy, currentSortDir);
+    };
+
+    const handleSearchSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        applyParameters(currentFilter || null, search, currentSortBy, currentSortDir);
+    };
+
+    const clearSearch = () => {
+        setSearch('');
+        applyParameters(currentFilter || null, '', currentSortBy, currentSortDir);
+    };
+
+    const SortableHeader = ({ field, label }: { field: string, label: string }) => {
+        const isActive = currentSortBy === field;
+        return (
+            <th
+                onClick={() => handleSort(field)}
+                className="px-6 py-4 text-left text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30 cursor-pointer hover:text-admin-on-surface select-none transition-colors"
+            >
+                <div className="flex items-center gap-1">
+                    <span>{label}</span>
+                    <span className="inline-block text-admin-on-surface-variant/40 group-hover:text-admin-on-surface/80">
+                        {isActive ? (
+                            currentSortDir === 'asc' ? <ChevronUp size={14} className="text-admin-primary" /> : <ChevronDown size={14} className="text-admin-primary" />
+                        ) : (
+                            <ChevronDown size={14} className="opacity-0 hover:opacity-100 transition-opacity" />
+                        )}
+                    </span>
+                </div>
+            </th>
+        );
     };
 
     return (
@@ -35,8 +114,8 @@ export default function Inbox({ auth, messages, currentFilter }: Props) {
             <div className="py-10">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
 
-                    {/* Unified Action Bar */}
-                    <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+                    {/* Action Bar Header */}
+                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
                         <div>
                             <h2 className="text-2xl font-bold text-admin-on-surface tracking-tight">
                                 Message Inbox
@@ -46,24 +125,35 @@ export default function Inbox({ auth, messages, currentFilter }: Props) {
                             </p>
                         </div>
 
-                        {/* Filter Buttons */}
-                        <div className="flex gap-2 bg-admin-surface-container-low p-1 rounded-lg">
-                            <button
-                                onClick={() => setFilter(null)}
-                                className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-colors ${
-                                    !currentFilter ? 'bg-admin-surface text-admin-on-surface shadow-sm' : 'text-admin-on-surface-variant hover:text-admin-on-surface'
-                                }`}
-                            >
-                                All
-                            </button>
-                            <button
-                                onClick={() => setFilter('unread')}
-                                className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-colors ${
-                                    currentFilter === 'unread' ? 'bg-admin-surface text-admin-on-surface shadow-sm' : 'text-admin-on-surface-variant hover:text-admin-on-surface'
-                                }`}
-                            >
-                                Unread
-                            </button>
+                        {/* Search & Tabs Controls Container */}
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                            <form onSubmit={handleSearchSubmit} className="relative flex items-center">
+                                <Search size={16} className="absolute left-3 text-admin-on-surface-variant/60" />
+                                <input
+                                    type="text"
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    placeholder="Search messages..."
+                                    className="pl-9 pr-8 py-1.5 w-full sm:w-64 text-xs rounded-lg border border-admin-outline-variant/40 bg-admin-surface-container text-admin-on-surface placeholder-admin-on-surface-variant/50 focus:outline-none focus:border-admin-primary transition-colors"
+                                />
+                                {search && (
+                                    <button type="button" onClick={clearSearch} className="absolute right-2.5 text-admin-on-surface-variant/60 hover:text-admin-on-surface">
+                                        <X size={14} />
+                                    </button>
+                                )}
+                            </form>
+
+                            <div className="flex gap-1 bg-admin-surface-container-low p-1 rounded-lg border border-admin-outline-variant/20">
+                                <button onClick={() => handleFilterChange(null)} className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${!currentFilter ? 'bg-admin-surface text-admin-on-surface shadow-sm' : 'text-admin-on-surface-variant hover:text-admin-on-surface'}`}>
+                                    All
+                                </button>
+                                <button onClick={() => handleFilterChange('unread')} className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${currentFilter === 'unread' ? 'bg-admin-surface text-admin-on-surface shadow-sm' : 'text-admin-on-surface-variant hover:text-admin-on-surface'}`}>
+                                    Unread
+                                </button>
+                                <button onClick={() => handleFilterChange('read')} className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors ${currentFilter === 'read' ? 'bg-admin-surface text-admin-on-surface shadow-sm' : 'text-admin-on-surface-variant hover:text-admin-on-surface'}`}>
+                                    Read
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -72,23 +162,15 @@ export default function Inbox({ auth, messages, currentFilter }: Props) {
                         <div className="p-0 text-admin-on-surface">
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left text-sm divide-y divide-admin-outline-variant/20">
-
-                                    {/* Refined Table Headers */}
                                     <thead className="bg-admin-surface-container-low/50">
                                         <tr>
-                                            <th className="px-6 py-4 text-left text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30">
-                                                Received
-                                            </th>
-                                            <th className="px-6 py-4 text-left text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30">
-                                                Sender
-                                            </th>
-                                            <th className="px-6 py-4 text-left text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30">
-                                                Email
-                                            </th>
-                                            <th className="px-6 py-4 text-left text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30">
+                                            <SortableHeader field="received" label="Received" />
+                                            <SortableHeader field="sender" label="Sender" />
+                                            <SortableHeader field="email" label="Email" />
+                                            <th className="px-6 py-4 text-left text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30 select-none">
                                                 Message
                                             </th>
-                                            <th className="px-6 py-4 text-right text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30">
+                                            <th className="px-6 py-4 text-right text-[11px] font-bold text-admin-on-surface-variant uppercase tracking-widest border-b border-admin-outline-variant/30 select-none">
                                                 Actions
                                             </th>
                                         </tr>
@@ -100,16 +182,15 @@ export default function Inbox({ auth, messages, currentFilter }: Props) {
                                                 <td colSpan={5} className="px-6 py-16 text-center">
                                                     <div className="flex flex-col items-center justify-center text-admin-on-surface-variant">
                                                         <Mail size={48} className="mb-4 opacity-20" />
-                                                        <p className="text-sm tracking-wide">No messages in the buffer.</p>
+                                                        <p className="text-sm tracking-wide">
+                                                            {search ? 'No results match your search.' : 'No messages in the buffer.'}
+                                                        </p>
                                                     </div>
                                                 </td>
                                             </tr>
                                         ) : (
                                             messages.map((msg) => (
-                                                <tr
-                                                    key={msg.id}
-                                                    className={`hover:bg-admin-surface-container-highest transition-colors group ${!msg.is_read ? 'bg-admin-surface-container-high/30' : ''}`}
-                                                >
+                                                <tr key={msg.id} className={`hover:bg-admin-surface-container-highest transition-colors group ${!msg.is_read ? 'bg-admin-surface-container-high/30' : ''}`}>
                                                     <td className="whitespace-nowrap px-6 py-4 text-xs font-mono text-admin-on-surface-variant group-hover:text-admin-on-surface transition-colors">
                                                         {new Date(msg.created_at).toLocaleString()}
                                                     </td>
@@ -118,10 +199,7 @@ export default function Inbox({ auth, messages, currentFilter }: Props) {
                                                             {!msg.is_read && (
                                                                 <span className="w-1.5 h-1.5 rounded-full bg-admin-primary shadow-[0_0_6px_rgba(255,140,0,0.8)]"></span>
                                                             )}
-                                                            <a
-                                                                href={route('admin.contact.show', msg.id)}
-                                                                className={`text-sm tracking-wide hover:underline ${!msg.is_read ? 'font-bold text-admin-on-surface' : 'font-semibold text-admin-on-surface/80'}`}
-                                                            >
+                                                            <a href={route('admin.contact.show', msg.id)} className={`text-sm tracking-wide hover:underline ${!msg.is_read ? 'font-bold text-admin-on-surface' : 'font-semibold text-admin-on-surface/80'}`}>
                                                                 {msg.identifier_name}
                                                             </a>
                                                         </div>
@@ -134,11 +212,7 @@ export default function Inbox({ auth, messages, currentFilter }: Props) {
                                                     </td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-right">
                                                         <div className="flex justify-end">
-                                                            <button
-                                                                onClick={() => deleteMessage(msg.id)}
-                                                                className="text-admin-on-surface-variant hover:text-admin-error transition-colors"
-                                                                title="Delete Message"
-                                                            >
+                                                            <button onClick={() => deleteMessage(msg.id)} className="text-admin-on-surface-variant hover:text-admin-error transition-colors" title="Delete Message">
                                                                 <Trash2 size={18} />
                                                             </button>
                                                         </div>

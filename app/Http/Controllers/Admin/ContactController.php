@@ -29,11 +29,43 @@ class ContactController extends Controller
 
         if ($request->query('filter') === 'unread') {
             $query->where('is_read', false);
+        } elseif ($request->query('filter') === 'read') {
+            $query->where('is_read', true);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->query('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('identifier_name', 'like', "%{$search}%")
+                  ->orWhere('return_path_email', 'like', "%{$search}%")
+                  ->orWhere('payload_message', 'like', "%{$search}%");
+            });
+        }
+
+        $allowedSortFields = [
+            'received' => 'created_at',
+            'sender'   => 'identifier_name',
+            'email'    => 'return_path_email'
+        ];
+
+        $sortByParam = $request->query('sort_by', 'received');
+        $sortField = $allowedSortFields[$sortByParam] ?? 'created_at';
+
+        $sortDir = strtolower($request->query('sort_dir', 'desc')) === 'asc' ? 'asc' : 'desc';
+
+        if ($sortField === 'created_at') {
+            $query->orderBy($sortField, $sortDir);
+        } else {
+            $query->orderBy($sortField, $sortDir)
+                  ->orderBy('created_at', 'desc');
         }
 
         return Inertia::render('Admin/Inbox', [
-            'messages' => $query->latest()->get(),
-            'currentFilter' => $request->query('filter')
+            'messages' => $query->get(),
+            'currentFilter' => $request->query('filter'),
+            'currentSearch' => $request->query('search', ''),
+            'currentSortBy' => $sortByParam,
+            'currentSortDir' => $sortDir
         ]);
     }
 
