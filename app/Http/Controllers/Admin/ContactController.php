@@ -65,7 +65,7 @@ class ContactController extends Controller
             $query->orderBy($sortField, $sortDir)->orderBy('created_at', 'desc');
         }
 
-        return Inertia::render('Admin/Inbox', [
+        return Inertia::render('Admin/Inbox/Index', [
             'messages'          => $query->get(),
             'currentFilter'     => $request->query('filter'),
             'currentStarFilter' => $starFilter,
@@ -90,7 +90,7 @@ class ContactController extends Controller
             $message->update(['is_read' => true]);
         }
 
-        return Inertia::render('Admin/ShowMessage', [
+        return Inertia::render('Admin/Inbox/Show', [
             'message' => $message
         ]);
     }
