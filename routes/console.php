@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Artisan;
 use Spatie\Sitemap\Sitemap;
 use Illuminate\Support\Facades\Route;
 use Spatie\Sitemap\Tags\Url;
+use App\Models\Reminder;
+use Illuminate\Support\Facades\Schedule;
+use App\Services\DiscordReminderService;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -58,3 +61,24 @@ Artisan::command('sitemap:generate', function () {
     $this->info('Done! Sitemap generated successfully.');
 
 })->purpose('Automatically generate sitemap by scanning non-admin routes');
+
+Schedule::call(function (DiscordReminderService $service) {
+    $dueReminders = Reminder::with('remindable')
+                            ->where('is_sent', false)
+                            ->where('reminder_at', '<=', now())
+                            ->get();
+
+    if ($dueReminders->isEmpty()) {
+        return;
+    }
+
+    $webhookUrl = config('services.discord.webhook_url');
+
+    foreach ($dueReminders as $reminder) {
+        $payload = $service->makePayload($reminder);
+
+        Http::post($webhookUrl, $payload);
+
+        $reminder->update(['is_sent' => true]);
+    }
+})->everyMinute();

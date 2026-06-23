@@ -90,7 +90,7 @@ class ContactController extends Controller
         }
 
         return Inertia::render('Admin/Inbox/Show', [
-            'message' => $message
+            'message' => $message->load('reminders')
         ]);
     }
 

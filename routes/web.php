@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\ReminderController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\ProjectPageController as AdminProjectPageController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -29,7 +30,6 @@ Route::middleware(['auth', 'verified'])
     ->prefix('admin')
     ->group(function () {
 
-        // Route::get('/dashboard', function () {return Inertia::render('Admin/Dashboard');})->name('dashboard');
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/projects', [AdminProjectController::class, 'index'])->name('admin.projects.index');
@@ -57,6 +57,8 @@ Route::middleware(['auth', 'verified'])
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        Route::patch('/reminders/{type}/{id}', [ReminderController::class, 'storeOrUpdate'])->name('reminders.store-or-update');
     });
 
 require __DIR__.'/auth.php';

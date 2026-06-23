@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Reminder;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class ContactMessage extends Model
 {
@@ -14,4 +16,9 @@ class ContactMessage extends Model
         'is_starred',
         'admin_notes',
     ];
+
+    public function reminders(): MorphMany
+    {
+        return $this->morphMany(Reminder::class, 'remindable');
+    }
 }
