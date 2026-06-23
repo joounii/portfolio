@@ -11,5 +11,7 @@ class ContactMessage extends Model
         'return_path_email',
         'payload_message',
         'is_read',
+        'is_starred',
+        'admin_notes',
     ];
 }
