@@ -184,7 +184,7 @@ export default function Inbox({
                                 </button>
                             </div>
 
-                            {/* Isolated 3-State Star Toggle Action Button */}
+                            {/* Star Toggle Action Button */}
                             <button
                                 type="button"
                                 onClick={handleCycleStarFilter}

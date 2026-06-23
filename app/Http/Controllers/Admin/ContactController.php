@@ -75,15 +75,6 @@ class ContactController extends Controller
         ]);
     }
 
-    public function toggleStar(ContactMessage $message)
-    {
-        $message->update([
-            'is_starred' => !$message->is_starred
-        ]);
-
-        return redirect()->back()->with('success', 'STAR_STATUS_MUTATED');
-    }
-
     public function show(ContactMessage $message)
     {
         if (!$message->is_read) {
@@ -99,5 +90,27 @@ class ContactController extends Controller
     {
         $message->delete();
         return redirect()->back()->with('success', 'PACKET_PURGED');
+    }
+
+    public function toggleStar(ContactMessage $message)
+    {
+        $message->update([
+            'is_starred' => !$message->is_starred
+        ]);
+
+        return redirect()->back()->with('success', 'STAR_STATUS_MUTATED');
+    }
+
+    public function toggleRead(ContactMessage $message)
+    {
+        $message->update([
+            'is_read' => !$message->is_read
+        ]);
+
+        if (!$message->is_read) {
+            return redirect()->route('admin.inbox')->with('success', 'PACKET_MARKED_UNREAD');
+        }
+
+        return redirect()->back();
     }
 }
