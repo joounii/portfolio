@@ -7,7 +7,13 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Reminder extends Model
 {
-    protected $fillable = ['reminder_at', 'is_sent', 'remindable_id', 'remindable_type'];
+    protected $fillable = [
+        'reminder_at',
+        'is_sent',
+        'remindable_id',
+        'remindable_type',
+        'custom_message',
+    ];
 
     protected $casts = [
         'reminder_at' => 'datetime',

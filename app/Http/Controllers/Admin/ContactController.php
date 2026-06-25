@@ -72,7 +72,7 @@ class ContactController extends Controller
             $query->orderBy($sortField, $sortDir)->orderBy('created_at', 'desc');
         }
 
-        return Inertia::render('Admin/Inbox', [
+        return Inertia::render('Admin/Inbox/Index', [
             'messages'           => $query->get(),
             'currentFilter'      => $request->query('filter'),
             'currentStarFilter'  => $starFilter,

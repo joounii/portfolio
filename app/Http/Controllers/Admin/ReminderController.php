@@ -10,19 +10,15 @@ use Carbon\Carbon;
 
 class ReminderController extends Controller
 {
-    public function storeOrUpdate(Request $request, string $type, int $id)
+    public function store(Request $request, string $type, int $id)
     {
         $request->validate([
-            'reminder_at' => 'nullable|string',
+            'reminder_at'    => 'required|string',
+            'custom_message' => 'nullable|string|max:500',
         ]);
 
         $modelClass = Relation::getMorphedModel($type) ?? $type;
         $parentModel = $modelClass::findOrFail($id);
-
-        if (!$request->filled('reminder_at')) {
-            $parentModel->reminders()->delete();
-            return redirect()->back()->with('success', 'REMINDER_DELETED');
-        }
 
         $utcTime = Carbon::parse($request->input('reminder_at'));
 
@@ -30,11 +26,18 @@ class ReminderController extends Controller
             return redirect()->back()->withErrors(['reminder_at' => 'The reminder must be a future date.']);
         }
 
-        $parentModel->reminders()->updateOrCreate(
-            [],
-            ['reminder_at' => $utcTime, 'is_sent' => false]
-        );
+        $parentModel->reminders()->create([
+            'reminder_at'    => $utcTime,
+            'custom_message' => $request->input('custom_message'),
+            'is_sent'        => false
+        ]);
 
-        return redirect()->back()->with('success', 'REMINDER_SCHEDULED');
+        return redirect()->back()->with('success', 'REMINDER_QUEUED');
+    }
+
+    public function destroy(Reminder $reminder)
+    {
+        $reminder->delete();
+        return redirect()->back()->with('success', 'REMINDER_PURGED');
     }
 }

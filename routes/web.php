@@ -58,7 +58,8 @@ Route::middleware(['auth', 'verified'])
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-        Route::patch('/reminders/{type}/{id}', [ReminderController::class, 'storeOrUpdate'])->name('reminders.store-or-update');
+        Route::post('/admin/reminders/{type}/{id}', [ReminderController::class, 'store'])->name('reminders.store');
+        Route::delete('/admin/reminders/{reminder}', [ReminderController::class, 'destroy'])->name('reminders.destroy');
     });
 
 require __DIR__.'/auth.php';

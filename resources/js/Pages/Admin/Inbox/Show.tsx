@@ -7,6 +7,7 @@ import NotesWidget from '@/Components/Admin/NotesWidget';
 interface Reminder {
     id: number;
     reminder_at: string;
+    custom_message: string | null;
     is_sent: boolean;
 }
 
