@@ -31,7 +31,7 @@ class DiscordReminderService
             $description .= "\n\n[Open full message in your admin dashboard](" . route('admin.contact.show', $parent->id) . ")";
 
             return [
-                'content' => '**Admin Reminder Alert!**',
+                'content' => '**Admin Reminder Alert!** @everyone',
                 'embeds' => [[
                     'title'       => 'Scheduled Reminder',
                     'description' => $description,

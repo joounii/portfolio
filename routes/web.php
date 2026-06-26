@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\ProjectPageController as AdminProjectPageControll
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\Games\GamesCatalogController;
+use App\Http\Controllers\Games\SnakeGameController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,40 +28,48 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/api/upload-image', [ImageUploadController::class, 'store'])->name('image.upload');
 });
 
-Route::middleware(['auth', 'verified'])
-    ->prefix('admin')
-    ->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
 
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        Route::get('/projects', [AdminProjectController::class, 'index'])->name('admin.projects.index');
-        Route::get('/projects/create', [AdminProjectController::class, 'create'])->name('admin.projects.create');
-        Route::post('/projects', [AdminProjectController::class, 'store'])->name('admin.projects.store');
-        Route::get('/projects/{project}', [AdminProjectController::class, 'show'])->name('admin.projects.show');
-        Route::get('/projects/{project}/edit', [AdminProjectController::class, 'edit'])->name('admin.projects.edit');
-        Route::put('/projects/{project}', [AdminProjectController::class, 'update'])->name('admin.projects.update');
-        Route::delete('/projects/{project}', [AdminProjectController::class, 'destroy'])->name('admin.projects.destroy');
-        Route::patch('/projects/{project}/pages/{page}/toggle', [AdminProjectController::class, 'toggleActivePage'])->name('admin.projects.page.toggle');
-        Route::post('/projects/{project}/pages/import', [AdminProjectController::class, 'import'])->name('admin.projects.page.import');
+    Route::get('/projects', [AdminProjectController::class, 'index'])->name('admin.projects.index');
+    Route::get('/projects/create', [AdminProjectController::class, 'create'])->name('admin.projects.create');
+    Route::post('/projects', [AdminProjectController::class, 'store'])->name('admin.projects.store');
+    Route::get('/projects/{project}', [AdminProjectController::class, 'show'])->name('admin.projects.show');
+    Route::get('/projects/{project}/edit', [AdminProjectController::class, 'edit'])->name('admin.projects.edit');
+    Route::put('/projects/{project}', [AdminProjectController::class, 'update'])->name('admin.projects.update');
+    Route::delete('/projects/{project}', [AdminProjectController::class, 'destroy'])->name('admin.projects.destroy');
+    Route::patch('/projects/{project}/pages/{page}/toggle', [AdminProjectController::class, 'toggleActivePage'])->name('admin.projects.page.toggle');
+    Route::post('/projects/{project}/pages/import', [AdminProjectController::class, 'import'])->name('admin.projects.page.import');
 
-        Route::get('/projects/{project}/pages/create', [AdminProjectPageController::class, 'create'])->name('admin.projects.page.create');
-        Route::post('/projects/{project}/pages', [AdminProjectPageController::class, 'store'])->name('admin.projects.page.store');
-        Route::get('/projects/{project}/pages/{page}/edit', [AdminProjectPageController::class, 'edit'])->name('admin.projects.page.edit');
-        Route::put('/projects/{project}/pages/{page}', [AdminProjectPageController::class, 'update'])->name('admin.projects.page.update');
+    Route::get('/projects/{project}/pages/create', [AdminProjectPageController::class, 'create'])->name('admin.projects.page.create');
+    Route::post('/projects/{project}/pages', [AdminProjectPageController::class, 'store'])->name('admin.projects.page.store');
+    Route::get('/projects/{project}/pages/{page}/edit', [AdminProjectPageController::class, 'edit'])->name('admin.projects.page.edit');
+    Route::put('/projects/{project}/pages/{page}', [AdminProjectPageController::class, 'update'])->name('admin.projects.page.update');
 
-        Route::get('/inbox', [ContactController::class, 'index'])->name('admin.inbox');
-        Route::get('/inbox/{message}', [ContactController::class, 'show'])->name('admin.contact.show')->middleware(['auth']);
-        Route::delete('/inbox/{message}', [ContactController::class, 'destroy'])->name('contact.destroy');
-        Route::patch('/inbox/{message}/toggle-star', [ContactController::class, 'toggleStar'])->name('contact.toggle-star');
-        Route::patch('/contact/{message}/toggle-read', [ContactController::class, 'toggleRead'])->name('contact.toggle-read');
-        Route::patch('/contact/{message}/notes', [ContactController::class, 'updateNotes'])->name('contact.update-notes');
+    Route::get('/inbox', [ContactController::class, 'index'])->name('admin.inbox');
+    Route::get('/inbox/{message}', [ContactController::class, 'show'])->name('admin.contact.show')->middleware(['auth']);
+    Route::delete('/inbox/{message}', [ContactController::class, 'destroy'])->name('contact.destroy');
+    Route::patch('/inbox/{message}/toggle-star', [ContactController::class, 'toggleStar'])->name('contact.toggle-star');
+    Route::patch('/contact/{message}/toggle-read', [ContactController::class, 'toggleRead'])->name('contact.toggle-read');
+    Route::patch('/contact/{message}/notes', [ContactController::class, 'updateNotes'])->name('contact.update-notes');
 
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-        Route::post('/reminders/{type}/{id}', [ReminderController::class, 'store'])->name('reminders.store');
-        Route::delete('/reminders/{reminder}', [ReminderController::class, 'destroy'])->name('reminders.destroy');
+    Route::post('/reminders/{type}/{id}', [ReminderController::class, 'store'])->name('reminders.store');
+    Route::delete('/reminders/{reminder}', [ReminderController::class, 'destroy'])->name('reminders.destroy');
+});
+
+Route::prefix('games')->as('games.')->group(function () {
+
+    Route::get('/', [GamesCatalogController::class, 'index'])->name('index');
+
+    Route::prefix('snake')->as('snake.')->group(function () {
+        Route::get('/', [SnakeGameController::class, 'index'])->name('index');
     });
+
+});
 
 require __DIR__.'/auth.php';
