@@ -11,6 +11,26 @@ services:
             - /var/www/node_modules
             - build-assets:/var/www/public/build
 
+    scheduler:
+        build: .
+        container_name: portfolio_scheduler
+        restart: unless-stopped
+        env_file: .env
+        networks:
+            - app-network
+        volumes:
+            - ./:/var/www
+            - /var/www/vendor
+            - /var/www/node_modules
+        depends_on:
+            - app
+            - db
+        entrypoint: ["sh", "-c"]
+        command:
+            - |
+                echo "* * * * * cd /var/www && php artisan schedule:run >> /dev/null 2>&1" > /etc/crontabs/root
+                exec crond -f -l 2
+
     webserver:
         image: nginx:alpine
         restart: unless-stopped

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\ReminderController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\ProjectPageController as AdminProjectPageController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -29,7 +30,6 @@ Route::middleware(['auth', 'verified'])
     ->prefix('admin')
     ->group(function () {
 
-        // Route::get('/dashboard', function () {return Inertia::render('Admin/Dashboard');})->name('dashboard');
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/projects', [AdminProjectController::class, 'index'])->name('admin.projects.index');
@@ -48,12 +48,18 @@ Route::middleware(['auth', 'verified'])
         Route::put('/projects/{project}/pages/{page}', [AdminProjectPageController::class, 'update'])->name('admin.projects.page.update');
 
         Route::get('/inbox', [ContactController::class, 'index'])->name('admin.inbox');
-        Route::get('/admin/inbox/{message}', [ContactController::class, 'show'])->name('admin.contact.show')->middleware(['auth']);
+        Route::get('/inbox/{message}', [ContactController::class, 'show'])->name('admin.contact.show')->middleware(['auth']);
         Route::delete('/inbox/{message}', [ContactController::class, 'destroy'])->name('contact.destroy');
+        Route::patch('/inbox/{message}/toggle-star', [ContactController::class, 'toggleStar'])->name('contact.toggle-star');
+        Route::patch('/contact/{message}/toggle-read', [ContactController::class, 'toggleRead'])->name('contact.toggle-read');
+        Route::patch('/contact/{message}/notes', [ContactController::class, 'updateNotes'])->name('contact.update-notes');
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        Route::post('/reminders/{type}/{id}', [ReminderController::class, 'store'])->name('reminders.store');
+        Route::delete('/reminders/{reminder}', [ReminderController::class, 'destroy'])->name('reminders.destroy');
     });
 
 require __DIR__.'/auth.php';

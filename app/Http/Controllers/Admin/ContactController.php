@@ -29,11 +29,57 @@ class ContactController extends Controller
 
         if ($request->query('filter') === 'unread') {
             $query->where('is_read', false);
+        } elseif ($request->query('filter') === 'read') {
+            $query->where('is_read', true);
         }
 
-        return Inertia::render('Admin/Inbox', [
-            'messages' => $query->latest()->get(),
-            'currentFilter' => $request->query('filter')
+        $starFilter = $request->query('star_filter', 'all');
+        if ($starFilter === 'only') {
+            $query->where('is_starred', true);
+        } elseif ($starFilter === 'exclude') {
+            $query->where('is_starred', false);
+        }
+
+        $notesFilter = $request->query('notes_filter', 'all');
+        if ($notesFilter === 'has_notes') {
+            $query->whereNotNull('admin_notes')->where('admin_notes', '!=', '');
+        } elseif ($notesFilter === 'no_notes') {
+            $query->whereNull('admin_notes')->orWhere('admin_notes', '=', '');
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->query('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('identifier_name', 'like', "%{$search}%")
+                  ->orWhere('return_path_email', 'like', "%{$search}%")
+                  ->orWhere('payload_message', 'like', "%{$search}%");
+            });
+        }
+
+        $allowedSortFields = [
+            'received' => 'created_at',
+            'sender'   => 'identifier_name',
+            'email'    => 'return_path_email'
+        ];
+
+        $sortByParam = $request->query('sort_by', 'received');
+        $sortField = $allowedSortFields[$sortByParam] ?? 'created_at';
+        $sortDir = strtolower($request->query('sort_dir', 'desc')) === 'asc' ? 'asc' : 'desc';
+
+        if ($sortField === 'created_at') {
+            $query->orderBy($sortField, $sortDir);
+        } else {
+            $query->orderBy($sortField, $sortDir)->orderBy('created_at', 'desc');
+        }
+
+        return Inertia::render('Admin/Inbox/Index', [
+            'messages'           => $query->get(),
+            'currentFilter'      => $request->query('filter'),
+            'currentStarFilter'  => $starFilter,
+            'currentNotesFilter' => $notesFilter,
+            'currentSearch'      => $request->query('search', ''),
+            'currentSortBy'      => $sortByParam,
+            'currentSortDir'     => $sortDir
         ]);
     }
 
@@ -43,14 +89,48 @@ class ContactController extends Controller
             $message->update(['is_read' => true]);
         }
 
-        return Inertia::render('Admin/ShowMessage', [
-            'message' => $message
+        return Inertia::render('Admin/Inbox/Show', [
+            'message' => $message->load('reminders')
         ]);
     }
 
     public function destroy(ContactMessage $message)
     {
         $message->delete();
-        return redirect()->back()->with('success', 'PACKET_PURGED');
+
+        return redirect()->route('admin.inbox')->with('success', 'PACKET_PURGED');
+    }
+
+    public function toggleStar(ContactMessage $message)
+    {
+        $message->update([
+            'is_starred' => !$message->is_starred
+        ]);
+
+        return redirect()->back()->with('success', 'STAR_STATUS_MUTATED');
+    }
+
+    public function toggleRead(ContactMessage $message)
+    {
+        $message->update([
+            'is_read' => !$message->is_read
+        ]);
+
+        if (!$message->is_read) {
+            return redirect()->route('admin.inbox')->with('success', 'PACKET_MARKED_UNREAD');
+        }
+
+        return redirect()->back();
+    }
+
+    public function updateNotes(Request $request, ContactMessage $message)
+    {
+        $validated = $request->validate([
+            'admin_notes' => 'nullable|string',
+        ]);
+
+        $message->update($validated);
+
+        return redirect()->back()->with('success', 'NOTES_MUTATED');
     }
 }

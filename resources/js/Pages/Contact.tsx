@@ -122,9 +122,6 @@ export default function Contact() {
                                 </div>
                                 {!isDev ? (
                                     <div className="space-y-2">
-                                        <div className="font-mono text-[10px] text-on-surface-variant tracking-widest uppercase mb-1">
-                                            SECURITY_HANDSHAKE
-                                        </div>
                                         <Turnstile
                                             siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
                                             onSuccess={(token) => setData('turnstile_token', token)}

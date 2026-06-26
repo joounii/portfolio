@@ -349,11 +349,6 @@ export default function TextEditor({ content, onChange }: Props) {
                     <TableSelector editor={editor} />
                 </div>
 
-                <div className="w-px h-6 bg-admin-outline-variant/40 mx-1" />
-
-                {/* Table Selector */}
-                <TableSelector editor={editor} />
-
             </div>
 
             <ImageMenu editor={editor} />
