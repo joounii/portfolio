@@ -97,7 +97,8 @@ class ContactController extends Controller
     public function destroy(ContactMessage $message)
     {
         $message->delete();
-        return redirect()->back()->with('success', 'PACKET_PURGED');
+
+        return redirect()->route('admin.inbox')->with('success', 'PACKET_PURGED');
     }
 
     public function toggleStar(ContactMessage $message)

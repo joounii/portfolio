@@ -48,7 +48,7 @@ Route::middleware(['auth', 'verified'])
         Route::put('/projects/{project}/pages/{page}', [AdminProjectPageController::class, 'update'])->name('admin.projects.page.update');
 
         Route::get('/inbox', [ContactController::class, 'index'])->name('admin.inbox');
-        Route::get('/admin/inbox/{message}', [ContactController::class, 'show'])->name('admin.contact.show')->middleware(['auth']);
+        Route::get('/inbox/{message}', [ContactController::class, 'show'])->name('admin.contact.show')->middleware(['auth']);
         Route::delete('/inbox/{message}', [ContactController::class, 'destroy'])->name('contact.destroy');
         Route::patch('/inbox/{message}/toggle-star', [ContactController::class, 'toggleStar'])->name('contact.toggle-star');
         Route::patch('/contact/{message}/toggle-read', [ContactController::class, 'toggleRead'])->name('contact.toggle-read');
@@ -58,8 +58,8 @@ Route::middleware(['auth', 'verified'])
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-        Route::post('/admin/reminders/{type}/{id}', [ReminderController::class, 'store'])->name('reminders.store');
-        Route::delete('/admin/reminders/{reminder}', [ReminderController::class, 'destroy'])->name('reminders.destroy');
+        Route::post('/reminders/{type}/{id}', [ReminderController::class, 'store'])->name('reminders.store');
+        Route::delete('/reminders/{reminder}', [ReminderController::class, 'destroy'])->name('reminders.destroy');
     });
 
 require __DIR__.'/auth.php';

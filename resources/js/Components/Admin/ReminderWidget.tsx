@@ -113,7 +113,9 @@ export default function ReminderWidget({ morphType, parentFieldId, reminders = [
                     <button
                         type="submit"
                         disabled={processing || !data.reminder_at}
-                        className="flex items-center justify-center px-4 text-xs font-bold rounded-lg bg-admin-primary text-admin-on-primary hover:opacity-90 disabled:opacity-40 transition-opacity whitespace-nowrap"
+                        className="flex items-center justify-center px-4 text-xs font-bold rounded-lg border transition-all whitespace-nowrap
+                            enabled:border-admin-primary/40 enabled:bg-admin-primary/5 enabled:text-admin-primary enabled:hover:bg-admin-primary/10 enabled:hover:opacity-90
+                            disabled:border-admin-outline-variant/20 disabled:bg-admin-surface-container-low disabled:text-admin-on-surface-variant/40"
                     >
                         Save
                     </button>

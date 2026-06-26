@@ -17,6 +17,13 @@ class ContactMessage extends Model
         'admin_notes',
     ];
 
+    protected static function booted(): void
+    {
+        static::deleting(function (ContactMessage $message) {
+            $message->reminders()->delete();
+        });
+    }
+
     public function reminders(): MorphMany
     {
         return $this->morphMany(Reminder::class, 'remindable');
