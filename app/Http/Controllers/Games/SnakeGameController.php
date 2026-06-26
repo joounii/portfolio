@@ -12,9 +12,9 @@ class SnakeGameController extends Controller
     {
         $snakeConfigurationPresets = [
             'difficulties' => [
-                ['level' => 'slug', 'label' => 'Lazy Worm (Easy)', 'speedMs' => 140],
-                ['level' => 'classic', 'label' => 'Standard Retro (Medium)', 'speedMs' => 90],
-                ['level' => 'viper', 'label' => 'Python Override (Hard)', 'speedMs' => 45],
+                ['level' => 'slow', 'label' => 'Lazy Worm (Slow)', 'speedMs' => 140],
+                ['level' => 'medium', 'label' => 'Standard Retro (Medium)', 'speedMs' => 90],
+                ['level' => 'fast', 'label' => 'Python Override (Fast)', 'speedMs' => 45],
             ],
             'mods' => [
                 ['id' => 'walls', 'name' => 'Solid Borders', 'desc' => 'Crashing into bounds triggers instant game-over.'],

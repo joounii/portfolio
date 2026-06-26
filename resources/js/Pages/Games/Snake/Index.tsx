@@ -1,6 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft, Play, Settings, Trophy } from 'lucide-react';
 import { useState } from 'react';
+import SnakeCanvas from './Components/SnakeCanvas';
 
 interface Difficulty {
     level: string;
@@ -22,9 +23,22 @@ interface Props {
 }
 
 export default function Index({ presets }: Props) {
-    const [selectedDifficulty, setSelectedDifficulty] = useState('classic');
+    const [selectedDifficulty, setSelectedDifficulty] = useState('medium');
     const [activeMod, setActiveMod] = useState('walls');
     const [isPlaying, setIsPlaying] = useState(false);
+    const [gameOverScore, setGameOverScore] = useState<number | null>(null);
+    const [lastPlayedDifficulty, setLastPlayedDifficulty] = useState<string>('medium');
+
+    const handleGameOver = (finalScore: number, playedDifficulty: string) => {
+        setIsPlaying(false);
+        setGameOverScore(finalScore);
+        setLastPlayedDifficulty(playedDifficulty);
+    };
+
+    const handleStartGame = () => {
+        setGameOverScore(null);
+        setIsPlaying(true);
+    };
 
     return (
         <div className="min-h-screen bg-neutral-950 text-neutral-100 antialiased font-sans p-6">
@@ -50,8 +64,6 @@ export default function Index({ presets }: Props) {
 
                     {/* Control Panel Area Column */}
                     <div className="lg:col-span-1 space-y-4">
-
-                        {/* Box 1: Difficulty Settings */}
                         <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-5 space-y-3">
                             <h3 className="text-xs font-bold font-mono text-neutral-400 tracking-wider uppercase flex items-center gap-1.5">
                                 <Settings size={12} /> Game Tuning Presets
@@ -74,7 +86,6 @@ export default function Index({ presets }: Props) {
                             </div>
                         </div>
 
-                        {/* Box 2: Mechanics Modification Toggles */}
                         <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-5 space-y-3">
                             <h3 className="text-xs font-bold font-mono text-neutral-400 tracking-wider uppercase">
                                 Boundary Physics Mod
@@ -83,12 +94,11 @@ export default function Index({ presets }: Props) {
                                 {presets.mods.map((mod) => (
                                     <div
                                         key={mod.id}
-                                        onClick={() => !isPlaying && setActiveMod(mod.id)}
-                                        className={`p-3 rounded-lg border text-left cursor-pointer transition-all ${
+                                        className={`p-3 rounded-lg border text-left transition-all ${
                                             activeMod === mod.id
                                                 ? 'bg-neutral-950 border-orange-500/40 text-neutral-100'
-                                                : 'bg-neutral-950/40 border-neutral-800/60 text-neutral-400 opacity-60'
-                                        } ${isPlaying ? 'pointer-events-none' : ''}`}
+                                                : 'bg-neutral-950/40 border-neutral-800/60 text-neutral-500 opacity-40 cursor-not-allowed'
+                                        }`}
                                     >
                                         <p className="text-xs font-bold">{mod.name}</p>
                                         <p className="text-[10px] text-neutral-500 leading-snug mt-0.5">{mod.desc}</p>
@@ -100,35 +110,44 @@ export default function Index({ presets }: Props) {
 
                     {/* Main Arena Gameplay Screen Column */}
                     <div className="lg:col-span-2">
-                        <div className="w-full aspect-square bg-neutral-900 border border-neutral-800 rounded-2xl shadow-xl flex flex-col items-center justify-center p-6 relative overflow-hidden">
+                        <div className="w-full min-h-[500px] bg-neutral-900 border border-neutral-800 rounded-2xl shadow-xl flex flex-col items-center justify-center p-6 overflow-hidden">
 
                             {isPlaying ? (
-                                <div className="text-center space-y-2">
-                                    <p className="font-mono text-xs text-neutral-500">[ Canvas Game Loop Running ]</p>
-                                    <p className="text-xs text-neutral-400">Difficulty: <span className="text-orange-500 font-bold">{selectedDifficulty}</span> | Mode: <span className="text-orange-500 font-bold">{activeMod}</span></p>
-                                    <button
-                                        onClick={() => setIsPlaying(false)}
-                                        className="mt-4 px-4 py-1.5 text-xs font-bold bg-neutral-800 rounded-lg hover:bg-neutral-700 transition-colors"
-                                    >
-                                        Quit Match
-                                    </button>
-                                </div>
+                                <SnakeCanvas
+                                    difficulty={selectedDifficulty}
+                                    onGameOver={handleGameOver}
+                                    onQuit={() => setIsPlaying(false)}
+                                />
                             ) : (
-                                <div className="text-center max-w-sm space-y-4">
-                                    <div className="w-12 h-12 rounded-full bg-orange-600/10 text-orange-500 flex items-center justify-center mx-auto shadow-inner">
-                                        <Play size={20} fill="currentColor" className="ml-0.5" />
-                                    </div>
+                                <div className="text-center max-w-sm space-y-5">
+                                    {gameOverScore !== null ? (
+                                        <div className="space-y-2 animate-scale-up">
+                                            <div className="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mx-auto">
+                                                <Trophy size={20} />
+                                            </div>
+                                            <h2 className="text-xl font-black text-red-500 tracking-wide uppercase">Game Over</h2>
+                                            <p className="text-sm text-neutral-400">
+                                                You scored <span className="text-white font-bold font-mono">{gameOverScore}</span> points on <span className="text-orange-500 font-semibold">{lastPlayedDifficulty}</span> speed!
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <div className="w-12 h-12 rounded-full bg-orange-600/10 text-orange-500 flex items-center justify-center mx-auto shadow-inner">
+                                            <Play size={20} fill="currentColor" className="ml-0.5" />
+                                        </div>
+                                    )}
+
                                     <div>
-                                        <h2 className="text-lg font-bold">Ready to Start?</h2>
+                                        <h2 className="text-md font-bold">{gameOverScore !== null ? "Try Again?" : "Ready to Start?"}</h2>
                                         <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
-                                            The game board will launch inside this window using your active speed config and physical rule parameters. Use arrow keys to maneuver.
+                                            The game viewport will execute within this card frame. Use **Arrow Keys** or **WASD** inputs on your keyboard to navigate the snake.
                                         </p>
                                     </div>
+
                                     <button
-                                        onClick={() => setIsPlaying(true)}
-                                        className="inline-flex items-center gap-2 h-9 px-6 text-xs font-bold bg-orange-600 hover:bg-orange-500 rounded-lg shadow-md transition-colors"
+                                        onClick={handleStartGame}
+                                        className="inline-flex items-center gap-2 h-9 px-6 text-xs font-bold bg-orange-600 hover:bg-orange-500 rounded-lg shadow-md transition-colors font-mono tracking-wide uppercase"
                                     >
-                                        Launch Game Loop
+                                        {gameOverScore !== null ? "Reinitialize Arena" : "Launch Match Arena"}
                                     </button>
                                 </div>
                             )}
