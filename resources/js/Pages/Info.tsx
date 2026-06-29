@@ -1,13 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Activity, Cpu, ShieldCheck, Layers, RefreshCw, Server, Clock, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { Activity, Cpu, ShieldCheck, Layers, RefreshCw, Server, Clock, CheckCircle2, AlertTriangle, Container } from 'lucide-react';
 import { Head } from '@inertiajs/react';
 import axios from 'axios';
 import MainLayout from '@/Layouts/MainLayout';
 
 interface TelemetryData {
-    host: { environment: string; php_version: string; laravel_version: string; uptime: string };
-    hardware: { cpu_load: number; memory: { used: string; subtext: string; percentage: number } };
+    host: {
+        environment: string;
+        php_version: string;
+        laravel_version: string;
+        uptime: string
+    };
+    hardware: {
+        cpu_load: number;
+        memory: {
+            used: string;
+            percentage: number;
+            subtext: string;
+            host_percentage: number;
+        };
+        containers: {
+            total_containers: number;
+            global_containers: number;
+        };
+    };
     daemons: {
         php_fpm: { status: string; latency: string };
         mysql: { status: string; context: string };
@@ -55,7 +72,7 @@ export default function Status() {
                             SYSTEM <span className="text-primary italic">INFOS</span>
                         </h1>
                         <p className="text-on-surface-variant text-lg font-light leading-relaxed">
-                            Real-time infrastructure metrics and service status streaming straight from the Docker containers hosting this website.
+                            Real-time infrastructure metrics and service status streaming straight from Server hosting this website.
                         </p>
                     </div>
 
@@ -78,34 +95,66 @@ export default function Status() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
                     {loading ? (
-                        [1, 2].map((i) => <div key={i} className="h-44 bg-surface-container-low rounded border border-outline-variant/10 animate-pulse" />)
+                        [1, 2].map((i) => <div key={i} className="h-56 bg-surface-container-low rounded border border-outline-variant/10 animate-pulse" />)
                     ) : (
                         <>
-                            {/* CPU Engine */}
-                            <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="bg-surface-container-low rounded p-8 border border-outline-variant/10">
-                                <div className="flex justify-between items-start mb-6">
-                                    <div className="font-mono text-[10px] text-outline tracking-widest uppercase">CORE_LOAD_AVG</div>
-                                    <Cpu className="text-primary" size={18} />
+                            {/* Memory Matrix Allocation */}
+                            <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="bg-surface-container-low rounded p-8 border border-outline-variant/10 flex flex-col justify-between">
+                                <div>
+                                    <div className="flex justify-between items-start mb-6">
+                                        <div className="font-mono text-[10px] text-outline tracking-widest uppercase">DYNAMIC_RAM_BUFFER</div>
+                                        <Activity className="text-secondary" size={18} />
+                                    </div>
+
+                                    {/* Primary Focus: Website Footprint */}
+                                    <div className="mb-6">
+                                        <div className="font-mono text-[10px] text-outline tracking-wider uppercase mb-1">WEBSITE RAM USAGE</div>
+                                        <div className="flex items-baseline gap-2">
+                                            <h3 className="font-mono text-4xl font-bold">{data?.hardware.memory.used}</h3>
+                                            <span className="font-mono text-xs text-secondary">({data?.hardware.memory.percentage}%)</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="font-mono text-[10px] text-outline tracking-wider uppercase mb-1">COMPUTE ENGINE LOAD</div>
-                                <h3 className="font-mono text-4xl font-bold mb-2">{data?.hardware.cpu_load}%</h3>
-                                <p className="font-mono text-[11px] text-on-surface-variant/80">RESOURCE CONSUMPTION VALUE ACROSS CLUSTER APPS</p>
-                                <div className="w-full bg-surface-container-highest h-[2px] mt-6 rounded-full overflow-hidden">
-                                    <div className="bg-primary h-full transition-all duration-500" style={{ width: `${Math.min(data?.hardware.cpu_load || 0, 100)}%` }}></div>
+
+                                {/* Machine Level Breakdown */}
+                                <div className="border-t border-outline-variant/10 pt-4 mt-2">
+                                    <div className="flex justify-between font-mono text-[11px] mb-2">
+                                        <span className="text-outline">TOTAL SERVER CONSUMPTION:</span>
+                                        <span className="text-on-surface font-semibold">{data?.hardware.memory.subtext}</span>
+                                    </div>
+                                    {/* Visual Bar showing the total hardware usage profile */}
+                                    <div className="w-full bg-surface-container-highest h-[3px] rounded-full overflow-hidden">
+                                        <div className="bg-gradient-to-r from-secondary to-primary h-full transition-all duration-500" style={{ width: `${data?.hardware.memory.host_percentage || 70}%` }}></div>
+                                    </div>
                                 </div>
                             </motion.div>
 
-                            {/* Memory Allocation */}
-                            <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="bg-surface-container-low rounded p-8 border border-outline-variant/10">
-                                <div className="flex justify-between items-start mb-6">
-                                    <div className="font-mono text-[10px] text-outline tracking-widest uppercase">DYNAMIC_RAM_BUFFER</div>
-                                    <Activity className="text-secondary" size={18} />
+                            {/* Container Engine Node Registry */}
+                            <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="bg-surface-container-low rounded p-8 border border-outline-variant/10 flex flex-col justify-between">
+                                <div>
+                                    <div className="flex justify-between items-start mb-6">
+                                        <div className="font-mono text-[10px] text-outline tracking-widest uppercase">NODE_INVENTORY</div>
+                                        <Container className="text-tertiary" size={18} />
+                                    </div>
+
+                                    {/* Primary Focus: App Isolated Nodes */}
+                                    <div className="mb-6">
+                                        <div className="font-mono text-[10px] text-outline tracking-wider uppercase mb-1">WEBSITE DOCKER CONTAINERS</div>
+                                        <div className="flex items-baseline gap-2">
+                                            <h3 className="font-mono text-4xl font-bold">{data?.hardware?.containers?.total_containers ?? 0}</h3>
+                                            <span className="font-mono text-xs text-outline">/ 5 RUNNING</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="font-mono text-[10px] text-outline tracking-wider uppercase mb-1">MEMORY UTILIZATION</div>
-                                <h3 className="font-mono text-4xl font-bold mb-2">{data?.hardware.memory.used}</h3>
-                                <p className="font-mono text-[11px] text-on-surface-variant/80 uppercase">{data?.hardware.memory.subtext}</p>
-                                <div className="w-full bg-surface-container-highest h-[2px] mt-6 rounded-full overflow-hidden">
-                                    <div className="bg-secondary h-full transition-all duration-500" style={{ width: `${data?.hardware.memory.percentage}%` }}></div>
+
+                                {/* Machine Level Counter */}
+                                <div className="border-t border-outline-variant/10 pt-4 mt-2">
+                                    <div className="flex justify-between font-mono text-[11px] items-center">
+                                        <span className="text-outline">TOTAL RUNNING DOCKER CONTAINERS:</span>
+                                        <div className="flex items-center gap-1.5 bg-surface-container-highest px-2.5 py-1 rounded border border-outline-variant/10 font-mono text-xs font-semibold text-tertiary">
+                                            {data?.hardware?.containers?.global_containers ?? 0} RUNNING
+                                        </div>
+                                    </div>
                                 </div>
                             </motion.div>
                         </>
