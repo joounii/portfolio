@@ -4,9 +4,11 @@ import { usePage } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
+import { useConsoleMessage } from '@/Hooks/useConsoleMessage';
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
     const { url } = usePage();
+    useConsoleMessage();
 
     return (
         <div className="min-h-screen bg-surface-container-lowest selection:bg-primary/30 selection:text-primary flex flex-col relative">

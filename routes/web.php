@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ProjectPageController as AdminProjectPageControll
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\InfoController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,9 +19,11 @@ Route::get('/projects', [ProjectController::class, 'index'])->name('projects.ind
 Route::get('/projects/{slug}', [ProjectController::class, 'show'])->name('projects.show');
 Route::get('/stack', function () { return Inertia::render('Stack'); })->name('stack');
 Route::get('/contact', function () { return Inertia::render('Contact'); })->name('contact');
+Route::get('/info', function () { return Inertia::render('Info'); })->name('info');
 Route::get('/logs', function () { return Inertia::render('Logs'); })->name('logs');
 
 Route::post('/api/handshake', [ContactController::class, 'store'])->middleware(['throttle:3,1'])->name('contact.store');
+Route::get('/api/infra/telemetry', [InfoController::class, 'getMetrics']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/api/upload-image', [ImageUploadController::class, 'store'])->name('image.upload');
