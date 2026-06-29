@@ -8,6 +8,7 @@ use Spatie\Sitemap\Tags\Url;
 use App\Models\Reminder;
 use Illuminate\Support\Facades\Schedule;
 use App\Services\DiscordReminderService;
+use \Illuminate\Support\Facades\Cache;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -81,4 +82,9 @@ Schedule::call(function (DiscordReminderService $service) {
 
         $reminder->update(['is_sent' => true]);
     }
+})->everyMinute();
+
+
+Schedule::call(function () {
+    Cache::put('scheduler_last_heartbeat', now()->timestamp);
 })->everyMinute();
