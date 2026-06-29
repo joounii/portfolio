@@ -10,6 +10,7 @@ class InfoController extends Controller
 {
     public function getMetrics(): JsonResponse
     {
+
         $stats = Cache::remember('infra_telemetry', 10, function () {
             $memoryData = $this->getMemoryMetrics();
             return [
@@ -95,7 +96,6 @@ class InfoController extends Controller
         $hostUsedGb = 0;
         $hostUsedPercentage = 0;
 
-        // 1. Gather Host Total Memory Registry
         if (file_exists('/proc/meminfo')) {
             $meminfo = file_get_contents('/proc/meminfo');
             preg_match('/MemTotal:\s+(\d+)/', $meminfo, $totalMatches);
@@ -112,7 +112,6 @@ class InfoController extends Controller
             }
         }
 
-        // 2. Fetch Isolated Application Footprint
         $appContainerMemoryGb = $this->getWebsiteStackMemory();
         $websitePercentageOfServer = $hostTotalGb > 0 ? round(($appContainerMemoryGb / $hostTotalGb) * 100, 1) : 0;
 

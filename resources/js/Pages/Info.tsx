@@ -4,6 +4,7 @@ import { Activity, Cpu, ShieldCheck, Layers, RefreshCw, Server, Clock, CheckCirc
 import { Head } from '@inertiajs/react';
 import axios from 'axios';
 import MainLayout from '@/Layouts/MainLayout';
+import { router } from '@inertiajs/react';
 
 interface TelemetryData {
     host: {
@@ -38,23 +39,48 @@ export default function Status() {
     const [loading, setLoading] = useState<boolean>(true);
     const [refreshing, setRefreshing] = useState<boolean>(false);
 
-    const fetchTelemetry = async () => {
-        setRefreshing(true);
-        try {
-            const response = await axios.get('/api/infra/telemetry');
-            setData(response.data);
-            setLoading(false);
-        } catch (error) {
-            console.error("Telemetry pipeline interrupted:", error);
-        } finally {
-            setRefreshing(false);
-        }
-    };
-
     useEffect(() => {
-        fetchTelemetry();
-        const telemetryLoop = setInterval(fetchTelemetry, 15000);
-        return () => clearInterval(telemetryLoop);
+        let abortController = new AbortController();
+
+        const fetchTelemetry = async (signal: AbortSignal) => {
+            setRefreshing(true);
+            try {
+                const response = await axios.get('/api/infra/telemetry', {
+                    signal
+                });
+                setData(response.data);
+                setLoading(false);
+            } catch (error) {
+                if (axios.isCancel(error)) {
+                    console.log("Telemetry pipeline instantly severed via global Inertia router hook.");
+                } else {
+                    console.error("Telemetry pipeline interrupted:", error);
+                }
+            } finally {
+                setRefreshing(false);
+            }
+        };
+
+        // Initial push execution
+        fetchTelemetry(abortController.signal);
+
+        // Regular polling loop
+        const telemetryLoop = setInterval(() => {
+            abortController = new AbortController();
+            fetchTelemetry(abortController.signal);
+        }, 15000);
+
+        // INSTANT ROUTER HOOK: Catches the exact millisecond any link is pressed
+        const removeStartListener = router.on('start', () => {
+            abortController.abort(); // Sever the data request pipeline instantly
+        });
+
+        // Component destruction cleanup loop
+        return () => {
+            clearInterval(telemetryLoop);
+            removeStartListener();   // Destroy the Inertia event listener
+            abortController.abort(); // Safe fallback cleanup
+        };
     }, []);
 
     return (
