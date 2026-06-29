@@ -17,6 +17,7 @@ export default function Navbar() {
         { label: 'PROJECTS', href: '/projects' },
         { label: 'STACK', href: '/stack' },
         { label: 'CONTACT', href: '/contact' },
+        { label: 'INFO', href: '/info' },
     ];
 
     // Close mobile menu on navigation
@@ -103,7 +104,7 @@ export default function Navbar() {
                                 {item.label}
                             </Link>
                         ))}
-                        {/* will be added in Version 2 */}
+                        {/* will be added in Later Version */}
                         {/* <button className="w-full bg-primary text-on-primary-container px-4 py-3 rounded-lg text-xs font-headline font-bold tracking-widest uppercase">
                             RESUME
                         </button> */}
@@ -111,9 +112,10 @@ export default function Navbar() {
                 )}
             </AnimatePresence>
 
+            {/* will be added in Later Version */}
             {/* Desktop Actions */}
-            <div className="hidden md:flex items-center gap-4">
-                {/* will be added in Version 2 */}
+            {/* <div className="hidden md:flex items-center gap-4"> */}
+
                 {/* <Link
                     href="/logs"
                     className={`p-2 rounded-lg transition-colors ${url === '/logs' ? 'text-secondary bg-secondary/10' : 'text-primary hover:bg-primary/10'}`}
@@ -123,7 +125,7 @@ export default function Navbar() {
                 <button className="bg-primary text-on-primary-container px-4 py-1.5 rounded-lg text-xs font-headline font-bold tracking-widest hover:brightness-110 transition-all active:scale-95 uppercase">
                     RESUME
                 </button> */}
-            </div>
+            {/* </div> */}
         </motion.nav>
     );
 }
