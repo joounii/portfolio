@@ -60,6 +60,8 @@ services:
         command: tunnel run
         environment:
             - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
         depends_on:
             - webserver
         networks:
